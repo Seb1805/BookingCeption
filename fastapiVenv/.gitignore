@@ -1,0 +1,10 @@
+# cache files
+/__pycache__
+
+
+# local env files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
