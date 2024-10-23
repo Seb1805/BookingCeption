@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from ..utils.security import get_current_user
 
 router = APIRouter(prefix="/skrald", tags=["skrald"])

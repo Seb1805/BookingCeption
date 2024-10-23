@@ -4,6 +4,7 @@ from jose import jwt, JWTError
 from passlib.context import CryptContext
 from pydantic import BaseModel
 from datetime import datetime, timedelta
+from typing import Optional
 
 SECRET_KEY = "your-secret-key"
 ALGORITHM = "HS256"
