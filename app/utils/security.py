@@ -11,7 +11,8 @@ from sqlalchemy.orm import sessionmaker, relationship
 import hashlib
 from sqlalchemy.sql import select
 from sqlalchemy.orm import Session
-
+from ..database import get_db
+import os
 
 SECRET_KEY = "your-secret-key"
 ALGORITHM = "HS256"
@@ -37,25 +38,7 @@ class User(BaseModel):
 class UserInDB(User):
     password: str
 
-from dotenv import load_dotenv
-load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-engine = create_engine(DATABASE_URL)
-
-Base.metadata.create_all(bind=engine)
-
-
-#Use the web to find correct format for connection string
-SessionLocal = sessionmaker(bind=engine)
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 def hash_password(password):
     salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
@@ -97,7 +80,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-async def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
+async def get_current_user(db: Session = Depends(get_db()), token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",

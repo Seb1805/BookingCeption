@@ -1,18 +1,32 @@
 from fastapi import APIRouter, Depends
-from ..utils.security import get_current_user,User,hash_password
+from ..utils.security import get_current_user,hash_password
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from .database import get_db
-from .models import User
-from .schemas import UserCreate, User
+from ..database import get_db
+from ..models import UserCreate,User
 
 router = APIRouter(prefix="/users", tags=["users"])
 
-@router.get("/users/me")
+from pydantic import BaseModel
+from typing import Optional
+
+class UserReturn(BaseModel):
+    userId: int
+    firstname: str
+    lastname: str
+    email: str
+    password: str
+    address: Optional[str] = None
+
+    class Config:
+        orm_mode = True
+
+
+@router.get("/me")
 async def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
 
-@router.post("/users/", response_model=User)
+@router.post("/", response_model=UserReturn)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     # Check if email already exists
     existing_user = db.query(User).filter(User.email == user.email).first()
