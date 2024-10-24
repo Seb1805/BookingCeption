@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Skole\Api\BookingCeption\fastapiVenv
+set VIRTUAL_ENV=C:\Users\Frank\Desktop\projects\BookingCeption\fastapiVenv
 
 if not defined PROMPT set PROMPT=$P$G
 
