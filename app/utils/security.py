@@ -5,6 +5,13 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 from datetime import datetime, timedelta
 from typing import Optional
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, relationship
+import hashlib
+from sqlalchemy.sql import select
+from sqlalchemy.orm import Session
+
 
 SECRET_KEY = "your-secret-key"
 ALGORITHM = "HS256"
@@ -21,42 +28,64 @@ class TokenData(BaseModel):
     username: Optional[str] = None
 
 class User(BaseModel):
-    username: str
+    userId: int
+    firstname: str
+    lastname: str
     email: Optional[str] = None
-    full_name: Optional[str] = None
     disabled: Optional[bool] = False
 
 class UserInDB(User):
     password: str
 
-fake_users_db = {
-    "johndoe": {
-        "username": "johndoe",
-        "full_name": "John Doe",
-        "email": "johndoe@example.com",
-        "hashed_password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
-        "disabled": False,
-    }
-}
+from dotenv import load_dotenv
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+engine = create_engine(DATABASE_URL)
+
+Base.metadata.create_all(bind=engine)
+
+
+#Use the web to find correct format for connection string
+SessionLocal = sessionmaker(bind=engine)
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+def hash_password(password):
+    salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
+    pwdhash = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'), salt, 100000)
+    pwdhash = pwdhash.hex()
+    return pwdhash
 
 def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
+    salt = hashed_password[:64]
+    stored_hash = hashed_password[64:]
+    pwdcheck = hashlib.pbkdf2_hmac('sha512', plain_password.encode('utf-8'), salt.encode('ascii'), 100000)
+    return pwdcheck.hex() == stored_hash
 
-def get_password_hash(password):
-    return pwd_context.hash(password)
-
-def get_user(db, username: str):
-    if username in db:
-        user_dict = db[username]
-        return UserInDB(**user_dict)
-
-def authenticate_user(fake_db, username: str, password: str):
-    user = get_user(fake_db, username)
+# Modify authenticate_user function
+def authenticate_user(db, username: str, password: str):
+    user = db.query(User).filter(User.username == username).first()
     if not user:
         return False
     if not verify_password(password, user.hashed_password):
         return False
     return user
+
+async def get_user(db, username: str):
+    statement = select(User).where(User.username == username)
+    result = db.execute(statement)
+    return result.scalar_one_or_none()
+
+async def create_user(db, user: User):
+    db.add(user)
+    db.commit()
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
@@ -68,7 +97,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-async def get_current_user(token: str = Depends(oauth2_scheme)):
+async def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -82,7 +111,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         token_data = TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = get_user(fake_users_db, username=token_data.username)
+    user = db.query(User).filter(User.email == token_data.username).first()
     if user is None:
         raise credentials_exception
     return user
