@@ -22,17 +22,22 @@ const SignUpScreen = ({ navigation }: { navigation: any }) => {
 
   async function handleSignUp() {
     if(validateFormValues(state)) {
-      const response = await fetch(`${process.env.REACT_NATIVE_APP_BACKEND_API}/users`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(state)
-      });
-
-      if (response.status == 200) {
-        navigation.navigate('LoginScreen');
-      } 
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/users`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(state)
+        });
+  
+        if (response.status == 200) {
+          navigation.navigate('LoginScreen');
+        } 
+        
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
