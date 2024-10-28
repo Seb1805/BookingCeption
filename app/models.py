@@ -37,11 +37,12 @@ class User(Base):
         return f"<User(username={self.firstname})>"
     
 
-
-
 class UserCreate(BaseModel):
     firstname: str
     lastname: str
     email: str
     password: str
     address: Optional[str] = None
+
+
+#TODO: Define other classes
