@@ -14,11 +14,16 @@ from sqlalchemy.sql import select
 from sqlalchemy.orm import Session
 from ..database import get_db
 import os
+from ..utils.security import Token
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+from fastapi import APIRouter, Depends
+from ..utils.security import get_current_user
 
-@app.post("/token", response_model=Token)
+router = APIRouter(prefix="/token", tags=["token"])
+
+@router.post("/", response_model=Token)
 async def login_for_access_token(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
