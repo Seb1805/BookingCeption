@@ -1,26 +1,35 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from './LoginScreen';
+// import { createStackNavigator } from '@react-navigation/stack';
+import Login from './Login';
 import Home from './Home';
-import SignUpScreen from './SignupScreen'
-// import { Stack } from 'expo-router';
-// import RegisterScreen from './RegisterScreen';
-// import HomeScreen from './HomeScreen';
+import SignUp from './Signup';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-const Stack = createStackNavigator();
+// const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
+
+
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Index from './index';
+
+
+const Tab = createBottomTabNavigator();
+// function BottomNavigation() {
+//   return (
+//     <Tab.Navigator initialRouteName='Home' screenOptions={{headerShown: false}}>
+//       <Tab.Screen name="Home" component={Home} options={{ title: 'Setting Page'}}/>
+//     </Tab.Navigator>
+//   )
+// }
+
 
 export default function Layout() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="LoginScreen">
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen name="SignupScreen" component={SignUpScreen} />
-
-        {/* <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} /> */}
-      </Stack.Navigator>
-      </NavigationContainer>
+      <Stack.Navigator initialRouteName="index">
+        <Stack.Screen name="index" component={Index} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Signup" component={SignUp} />
+      </Stack.Navigator> 
   );
 }

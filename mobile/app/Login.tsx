@@ -42,7 +42,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       />
       <Button title="Login" onPress={handleLogin} />
       <Text style={styles.link}>
-        Don't have an account? <Link to={"/SignupScreen"}>Register here</Link>
+        Don't have an account? <Link to={"/Signup"}>Register here</Link>
       </Text>
       {/* <Text style={styles.link} onPress={() => navigation.navigate('SignUpScreen')}>
         Don't have an account? Register here

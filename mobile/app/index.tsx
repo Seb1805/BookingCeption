@@ -1,15 +1,17 @@
 import { Text, View } from "react-native";
+import ProjectCards from "@/components/ProjectCards";
+import Home from "@/app/Home"
+import Profile  from "./Profile/index";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+
+const Tab = createBottomTabNavigator();
 
 export default function Index() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-    </View>
+    <Tab.Navigator initialRouteName='Home' screenOptions={{headerShown: false}}>
+      <Tab.Screen name="Home" component={Home} options={{ title: 'Home' }}/>
+      <Tab.Screen name="Profile" component={Profile} options={{ title: 'Profile'}}/>
+    </Tab.Navigator>
   );
 }
