@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .routers import read_item, skrald,users
+from .routers import read_item, skrald, token_old, users,token
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -7,6 +7,7 @@ app = FastAPI()
 app.include_router(read_item.router)
 app.include_router(skrald.router)
 app.include_router(users.router)
+app.include_router(token.router)
 
 origins = [
     "http://localhost:3000",  # React Native Metro bundler port

@@ -20,21 +20,21 @@ from typing import Optional
 
 Base = declarative_base()
 
-class User(Base):
-    __tablename__ = "User"
+# class User(Base):
+#     __tablename__ = "User"
     
-    userId = Column(Integer, primary_key=True)
-    firstname = Column(String(150))
-    lastname = Column(String(150))
-    email = Column(String(150))
-    password = Column(String(150))
-    address = Column(String(150))
-    #disabled: Optional[bool] = False
-    # username = Column(String(50), unique=True)
-    #hashed_password = Column(String(255))
+#     userId = Column(Integer, primary_key=True)
+#     firstname = Column(String(150))
+#     lastname = Column(String(150))
+#     email = Column(String(150))
+#     password = Column(String(150))
+#     address = Column(String(150))
+#     #disabled: Optional[bool] = False
+#     # username = Column(String(50), unique=True)
+#     #hashed_password = Column(String(255))
     
-    def __repr__(self):
-        return f"<User(username={self.firstname})>"
+#     def __repr__(self):
+#         return f"<User(username={self.firstname})>"
     
 
 class UserCreate(BaseModel):
@@ -46,3 +46,22 @@ class UserCreate(BaseModel):
 
 
 #TODO: Define other classes
+
+from pydantic import BaseModel
+from typing import Optional
+
+class UserBase(BaseModel):
+    username: str
+    email: str
+    full_name: Optional[str] = None
+    disabled: Optional[bool] = None
+
+class User(UserBase):
+    hashed_password: str
+
+class UserInDB(User):
+    password: str
+
+# class UserInDB(UserBase):
+#     hashed_password: str
+#     posts: Optional[list["Post"]] = None
