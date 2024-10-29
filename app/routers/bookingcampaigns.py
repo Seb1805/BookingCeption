@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from ..utils.security import get_current_user
+from ..utils.security_old import get_current_user
 
 router = APIRouter(prefix="/booking_campaigns", tags=["booking_campaigns"])
 
