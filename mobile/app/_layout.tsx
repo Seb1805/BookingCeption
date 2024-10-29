@@ -12,20 +12,15 @@ const Stack = createStackNavigator();
 
 export default function Layout() {
   return (
-
+    <NavigationContainer>
       <Stack.Navigator initialRouteName="LoginScreen">
+        <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="SignupScreen" component={SignUpScreen} />
-        <Stack.Screen name="Home" component={Home} />
 
         {/* <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Home" component={HomeScreen} /> */}
       </Stack.Navigator>
-
-      // <Stack initialRouteName="LoginScreen">
-      //   <Stack.Screen name='home' options={{ title: 'home'}} />
-      //   <Stack.Screen name='LoginScreen' options={{ title: 'Login'}} />
-      // </Stack>
-
+      </NavigationContainer>
   );
 }
