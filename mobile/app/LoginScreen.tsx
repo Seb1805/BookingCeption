@@ -6,38 +6,83 @@ interface LoginScreenState {
   email: string;
   password: string;
 }
-const LoginScreen = ({ navigation }: { navigation: any }) => {
-  const [state, setState] = useState<LoginScreenState>({
-    email: "",
-    password: "",
-  });
-  const handleLogin = () => {
-    // Simulating API call
-    setTimeout(() => {
-      if (
-        state.email === "test@example.com" &&
-        state.password === "password123"
-      ) {
-        navigation.navigate("Home");
-      } else {
-        alert("Invalid credentials");
+const LoginScreen = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async () => {
+    if (loading) return;
+
+    setLoading(true);
+    
+    try {
+      const formData = new FormData();
+      formData.append('username', email);
+      formData.append('password', password);
+
+      const response = await fetch('http://localhost:8000/token/', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-    }, 2000);
+
+      const data = await response.json();
+      console.log(data);
+      // Handle successful login
+      setLoading(false);
+    } catch (error) {
+      console.error("Error:", error);
+      // Handle error appropriately
+      setLoading(false);
+    }
   };
+
+// const LoginScreen = ({ navigation }: { navigation: any }) => {
+//   const [state, setState] = useState<LoginScreenState>({
+//     email: "",
+//     password: "",
+//   });
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//    async function handleLogin(){
+//     // Simulating API call
+    
+//       const response = await fetch(`http://127.0.0.1:8000/token`, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(state)
+//       });
+
+//       // if (
+//       //   state.email === "test@example.com" &&
+//       //   state.password === "password123"
+//       // ) {
+//       //   navigation.navigate("Home");
+//       // } else {
+//       //   alert("Invalid credentials");
+//       // }
+    
+//   };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
-        value={state.email}
-        onChangeText={(text) => setState({ ...state, email: text })}
+        value={email}
+        onChangeText={(text) => setEmail(text)}
       />
       <TextInput
         style={styles.input}
         placeholder="Password"
-        value={state.password}
-        onChangeText={(text) => setState({ ...state, password: text })}
+        value={password}
+        onChangeText={(text) => setPassword(text)}
         secureTextEntry
       />
       <Button title="Login" onPress={handleLogin} />
