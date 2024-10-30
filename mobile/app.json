@@ -28,8 +28,7 @@
     },
     "plugins": [
       "expo-router",
-      "expo-asset",
-      { "assets": ["./assets/images/"] }
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true

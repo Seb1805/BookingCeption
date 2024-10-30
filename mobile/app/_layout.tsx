@@ -1,35 +1,18 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-// import { createStackNavigator } from '@react-navigation/stack';
-import Login from './Login';
-import Home from './Home';
-import SignUp from './Signup';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from './(auth)/Login';
+import SignUp from './(auth)/Signup';
+import { Stack } from 'expo-router';
 
-// const Stack = createStackNavigator();
-const Stack = createNativeStackNavigator();
-
-
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Index from './index';
-
-
-const Tab = createBottomTabNavigator();
-// function BottomNavigation() {
-//   return (
-//     <Tab.Navigator initialRouteName='Home' screenOptions={{headerShown: false}}>
-//       <Tab.Screen name="Home" component={Home} options={{ title: 'Setting Page'}}/>
-//     </Tab.Navigator>
-//   )
-// }
+import Index from './(tabs)/index';
 
 
 export default function Layout() {
   return (
-      <Stack.Navigator initialRouteName="index">
-        <Stack.Screen name="index" component={Index} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Signup" component={SignUp} />
-      </Stack.Navigator> 
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false}}/>
+        <Stack.Screen name="(auth)/Login"/>
+        <Stack.Screen name="(auth)/Signup"/>
+      </Stack> 
   );
 }
