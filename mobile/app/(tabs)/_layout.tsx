@@ -1,14 +1,13 @@
 import { Text, View } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from "expo-router";
 import Home from "./index";
 import Profile from "./Profile/index";
+import Events from "./Events";
 
 import TabIcon from "../../components/navigation/tabIcon";
 import icons from "../../constants/Icons";
 import { Colors } from "@/constants/Colors";
-
-const Tab = createBottomTabNavigator();
 
 export default function Index() {
   return (
@@ -19,37 +18,24 @@ export default function Index() {
         tabBarActiveTintColor: Colors.light.tint,
       }}
     >
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          title: "Home",
-          // tabBarIcon: ({ color, focused }) => {
-          //   return (
-          //     <TabIcon
-          //       icon={icons.home}
-          //       color={color}
-          //       name="Home"
-          //       focused={focused}
-          //     />
-          //   );
-          // },
+      <Tabs.Screen
+        name="Events"
+        options={{ title: "Messer", tabBarLabel: "Messer",
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="shopping-basket" color={color} />,
         }}
       />
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{ title: "Profile", tabBarLabel: "Profile"}}
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "Home",
+          tabBarLabel: "Home",
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />
+        }}
       />
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{ title: "Profile", tabBarLabel: "Profile"}}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{ title: "Profile", tabBarLabel: "Profile"}}
+      
+      <Tabs.Screen
+        name="Profile/index"
+        options={{ title: "Profil", tabBarLabel: "Profil", tabBarIcon: ({ color }) => <FontAwesome size={28} name="user" color={color} />,}}
       />
     </Tabs>
   );
