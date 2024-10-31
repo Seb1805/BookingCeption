@@ -14,28 +14,26 @@ from sqlalchemy.orm import Session
 
 from pydantic import BaseModel
 from typing import Optional
-
-
-
-
+# app/utils/models.py
+from sqlalchemy.orm import declarative_base
 Base = declarative_base()
 
-# class User(Base):
-#     __tablename__ = "User"
+
+#User
+class User(Base):
+    __tablename__ = "User"
     
-#     userId = Column(Integer, primary_key=True)
-#     firstname = Column(String(150))
-#     lastname = Column(String(150))
-#     email = Column(String(150))
-#     password = Column(String(150))
-#     address = Column(String(150))
-#     #disabled: Optional[bool] = False
-#     # username = Column(String(50), unique=True)
-#     #hashed_password = Column(String(255))
-    
-#     def __repr__(self):
-#         return f"<User(username={self.firstname})>"
-    
+    userId = Column(Integer, primary_key=True)
+    firstname = Column(String(150))
+    lastname = Column(String(150))
+    email = Column(String(150), unique=True)
+    password = Column(String(255))
+    address = Column(String(150))
+    role = Column(Integer)
+
+    def __repr__(self):
+        return f"<User(username={self.firstname})>"
+
 
 class UserCreate(BaseModel):
     firstname: str
@@ -43,25 +41,35 @@ class UserCreate(BaseModel):
     email: str
     password: str
     address: Optional[str] = None
+    role: int
 
 
-#TODO: Define other classes
-
-from pydantic import BaseModel
-from typing import Optional
-
-class UserBase(BaseModel):
-    username: str
+class UserPydantic(BaseModel):
+    userId: int
+    firstname: str
+    lastname: str
     email: str
-    full_name: Optional[str] = None
-    disabled: Optional[bool] = None
-
-class User(UserBase):
-    hashed_password: str
-
-class UserInDB(User):
     password: str
+    address: str | None
+    role: int
 
-# class UserInDB(UserBase):
-#     hashed_password: str
-#     posts: Optional[list["Post"]] = None
+    class Config:
+        orm_mode = True
+
+
+#Location
+class Location(Base):
+    __tablename__ = "User"
+    
+    locationId = Column(Integer, primary_key=True)
+    locationName = Column(String(150))
+    address = Column(String(150))
+
+    def __repr__(self):
+        return f"<User(username={self.firstname})>"
+    
+class LocationCreate(BaseModel):
+    locationName: str
+    address = str
+
+    
