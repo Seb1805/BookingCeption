@@ -2,7 +2,7 @@ import { Button, Text, View } from "react-native";
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import ProjectCards from "@/components/ProjectCards";
 import { useCallback, useState } from "react";
-import { useFocusEffect } from "expo-router";
+import { Link, useFocusEffect } from "expo-router";
 
 export default function Index({ navigation } : {navigation: any}) {
 
@@ -31,8 +31,12 @@ export default function Index({ navigation } : {navigation: any}) {
     >
 
       <Text>Home page</Text>
-      <Text style={{padding: 24}} onPress={() => navigation.navigate('Login')}>Login side</Text>
-      <Text style={{padding: 24}} onPress={() => navigation.navigate('Signup')}>Signup side</Text>
+      <Link href="/(auth)/Login"  style={{padding: 12, margin: 3}} >
+        <Text>Login side</Text>
+      </Link>
+      <Link href="/(auth)/Signup" style={{padding: 12, margin: 3}} >
+        <Text>Signup side</Text>
+      </Link>
       {/* <ProjectCards navigation={navigation} eventlink={`events/1`} messedata={} address={}/> */}
     </View>
   );
