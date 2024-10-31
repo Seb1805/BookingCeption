@@ -72,4 +72,15 @@ class LocationCreate(BaseModel):
     locationName: str
     address = str
 
+
+#Campaign
+class Campaign(Base):
+    __tablename__ = "Campaign"
+
+    campaignId  = Column(Integer, primary_key=True)
+    name = Column(String)
+    description = Column(String)
+    coverImage = Column(String)
+    dateStart = Column(date)
+
     
