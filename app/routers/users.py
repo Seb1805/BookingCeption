@@ -56,6 +56,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
         db.refresh(new_user)
     except Exception as e:
         db.rollback()
+        print(str(e))
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
     
     return new_user

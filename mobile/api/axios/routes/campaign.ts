@@ -1,7 +1,7 @@
-import axiosClient from "../axiosClient";
+import {axiosClientJson} from "../axiosClient";
 
 const campaignApi = {
-  getCampaignData: (page: Number) => axiosClient.get(`/campaign/page/${page}`)
+  getCampaignData: (page: Number) => axiosClientJson.get(`/campaign/page/${page}`)
 }
 
 export default campaignApi;

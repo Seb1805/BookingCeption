@@ -1,3 +1,7 @@
+
+
+
+
 @router.get("/campaigns/")
 def get_campaigns(db: Session = Depends(get_db)):
     campaigns = db.query(Campaign).all()

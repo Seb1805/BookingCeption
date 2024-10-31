@@ -3,6 +3,8 @@ import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import { Link, NavigationContainer } from "@react-navigation/native";
 // import { login } from loginApi
 import loginApi from "@/api/axios/routes/login";
+import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // import { createStackNavigator } from '@react-navigation-stack';
 interface LoginScreenState {
   email: string;
@@ -35,8 +37,9 @@ const LoginScreen = () => {
       //const data = await response.json();
       const data = response.data;
       console.log(data);
-      // Handle successful login
       setLoading(false);
+      await AsyncStorage.setItem("access_token",data.access_token)
+      router.replace('/(tabs)/ProfileIndex');
     } catch (error) {
       console.error("Error:", error);
       // Handle error appropriately

@@ -19,7 +19,7 @@ def get_location(company_id: int, db: Session = Depends(get_db),current_user: di
     company = db.query(Location).filter(Location.companyId == company_id).first()
     return {"company": company}
 
-@router.post("/")
+@router.post("/", response_model=LocationCreate)
 def createLocation(location: LocationCreate, db: Session = Depends(get_db),current_user: dict = Depends(get_current_user)):
     existing_location = db.query(Location).filter(Location.address == location.address).first()
     
