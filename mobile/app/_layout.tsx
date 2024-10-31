@@ -12,7 +12,6 @@ const Stack = createStackNavigator();
 
 export default function Layout() {
   return (
-    <NavigationContainer>
       <Stack.Navigator initialRouteName="LoginScreen">
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
@@ -21,6 +20,5 @@ export default function Layout() {
         {/* <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Home" component={HomeScreen} /> */}
       </Stack.Navigator>
-      </NavigationContainer>
   );
 }
