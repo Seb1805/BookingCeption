@@ -2,14 +2,14 @@ import { Text, View } from "react-native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from "expo-router";
 import Home from "./index";
-import Profile from "./Profile/index";
+import Profile from "./ProfileIndex";
 import Events from "./Events";
 
 import TabIcon from "../../components/navigation/tabIcon";
 import icons from "../../constants/Icons";
 import { Colors } from "@/constants/Colors";
 
-export default function Index() {
+export default function Index({ navigation } : {navigation: any}) {
   return (
     <Tabs
       screenOptions={{
@@ -34,9 +34,18 @@ export default function Index() {
       />
       
       <Tabs.Screen
-        name="Profile/index"
+        name="ProfileIndex"
         options={{ title: "Profil", tabBarLabel: "Profil", tabBarIcon: ({ color }) => <FontAwesome size={28} name="user" color={color} />,}}
       />
+      <Tabs.Screen
+        name="BoughtList"
+        options={{
+          title: "Mine arrangementer",
+          tabBarLabel: "Mine arrangementer",
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="calendar" color={color} />
+        }}
+      />
     </Tabs>
+    
   );
 }

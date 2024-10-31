@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-export default function Events() {
+export default function Events({ navigation } : {navigation: any}) {
   return (
     <View>
       <View>
