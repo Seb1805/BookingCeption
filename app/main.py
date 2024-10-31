@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .routers import read_item, skrald, token_old, users,token
+from .routers import read_item, skrald, users,token
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()

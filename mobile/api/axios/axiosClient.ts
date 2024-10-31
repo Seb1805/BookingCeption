@@ -6,7 +6,7 @@ const baseUrl = `${process.env.SCHEMA_SERVER}${process.env.SERVER_DOMAIN}`
   const axiosClient = axios.create({
     baseURL: baseUrl,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
       'Access-Control-Allow-Origin': '*'
     }
   })

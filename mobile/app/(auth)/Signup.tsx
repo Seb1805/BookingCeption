@@ -9,6 +9,7 @@ interface SignUpScreenState {
   firstname: string;
   lastname: string;
   address: string;
+  role: number
 }
 
 const SignUpScreen = ({ navigation }: { navigation: any }) => {
@@ -17,7 +18,8 @@ const SignUpScreen = ({ navigation }: { navigation: any }) => {
     password: '',
     firstname: '',
     lastname: '',
-    address: ''
+    address: '',
+    role: 1
   });
 
   async function handleSignUp() {
@@ -47,7 +49,8 @@ const SignUpScreen = ({ navigation }: { navigation: any }) => {
       state.password.length > 0 &&
       state.firstname.length > 0 &&
       state.lastname.length > 0 &&
-      state.address.length > 0
+      state.address.length > 0 &&
+      state.role == 1
     );
   }
   // const handleLogin = () => {

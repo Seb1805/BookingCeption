@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 from ..database import get_db
-from ..models import User
+from ..models import UserPydantic
 from ..utils.security_old import Token, TokenData
 from ..utils.security_old import SECRET_KEY,ALGORITHM,create_access_token,authenticate_user,get_current_active_user
 
@@ -47,9 +47,9 @@ async def login_for_access_token(
     
     return {"access_token": access_token, "token_type": "bearer"}
 
-@router.get("/users/me/", response_model=User)
-async def read_users_me(current_user: User = Depends(get_current_active_user)):
-    return current_user
+@router.get("/me", response_model=UserPydantic)
+async def read_users_me(current_user: DbUser = Depends(get_current_user)):
+    return UserPydantic.from_orm(current_user)
 
 
 

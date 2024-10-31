@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import { Link, NavigationContainer } from "@react-navigation/native";
+// import { login } from loginApi
+import loginApi from "@/api/axios/routes/login";
 // import { createStackNavigator } from '@react-navigation-stack';
 interface LoginScreenState {
   email: string;
@@ -20,17 +22,18 @@ const LoginScreen = () => {
       const formData = new FormData();
       formData.append('username', email);
       formData.append('password', password);
+      const response = (await loginApi.login(formData))
+      // const response = await fetch('http://localhost:8000/token/', {
+      //   method: 'POST',
+      //   body: formData,
+      // });
 
-      const response = await fetch('http://localhost:8000/token/', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error('Network response was not ok');
       }
 
-      const data = await response.json();
+      //const data = await response.json();
+      const data = response.data;
       console.log(data);
       // Handle successful login
       setLoading(false);
