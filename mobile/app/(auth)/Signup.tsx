@@ -34,7 +34,7 @@ const SignUpScreen = ({ navigation }: { navigation: any }) => {
         });
   
         if (response.status == 200) {
-          navigation.navigate('LoginScreen');
+          navigation.navigate('Login');
         } 
         
       } catch (error) {
