@@ -24,12 +24,15 @@ class User(Base):
     __tablename__ = "User"
     
     userId = Column(Integer, primary_key=True)
+    
     firstname = Column(String(150))
     lastname = Column(String(150))
     email = Column(String(150), unique=True)
     password = Column(String(255))
     address = Column(String(150))
     role = Column(Integer)
+
+    #bookings = relationship("Booking", back_populates="user")
 
     def __repr__(self):
         return f"<User(username={self.firstname})>"
@@ -94,31 +97,31 @@ class Location(Base):
     locationId = Column(Integer, primary_key=True)
     locationName = Column(String(150))
     address = Column(String(150))
+    organizerId = Column(Integer)
 
-    def __repr__(self):
-        return f"<User(username={self.firstname})>"
+
     
 class LocationCreate(BaseModel):
     locationName: str
     address: str
 
-# class LocationBase(BaseModel):
-#     location_name: str
-#     address: str
-#     organizer_id: int
+class LocationBase(BaseModel):
+    locationName: str
+    address: str
+    organizerId: int
 
-# class LocationCreate(LocationBase):
-#     pass
+class LocationCreate(LocationBase):
+    pass
 
-# class LocationUpdate(LocationBase):
-#     pass
+class LocationUpdate(LocationBase):
+    pass
 
-# class LocationPydantic(LocationBase):
-#     location_id: int
-#     sections: List["SectionPydantic"] = []
+class LocationPydantic(LocationBase):
+    location_id: int
+    sections: List["SectionPydantic"] = []
 
-#     class Config:
-#         orm_mode = True
+    class Config:
+        orm_mode = True
 #Organizers
 # class Organizer(Base):
 #     __tablename__ = "organizer"
@@ -203,15 +206,15 @@ class Campaign(Base):
 #     sectionId : int
 #     price : float
 class CampaignBase(BaseModel):
-    name: str
-    description: str
-    cover_image: str
-    date_start: date
-    time_start: time
-    date_end: date
-    time_end: time
-    section_id: int
-    price: float
+    name : str
+    description : str
+    coverImage : str #maybe blob
+    dateStart : date
+    timeStart : time
+    dateEnd : date
+    timeEnd : time
+    sectionId : int
+    price : float
 
 class CampaignCreate(CampaignBase):
     pass
@@ -231,32 +234,20 @@ class CampaignPydantic(CampaignBase):
 class Booking(Base):
     __tablename__ = "booking"
     
-    booking_id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("user.user_id"))
-    booking_status_id = Column(Integer, ForeignKey("bookingstatus.booking_status_id"))
-    booking_campaign_id = Column(Integer, ForeignKey("bookingcampaign.booking_campaign_id"))
+    bookingId = Column(Integer, primary_key=True)
+    userId = Column(Integer)
+    bookingStatusId = Column(Integer)
+    bookingCampaignId = Column(Integer)
 
-    user = relationship("User", back_populates="bookings")
-    booking_status = relationship("BookingStatus", back_populates="bookings")
-    booking_campaign = relationship("BookingCampaign", back_populates="bookings")
+    #user = relationship("User", back_populates="bookings")
+    # booking_status = relationship("BookingStatus", back_populates="bookings")
+    # booking_campaign = relationship("BookingCampaign", back_populates="bookings")
 
-class BookingStatus(Base):
-    __tablename__ = "bookingstatus"
-    
-    booking_status_id = Column(Integer, primary_key=True)
-    status = Column(String)
-
-    bookings = relationship("Booking", back_populates="booking_status")
-
-
-class BookingStatusEnum(str, Enum):
-    PENDING = "pending"
-    CONFIRMED = "confirmed"
-    CANCELLED = "cancelled"
 
 class BookingBase(BaseModel):
-    booking_status_id: int
-    status: BookingStatusEnum
+    userId: int
+    bookingStatusId: int
+    bookingCampaignId: int
 
 class BookingCreate(BookingBase):
     pass
@@ -265,14 +256,57 @@ class BookingUpdate(BookingBase):
     pass
 
 class BookingPydantic(BookingBase):
-    booking_id: int
-    user_id: int
-    booking_status_id: int
-    booking_campaign_id: int
+    bookingId: int
+    userId: int
+    bookingStatusId: int
+    bookingCampaignId: int
 
     class Config:
         orm_mode = True
 
+#Booking status
+class BookingStatus(Base):
+    __tablename__ = "bookingstatus"
+    
+    bookingStatusId = Column(Integer, primary_key=True)
+    status = Column(String)
+
+    #bookings = relationship("Booking", back_populates="bookingstatus")
+
+class BookingStatusPydantic:
+    status : str
+
+# class BookingStatusEnum(str, Enum):
+#     PENDING = "pending"
+#     CONFIRMED = "confirmed"
+#     CANCELLED = "cancelled"
+
+
+#Booking Campaign
+class BookingCampaign(Base):
+    __tablename__ = "bookingcampaign"
+    
+    bookingCampaignId = Column(Integer, primary_key=True)
+    ticketId = Column(Integer)
+    ticketAmount = Column(Integer)
+
+    #ticket = relationship("Ticket", back_populates="bookings")
+
+class BookingCampaignBase(BaseModel):
+    ticketId: int
+    ticketAmount: int
+
+class BookingCampaignCreate(BookingCampaignBase):
+    pass
+
+class BookingCampaignUpdate(BookingCampaignBase):
+    pass
+
+class BookingCampaignPydantic(BookingCampaignBase):
+    bookingCampaignId: int
+
+    class Config:
+        orm_mode = True
 
 #User Role
 class UserRole(Base):
@@ -329,11 +363,11 @@ class UserCompanyAssociation(Base):
     __tablename__ = "usercompanyassociation"
     
     user_company_association_id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("user.user_id"))
-    company_id = Column(Integer, ForeignKey("company.company_id"))
+    user_id = Column(Integer)
+    company_id = Column(Integer)
 
-    user = relationship("User", back_populates="companies")
-    company = relationship("Company", back_populates="users")
+    # user = relationship("User", back_populates="companies")
+    # company = relationship("Company", back_populates="users")
 
 class UserCompanyAssociationBase(BaseModel):
     user_id: int
@@ -358,26 +392,25 @@ class UserCompanyAssociationPydantic(UserCompanyAssociationBase):
 class Ticket(Base):
     __tablename__ = "ticket"
     
-    ticket_id = Column(Integer, primary_key=True)
+    ticketId = Column(Integer, primary_key=True)
     name = Column(String)
     price = Column(Float)
-    valid_date_start = Column(Date)
-    valid_date_end = Column(Date)
-    valid_time_start = Column(Time)
-    spot_id = Column(Integer, ForeignKey("spot.spot_id"))
-    campaign_id = Column(Integer, ForeignKey("campaign.campaign_id"))
+    validDateStart = Column(Date)
+    validDateEnd = Column(Date)
+    validTimeStart = Column(Time)
+    spotId = Column(Integer)
+    campaignId = Column(Integer)
 
-    spot = relationship("Spot", back_populates="tickets")
-    campaign = relationship("Campaign", back_populates="tickets")
+
 
 class TicketBase(BaseModel):
     name: str
     price: float
-    valid_date_start: date
-    valid_date_end: date
-    valid_time_start: time
-    spot_id: int
-    campaign_id: int
+    validDateStart: date
+    validDateEnd: date
+    validTimeStart: time
+    spotId: int
+    campaignId: int
 
 class TicketCreate(TicketBase):
     pass
@@ -386,59 +419,34 @@ class TicketUpdate(TicketBase):
     pass
 
 class TicketPydantic(TicketBase):
-    ticket_id: int
+    ticketId: int
     spot: dict = {}
     campaign: dict = {}
 
     class Config:
         orm_mode = True
 
-#Booking Campaign
-class BookingCampaign(Base):
-    __tablename__ = "bookingcampaign"
-    
-    booking_campaign_id = Column(Integer, primary_key=True)
-    ticket_id = Column(Integer, ForeignKey("ticket.ticket_id"))
-    ticket_amount = Column(Integer)
-
-    ticket = relationship("Ticket", back_populates="bookings")
-
-class BookingCampaignBase(BaseModel):
-    ticket_id: int
-    ticket_amount: int
-
-class BookingCampaignCreate(BookingCampaignBase):
-    pass
-
-class BookingCampaignUpdate(BookingCampaignBase):
-    pass
-
-class BookingCampaignPydantic(BookingCampaignBase):
-    booking_campaign_id: int
-
-    class Config:
-        orm_mode = True
 
 
 #Section
 class Section(Base):
     __tablename__ = "section"
     
-    section_id = Column(Integer, primary_key=True)
-    location_id = Column(Integer, ForeignKey("location.location_id"))
-    location_item = Column(Integer)
+    sectionId = Column(Integer, primary_key=True)
+    locationId = Column(Integer)
+    locationItem = Column(Integer)
     name = Column(String)
-    spot_id = Column(Integer, ForeignKey("spot.spot_id"))
-    room_for_participants = Column(Integer)
+    spotId = Column(Integer)
+    roomForParticipants = Column(Integer)
 
-    location = relationship("Location", back_populates="sections")
-    spot = relationship("Spot", back_populates="sections")
+
 class SectionBase(BaseModel):
-    location_id: int
-    location_item: int
+    sectionId: int
+    locationId: int
+    locationItem: int
     name: str
-    spot_id: int
-    room_for_participants: int
+    spotId: int
+    roomForParticipants: int
 
 class SectionCreate(SectionBase):
     pass
@@ -447,7 +455,7 @@ class SectionUpdate(SectionBase):
     pass
 
 class SectionPydantic(SectionBase):
-    section_id: int
+    sectionId: int
     spot: dict = {}
 
     class Config:
@@ -457,26 +465,24 @@ class SectionPydantic(SectionBase):
 class Spot(Base):
     __tablename__ = "spot"
     
-    spot_id = Column(Integer, primary_key=True)
+    spotId = Column(Integer, primary_key=True)
     status = Column(Boolean)
     position = Column(String)
-    length_cm = Column(Integer)
-    width_cm = Column(Integer)
-    price_extra = Column(Float)
-    price_per_square_meter = Column(Boolean)
-    spot_type_id = Column(Integer, ForeignKey("spottype.spottype_id"))
+    lengthCM = Column(Integer)
+    widthCM = Column(Integer)
+    priceExtra = Column(Float)
+    pricePrSquareMeter = Column(Boolean)
+    spotType = Column(Integer)
 
-    sections = relationship("Section", back_populates="spots")
-    spot_types = relationship("SpotType", back_populates="spots")
 
 class SpotBase(BaseModel):
     status: bool
     position: str
-    length_cm: int
-    width_cm: int
-    price_extra: float
-    price_per_square_meter: bool
-    spot_type_id: int
+    lengthCM: int
+    widthCM: int
+    priceExtra: float
+    pricePrSquareMeter: bool
+    spotType: int
 
 class SpotCreate(SpotBase):
     pass
@@ -498,11 +504,11 @@ class UserOrganizerAssociation(Base):
     __tablename__ = "userorganizerassociation"
     
     user_organizer_association_id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("user.user_id"))
-    organizer_id = Column(Integer, ForeignKey("organizer.organizer_id"))
+    user_id = Column(Integer)
+    organizer_id = Column(Integer)
 
-    user = relationship("User", back_populates="organizers")
-    organizer = relationship("Organizer", back_populates="users")
+    # user = relationship("User", back_populates="organizers")
+    # organizer = relationship("Organizer", back_populates="users")
 
 class UserOrganizerAssociationBase(BaseModel):
     user_id: int
@@ -527,7 +533,7 @@ class SpotType(Base):
     spottype_id = Column(Integer, primary_key=True)
     name = Column(String)
 
-    spots = relationship("Spot", back_populates="spot_types")
+    # spots = relationship("Spot", back_populates="spot_types")
 
 class SpotTypeBase(BaseModel):
     name: str

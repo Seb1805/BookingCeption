@@ -14,3 +14,5 @@ def get_companies(db: Session = Depends(get_db)):
 def get_company(company_id: int, db: Session = Depends(get_db)):
     company = db.query(Company).filter(Company.companyId == company_id).first()
     return {"company": company}
+
+
