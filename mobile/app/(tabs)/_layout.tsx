@@ -15,13 +15,19 @@ export default function Index() {
       screenOptions={{
         headerShown: false,
         // tabBarShowLabel: false,
-        tabBarActiveTintColor: Colors.light.tint,
+        tabBarActiveTintColor: Colors.light.primary,
       }}
     >
       <Tabs.Screen
         name="Events"
         options={{ title: "Messer", tabBarLabel: "Messer",
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="shopping-basket" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="Support"
+        options={{ title: "Support", tabBarLabel: "Support",
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="info-circle" color={color} />,
         }}
       />
       <Tabs.Screen
