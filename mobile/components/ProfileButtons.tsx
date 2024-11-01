@@ -14,14 +14,13 @@ const styles = StyleSheet.create({
   buttonstyling: {
     display: 'flex',
     flexDirection: 'row',
-    
     width: '100%',
-    padding: 12,
-    marginVertical: 6,
-    backgroundColor: Colors.light.primary,
+    paddingVertical: 8,
+    borderBottomColor: '#aaa',
+    borderBottomWidth: 1
   },
   buttonText: {
-    color: Colors.light.background,
-    textTransform: "uppercase",
+    color: Colors.light.text,
+    textTransform: "capitalize",
   }
 })

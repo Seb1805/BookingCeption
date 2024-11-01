@@ -44,13 +44,13 @@ const styles = StyleSheet.create({
   imagecontainer: {
     display: 'flex',
     overflow: 'hidden',
-    height: '100%',
+    height: 100,
     width: 100,
     justifyContent: 'center',
     alignItems: 'center'
   },
   image: {
-    height: "100%",
     width: "100%",
+    height: '100%'
   }
 })
