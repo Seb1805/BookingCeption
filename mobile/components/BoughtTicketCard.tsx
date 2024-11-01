@@ -1,11 +1,24 @@
 import { View, Text, Image, StyleSheet } from 'react-native'
 import React from 'react'
 
-export default function TicketCard() {
+export default function TicketCard({imagesrc = ""} : {imagesrc: string}) {
+
+  function ImageIdentifyer() {
+    if (imagesrc.substring(0,4) == "http") {
+      return (
+        <Image source={{uri: imagesrc}} style={styles.image} />
+      )
+    }
+
+    return (
+      <Image source={require('@/assets/images/placeholders/placeholder-ticket.jpg')} style={styles.image} />
+    )
+  }
+
   return (
     <View style={styles.cardcontainer}>
       <View style={styles.imagecontainer}>
-        <Image style={styles.image} />
+        {ImageIdentifyer()}
       </View>
       <View>
         <View><Text>Labels</Text></View>
@@ -25,15 +38,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#d1d1d1'
+    borderBottomColor: '#d1d1d1',
+    gap: 10,
   },
   imagecontainer: {
+    display: 'flex',
     overflow: 'hidden',
     height: '100%',
-    aspectRatio: '1/1'
+    width: 100,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   image: {
-    objectFit: 'cover'
+    height: "100%",
+    width: "100%",
   }
-
 })

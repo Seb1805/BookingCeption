@@ -6,9 +6,10 @@ export default function BoughtList() {
   return (
     <ScrollView>
       <Text>BoughtList</Text>
-      <BoughtTicketCard />
-      <BoughtTicketCard />
-      <BoughtTicketCard />
+      <BoughtTicketCard imagesrc=''/>
+      <BoughtTicketCard imagesrc=''/>
+      <BoughtTicketCard imagesrc='https://thevirtualinstructor.com/blog/wp-content/uploads/2013/08/understanding-abstract-art.jpg'/>
+      <BoughtTicketCard imagesrc=''/>
     </ScrollView>
   )
 }
