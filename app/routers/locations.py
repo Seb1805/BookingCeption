@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from ..utils.security import get_current_user
 from sqlalchemy.orm import Session
 from ..database import get_db
-from ..models import Location,LocationCreate
+from ..models import Location,LocationCreate,LocationPydantic,LocationUpdate
 from ..utils.security import get_current_user
 from fastapi import APIRouter, Depends, HTTPException, status
 
@@ -41,3 +41,41 @@ def createLocation(location: LocationCreate, db: Session = Depends(get_db),curre
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
     
     return new_location
+
+@router.put("/{locationid}", response_model=LocationPydantic)
+def update_campaign(locationId: int, campaign_data: LocationUpdate, db: Session = Depends(get_db)):
+    existing_location = db.query(Location).filter(Location.locationId == locationId).first()
+    
+    if not existing_location:
+        raise HTTPException(status_code=404, detail="Campaign not found")
+    
+    # Update fields based on campaign_data
+    for field in ["locationName","address","organizerId"]:
+        setattr(existing_location, field, getattr(campaign_data, field, None))
+    
+    try:
+        db.commit()
+        db.refresh(existing_location)
+    except Exception as e:
+        db.rollback()
+        print(str(e))
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+    
+    return existing_location
+
+@router.delete("/{locationId}")
+def delete_campaign(locationId: int, db: Session = Depends(get_db)):
+    location = db.query(Location).filter(Location.locationId == locationId).first()
+    
+    if not location:
+        raise HTTPException(status_code=404, detail="Campaign not found")
+    
+    try:
+        db.delete(location)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        print(str(e))
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+    
+    return {"message": "Campaign deleted successfully"}
