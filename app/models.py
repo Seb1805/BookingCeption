@@ -140,27 +140,27 @@ class Organizer(Base):
     name = Column(String)
 
 
-class OrganizerCreate(BaseModel):
-    locationId: int
-    campaignId: int
-    name: str
-
-# class OrganizerBase(BaseModel):
-#     campaign_id: int
+# class OrganizerCreate(BaseModel):
+#     locationId: int
+#     campaignId: int
 #     name: str
 
-# class OrganizerCreate(OrganizerBase):
-#     pass
+class OrganizerBase(BaseModel):
+    campaign_id: int
+    name: str
 
-# class OrganizerUpdate(OrganizerBase):
-#     pass
+class OrganizerCreate(OrganizerBase):
+    pass
 
-# class OrganizerPydantic(OrganizerBase):
-#     organizer_id: int
-#     locations: List["LocationPydantic"] = []
+class OrganizerUpdate(OrganizerBase):
+    pass
 
-#     class Config:
-#         orm_mode = True
+class OrganizerPydantic(OrganizerBase):
+    organizer_id: int
+    locations: List["LocationPydantic"] = []
+
+    class Config:
+        orm_mode = True
 
 
 #Campaign
