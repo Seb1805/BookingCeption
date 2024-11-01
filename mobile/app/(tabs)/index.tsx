@@ -1,4 +1,4 @@
-import { Button, Text, View } from "react-native";
+import { Button, ScrollView, Text, View } from "react-native";
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import ProjectCards from "@/components/ProjectCards";
 import { useCallback, useState } from "react";
@@ -22,13 +22,11 @@ export default function Index({ navigation } : {navigation: any}) {
   // )
 
   return (
-    <View
-      style={{
-        flex: 1,
+    <ScrollView>
+      <View style={{
         justifyContent: "center",
         alignItems: "center",
-      }}
-    >
+      }}>
 
       <Text>Home page</Text>
       <Link href="/(auth)/Login"  style={{padding: 12, margin: 3}} >
@@ -38,6 +36,7 @@ export default function Index({ navigation } : {navigation: any}) {
         <Text>Signup side</Text>
       </Link>
       {/* <ProjectCards navigation={navigation} eventlink={`events/1`} messedata={} address={}/> */}
-    </View>
+      </View>
+    </ScrollView>
   );
 }

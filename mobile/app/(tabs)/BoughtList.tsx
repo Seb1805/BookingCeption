@@ -1,12 +1,14 @@
-import { View, Text } from 'react-native'
-import TicketCard from '@/components/TicketCard'
+import { View, Text, ScrollView } from 'react-native'
+import BoughtTicketCard from '@/components/BoughtTicketCard'
 import React from 'react'
 
-export default function BoughtList({ navigation } : {navigation: any}) {
+export default function BoughtList() {
   return (
-    <View>
+    <ScrollView>
       <Text>BoughtList</Text>
-      <TicketCard />
-    </View>
+      <BoughtTicketCard />
+      <BoughtTicketCard />
+      <BoughtTicketCard />
+    </ScrollView>
   )
 }

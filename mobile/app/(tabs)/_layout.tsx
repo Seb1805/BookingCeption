@@ -9,7 +9,7 @@ import TabIcon from "../../components/navigation/tabIcon";
 import icons from "../../constants/Icons";
 import { Colors } from "@/constants/Colors";
 
-export default function Index({ navigation } : {navigation: any}) {
+export default function Index() {
   return (
     <Tabs
       screenOptions={{

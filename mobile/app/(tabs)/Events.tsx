@@ -1,16 +1,29 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, ScrollView, FlatList, TextInput } from 'react-native'
+import React, { useState } from 'react'
+import EventCard from '@/components/EventCard'
+import Searchbar from '@/components/Searchbar'
 
-export default function Events({ navigation } : {navigation: any}) {
+
+export default function Events() {
+  const [search, setSearch] = useState('');
   return (
-    <View>
+      <View style={{flex: 1}}>  
+        <Searchbar data={search} setData={setSearch} placeholderData='Søg her' />
+    <ScrollView>
       <View>
-        <Text>Events page</Text>  
-        <Text>Filtering</Text>  
+        <EventCard imagesrc=""/>
+        <EventCard imagesrc='https://thevirtualinstructor.com/blog/wp-content/uploads/2013/08/understanding-abstract-art.jpg'/>
+        <EventCard imagesrc=""/>
+        <EventCard imagesrc=""/>
       </View>
-      <View>
-        <Text>List af tilfældige messer, Evt. bassered på afstand fra brugerens addresse</Text>
+    </ScrollView>
       </View>
-    </View>
   )
 }
+
+const styles = StyleSheet.create({
+  input: {
+    paddingHorizontal: 15,
+    paddingVertical: 10
+  }
+})
