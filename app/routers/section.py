@@ -4,7 +4,7 @@ from ..utils.security import get_current_user
 from ..database import get_db
 from sqlalchemy.orm import Session
 
-router = APIRouter(prefix="/sections", tags=["sections"])
+router = APIRouter(prefix="/section", tags=["section"])
 
 @router.get("/")
 def get_tickets(db: Session = Depends(get_db)):

@@ -12,12 +12,12 @@ router = APIRouter(prefix="/location", tags=["location"])
 @router.get("/")
 def get_locations(db: Session = Depends(get_db),current_user: dict = Depends(get_current_user)):
     locations = db.query(Location).all()
-    return {"companies": locations}
+    return {"locations": locations}
 
 @router.get("/{location_id}")
-def get_location(company_id: int, db: Session = Depends(get_db),current_user: dict = Depends(get_current_user)):
-    company = db.query(Location).filter(Location.companyId == company_id).first()
-    return {"company": company}
+def get_location(location_id: int, db: Session = Depends(get_db),current_user: dict = Depends(get_current_user)):
+    location = db.query(Location).filter(Location.locationId == location_id).first()
+    return {"location": location}
 
 @router.post("/", response_model=LocationCreate)
 def createLocation(location: LocationCreate, db: Session = Depends(get_db),current_user: dict = Depends(get_current_user)):
@@ -42,12 +42,12 @@ def createLocation(location: LocationCreate, db: Session = Depends(get_db),curre
     
     return new_location
 
-@router.put("/{locationid}", response_model=LocationPydantic)
-def update_campaign(locationId: int, campaign_data: LocationUpdate, db: Session = Depends(get_db)):
-    existing_location = db.query(Location).filter(Location.locationId == locationId).first()
+@router.put("/{location_id}", response_model=LocationPydantic)
+def update_campaign(location_id: int, campaign_data: LocationUpdate, db: Session = Depends(get_db)):
+    existing_location = db.query(Location).filter(Location.locationId == location_id).first()
     
     if not existing_location:
-        raise HTTPException(status_code=404, detail="Campaign not found")
+        raise HTTPException(status_code=404, detail="Location not found")
     
     # Update fields based on campaign_data
     for field in ["locationName","address","organizerId"]:
@@ -68,7 +68,7 @@ def delete_campaign(locationId: int, db: Session = Depends(get_db)):
     location = db.query(Location).filter(Location.locationId == locationId).first()
     
     if not location:
-        raise HTTPException(status_code=404, detail="Campaign not found")
+        raise HTTPException(status_code=404, detail="Location not found")
     
     try:
         db.delete(location)
@@ -78,4 +78,4 @@ def delete_campaign(locationId: int, db: Session = Depends(get_db)):
         print(str(e))
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
     
-    return {"message": "Campaign deleted successfully"}
+    return {"message": "Location deleted successfully"}

@@ -6,7 +6,7 @@ from ..models import Booking,BookingCreate,BookingPydantic,BookingUpdate,User
 from ..utils.security import get_current_active_user
 
 
-router = APIRouter(prefix="/bookings", tags=["bookings"])
+router = APIRouter(prefix="/booking", tags=["booking"])
 @router.get("/")
 def get_bookings(db: Session = Depends(get_db)):
     bookings = db.query(Booking).all()
@@ -68,18 +68,18 @@ def update_booking(booking_id: int, booking_data: BookingUpdate, db: Session = D
     return existing_booking
 
 @router.delete("/{booking_id}")
-def delete_user(booking_id: int, db: Session = Depends(get_db)):
-    user = db.query(Booking).filter(Booking.bookingId == booking_id).first()
+def delete_booking(booking_id: int, db: Session = Depends(get_db)):
+    booking = db.query(Booking).filter(Booking.bookingId == booking_id).first()
     
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+    if not booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
     
     try:
-        db.delete(user)
+        db.delete(booking)
         db.commit()
     except Exception as e:
         db.rollback()
         print(str(e))
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
     
-    return {"message": "User deleted successfully"}
+    return {"message": "Booking deleted successfully"}

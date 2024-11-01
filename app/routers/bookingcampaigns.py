@@ -5,18 +5,18 @@ from ..database import get_db
 from sqlalchemy.orm import Session
 
 
-router = APIRouter(prefix="/booking_campaigns", tags=["booking_campaigns"])
+router = APIRouter(prefix="/booking_campaign", tags=["booking_campaign"])
 
 
 @router.get("/")
 def get_booking_campaigns(db: Session = Depends(get_db)):
-    campaigns = db.query(BookingCampaign).all()
-    return {"campaigns": campaigns}
+    booking_campaigns = db.query(BookingCampaign).all()
+    return {"booking_campaigns": booking_campaigns}
 
-@router.get("/{campaign_id}")
-def get_booking_campaign(campaign_id: int, db: Session = Depends(get_db)):
-    campaign = db.query(BookingCampaign).filter(BookingCampaign.bookingCampaignId == campaign_id).first()
-    return {"campaign": campaign}
+@router.get("/{booking_campaign_id}")
+def get_booking_campaign(booking_campaign_id: int, db: Session = Depends(get_db)):
+    booking_campaign = db.query(BookingCampaign).filter(BookingCampaign.bookingCampaignId == booking_campaign_id).first()
+    return {"booking_campaign": booking_campaign}
 
 @router.post("/", response_model=BookingCampaignPydantic)
 def create_booking(bookingCampaign: BookingCampaignCreate, db: Session = Depends(get_db),current_user: User = Depends(get_current_active_user)):
@@ -67,19 +67,19 @@ def update_booking(bookingCampaignId: int, booking_data: BookingCampaignUpdate, 
     
     return existing_bookingCampaign
 
-@router.delete("/{booking_id}")
-def delete_user(booking_id: int, db: Session = Depends(get_db)):
-    user = db.query(BookingCampaign).filter(BookingCampaign.bookingCampaignId == booking_id).first()
+@router.delete("/{booking_campaign_id}")
+def delete_booking_campaign(booking_campaign_id: int, db: Session = Depends(get_db)):
+    booking_campaign = db.query(BookingCampaign).filter(BookingCampaign.bookingCampaignId == booking_campaign_id).first()
     
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+    if not booking_campaign:
+        raise HTTPException(status_code=404, detail="Booking campaign not found")
     
     try:
-        db.delete(user)
+        db.delete(booking_campaign)
         db.commit()
     except Exception as e:
         db.rollback()
         print(str(e))
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
     
-    return {"message": "User deleted successfully"}
+    return {"message": "Booking campaign deleted successfully"}

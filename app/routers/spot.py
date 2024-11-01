@@ -4,19 +4,19 @@ from ..utils.security import get_current_user
 from ..database import get_db
 from sqlalchemy.orm import Session
 
-router = APIRouter(prefix="/spots", tags=["spots"])
+router = APIRouter(prefix="/spot", tags=["spot"])
 
 @router.get("/")
 def get_tickets(db: Session = Depends(get_db)):
-    campaigns = db.query(Spot).all()
-    return {"campaigns": campaigns}
+    spots = db.query(Spot).all()
+    return {"spots": spots}
 
 @router.get("/{spotId}")
 def get_ticket(spotId: int, db: Session = Depends(get_db)):
-    campaign = db.query(Spot).filter(Spot.spotId == spotId).first()
-    return {"campaign": campaign}
+    spot = db.query(Spot).filter(Spot.spotId == spotId).first()
+    return {"spot": spot}
 
-@router.post("/spots", response_model=SpotPydantic)
+@router.post("/", response_model=SpotPydantic)
 def create_spot(spot: SpotCreate, db: Session = Depends(get_db)):
     new_spot = Spot(
         status=spot.status,
@@ -39,7 +39,7 @@ def create_spot(spot: SpotCreate, db: Session = Depends(get_db)):
     
     return new_spot
 
-@router.put("/spots/{spot_id}", response_model=SpotPydantic)
+@router.put("/{spot_id}", response_model=SpotPydantic)
 def update_spot(spot_id: int, spot_data: SpotUpdate, db: Session = Depends(get_db)):
     existing_spot = db.query(Spot).filter(Spot.spotId == spot_id).first()
     
@@ -60,7 +60,7 @@ def update_spot(spot_id: int, spot_data: SpotUpdate, db: Session = Depends(get_d
     
     return existing_spot
 
-@router.delete("/spots/{spot_id}")
+@router.delete("/{spot_id}")
 def delete_spot(spot_id: int, db: Session = Depends(get_db)):
     spot = db.query(Spot).filter(Spot.spotId == spot_id).first()
     

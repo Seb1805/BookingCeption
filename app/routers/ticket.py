@@ -5,18 +5,18 @@ from ..utils.security import get_current_user
 from ..database import get_db
 from sqlalchemy.orm import Session
 
-router = APIRouter(prefix="/tickets", tags=["tickets"])
+router = APIRouter(prefix="/ticket", tags=["ticket"])
 
 
 @router.get("/")
 def get_tickets(db: Session = Depends(get_db)):
-    campaigns = db.query(Ticket).all()
-    return {"campaigns": campaigns}
+    tickets = db.query(Ticket).all()
+    return {"tickets": tickets}
 
-@router.get("/{campaign_id}")
+@router.get("/{ticket_id}")
 def get_ticket(ticketId: int, db: Session = Depends(get_db)):
-    campaign = db.query(Ticket).filter(Ticket.ticketId == ticketId).first()
-    return {"campaign": campaign}
+    ticket = db.query(Ticket).filter(Ticket.ticketId == ticketId).first()
+    return {"ticket": ticket}
 
 @router.post("/", response_model=TicketPydantic)
 def create_ticket(ticket: TicketCreate, db: Session = Depends(get_db)):

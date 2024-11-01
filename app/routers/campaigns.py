@@ -4,7 +4,7 @@ from ..models import Campaign,CampaignPydantic,CampaignCreate,CampaignUpdate
 from ..database import get_db
 from sqlalchemy.orm import Session
 
-router = APIRouter(prefix="/campaigns", tags=["campaigns"])
+router = APIRouter(prefix="/campaign", tags=["campaign"])
 
 
 @router.get("/")

@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from ..utils.security import get_current_user
 from ..database import get_db
 
-router = APIRouter(prefix="/organizers", tags=["organizers"])
+router = APIRouter(prefix="/organizer", tags=["organizer"])
 
 
 @router.get("/")
@@ -22,7 +22,7 @@ def createLocation(organizer: OrganizerCreate, db: Session = Depends(get_db),cur
     existing_organizer = db.query(Organizer).filter(Organizer.name == organizer.address).first()
     
     if existing_organizer:
-        raise HTTPException(status_code=400, detail="Address already registered")
+        raise HTTPException(status_code=400, detail="Organizer already registered")
     
     
     new_organizer = Organizer(

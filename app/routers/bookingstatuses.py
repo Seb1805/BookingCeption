@@ -5,14 +5,14 @@ from ..database import get_db
 from ..models import BookingStatus,BookingStatusPydantic
 from ..utils.security import get_current_active_user
 
-router = APIRouter(prefix="/booking_statuses", tags=["booking_statuses"])
+router = APIRouter(prefix="/booking_status", tags=["booking_status"])
 
 @router.get("/")
 def get_booking_statuses(db: Session = Depends(get_db)):
     statuses = db.query(BookingStatus).all()
     return {"statuses": statuses}
 
-@router.get("/status_id}")
+@router.get("/{status_id}")
 def get_booking_status(status_id: int, db: Session = Depends(get_db)):
     status = db.query(BookingStatus).filter(BookingStatus.bookingStatusId == status_id).first()
     return {"status": status}
@@ -36,12 +36,12 @@ def create_booking_status(bookingstatus: BookingStatus, db: Session = Depends(ge
     return new_booking_status
 
 
-@router.put("/{booking_id}", response_model=BookingStatusPydantic)
-def update_booking(bookingstatusid: int, booking_data: BookingStatus, db: Session = Depends(get_db)):
-    existing_bookingstatus = db.query(BookingStatus).filter(BookingStatus.bookingStatusId == bookingstatusid).first()
+@router.put("/{bookingstatus_id}", response_model=BookingStatusPydantic)
+def update_booking(bookingstatus_id: int, booking_data: BookingStatus, db: Session = Depends(get_db)):
+    existing_bookingstatus = db.query(BookingStatus).filter(BookingStatus.bookingStatusId == bookingstatus_id).first()
     
     if not existing_bookingstatus:
-        raise HTTPException(status_code=404, detail="Booking not found")
+        raise HTTPException(status_code=404, detail="Booking status not found")
     
     # Update fields based on booking_data
     for field in ["status"]:
@@ -58,18 +58,18 @@ def update_booking(bookingstatusid: int, booking_data: BookingStatus, db: Sessio
     return existing_bookingstatus
 
 @router.delete("/{bookingstatus_id}")
-def delete_user(bookingstatus_id: int, db: Session = Depends(get_db)):
-    user = db.query(BookingStatus).filter(BookingStatus.bookingStatusId == bookingstatus_id).first()
+def delete_bookingstatus(bookingstatus_id: int, db: Session = Depends(get_db)):
+    bookingstatus = db.query(BookingStatus).filter(BookingStatus.bookingStatusId == bookingstatus_id).first()
     
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+    if not bookingstatus:
+        raise HTTPException(status_code=404, detail="Booking status not found")
     
     try:
-        db.delete(user)
+        db.delete(bookingstatus)
         db.commit()
     except Exception as e:
         db.rollback()
         print(str(e))
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
     
-    return {"message": "User deleted successfully"}
+    return {"message": "Booking status deleted successfully"}

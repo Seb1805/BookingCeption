@@ -10,7 +10,7 @@ from app.utils.security import get_current_user, get_db,authenticate_user
 from ..models import UserCreate,User,UserPydantic
 Base = declarative_base()
 
-router = APIRouter(prefix="/users", tags=["users"])
+router = APIRouter(prefix="/user", tags=["user"])
 
 
 
