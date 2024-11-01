@@ -1,7 +1,8 @@
-import axiosClient from "../axiosClient";
+import {axiosClient}  from "../axiosClient";
 
 const loginApi = {
-  login: (data: FormData) => axiosClient.post('http://localhost:8000/token',data)
+  login: (data: FormData) => axiosClient.post('/token',data)
 }
+
 
 export default loginApi

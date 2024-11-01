@@ -9,3 +9,8 @@ export type Campaign = {
   timeEnd: string
   sectionId: number
 }
+
+export type Location = {
+  locationName: string
+  address: string
+}

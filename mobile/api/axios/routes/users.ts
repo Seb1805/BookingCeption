@@ -1,7 +1,7 @@
-import axiosClient from "../axiosClient";
+import {axiosClientJson} from "../axiosClient";
 
 const userApi = {
-  getUserData: () => axiosClient.get(`/user/me`)
+  getUserData: () => axiosClientJson.get(`/user/me`)
 }
 
 export default userApi;

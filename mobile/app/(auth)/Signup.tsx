@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { router } from 'expo-router';
 // import { createStackNavigator } from '@react-navigation-stack';
 
 interface SignUpScreenState {
@@ -34,8 +35,11 @@ const SignUpScreen = ({ navigation }: { navigation: any }) => {
         });
   
         if (response.status == 200) {
-          navigation.navigate('Login');
-        } 
+          router.replace('/(auth)/Login');
+        }
+        else{
+          throw new Error("Du er skrald jo")
+        }
         
       } catch (error) {
         console.log(error);
@@ -50,7 +54,7 @@ const SignUpScreen = ({ navigation }: { navigation: any }) => {
       state.firstname.length > 0 &&
       state.lastname.length > 0 &&
       state.address.length > 0 &&
-      state.role == 1
+      state.role > 0
     );
   }
   // const handleLogin = () => {
