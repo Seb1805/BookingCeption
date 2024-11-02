@@ -4,9 +4,10 @@ import { Stack } from 'expo-router'
 
 export default function _layout() {
   return (
-    <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="CreateLocation" />
+    <Stack screenOptions={{ headerShown: false }} >
+        <Stack.Screen name="index"/>
+        <Stack.Screen name="CreateLocation"  options={{ headerShown: true, headerTitle: 'Create location'}} />
+        <Stack.Screen name="CRUDmodal" options={{ presentation: 'modal' }} />
     </Stack>
   )
 }

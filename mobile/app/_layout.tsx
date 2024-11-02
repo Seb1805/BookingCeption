@@ -12,8 +12,8 @@ export default function Layout() {
   return (
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false}}/>
-        <Stack.Screen name="(auth)/Login"/>
-        <Stack.Screen name="(auth)/Signup"/>
+        <Stack.Screen name="(auth)/Login" options={{ headerTitle: 'Login'}}/>
+        <Stack.Screen name="(auth)/Signup" options={{ headerTitle: 'Sign up'}}/>
         
         <Stack.Screen
         name="modal"
