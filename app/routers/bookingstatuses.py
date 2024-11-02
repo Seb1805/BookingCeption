@@ -5,7 +5,7 @@ from ..database import get_db
 from ..models import BookingStatus,BookingStatusPydantic
 from ..utils.security import get_current_active_user
 
-router = APIRouter(prefix="/booking_status", tags=["booking_status"])
+router = APIRouter(prefix="/booking_statuses", tags=["booking_statuses"])
 
 @router.get("/")
 def get_booking_statuses(db: Session = Depends(get_db)):

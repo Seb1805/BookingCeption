@@ -14,3 +14,12 @@ export type Location = {
   locationName: string
   address: string
 }
+
+export type User = {
+  email: string;
+  password: string;
+  firstname: string;
+  lastname: string;
+  address: string;
+  role: number
+}

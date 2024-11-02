@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from ..utils.security import get_current_user
 from ..database import get_db
 
-router = APIRouter(prefix="/organizer", tags=["organizer"])
+router = APIRouter(prefix="/organizers", tags=["organizers"])
 
 
 @router.get("/")

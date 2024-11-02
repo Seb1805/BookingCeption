@@ -3,7 +3,7 @@ from ..utils.security_old import get_current_user
 from sqlalchemy.orm import Session
 
 
-router = APIRouter(prefix="/company", tags=["company"])
+router = APIRouter(prefix="/companies", tags=["companies"])
 
 @router.get("/")
 def get_companies(db: Session = Depends(get_db)):

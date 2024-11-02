@@ -6,7 +6,7 @@ from ..models import Booking,BookingCreate,BookingPydantic,BookingUpdate,User
 from ..utils.security import get_current_active_user
 
 
-router = APIRouter(prefix="/booking", tags=["booking"])
+router = APIRouter(prefix="/bookings", tags=["bookings"])
 @router.get("/")
 def get_bookings(db: Session = Depends(get_db)):
     bookings = db.query(Booking).all()

@@ -5,7 +5,7 @@ from ..database import get_db
 from sqlalchemy.orm import Session
 
 
-router = APIRouter(prefix="/booking_campaign", tags=["booking_campaign"])
+router = APIRouter(prefix="/booking_campaigns", tags=["booking_campaigns"])
 
 
 @router.get("/")

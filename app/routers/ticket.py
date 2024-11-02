@@ -5,7 +5,7 @@ from ..utils.security import get_current_user
 from ..database import get_db
 from sqlalchemy.orm import Session
 
-router = APIRouter(prefix="/ticket", tags=["ticket"])
+router = APIRouter(prefix="/tickets", tags=["tickets"])
 
 
 @router.get("/")

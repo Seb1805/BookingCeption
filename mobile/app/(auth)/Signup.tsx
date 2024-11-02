@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { router } from 'expo-router';
+import userApi from '@/api/axios/routes/users';
+import { User } from '@/constants/DBDatatypes';
 // import { createStackNavigator } from '@react-navigation-stack';
 
 interface SignUpScreenState {
@@ -13,8 +15,8 @@ interface SignUpScreenState {
   role: number
 }
 
-const SignUpScreen = ({ navigation }: { navigation: any }) => {
-  const [state, setState] = useState<SignUpScreenState>({
+const SignUpScreen = () => {
+  const [state, setState] = useState<User>({
     email: '',
     password: '',
     firstname: '',
@@ -26,14 +28,8 @@ const SignUpScreen = ({ navigation }: { navigation: any }) => {
   async function handleSignUp() {
     if(validateFormValues(state)) {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/users`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(state)
-        });
-  
+        const response = await userApi.addUser(state)
+        
         if (response.status == 200) {
           router.replace('/(auth)/Login');
         }

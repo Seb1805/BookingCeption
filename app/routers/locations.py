@@ -7,7 +7,7 @@ from ..utils.security import get_current_user
 from fastapi import APIRouter, Depends, HTTPException, status
 
 
-router = APIRouter(prefix="/location", tags=["location"])
+router = APIRouter(prefix="/locations", tags=["locations"])
 
 @router.get("/")
 def get_locations(db: Session = Depends(get_db),current_user: dict = Depends(get_current_user)):
