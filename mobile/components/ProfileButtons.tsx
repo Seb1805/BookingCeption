@@ -1,8 +1,9 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import React from 'react'
 import { Colors } from '@/constants/Colors'
+import { Redirect } from 'expo-router'
 
-export default function ProfileButtons({title = "", onpress = () => {}}: {title: string, onpress: any}) {
+export default function ProfileButtons({title = "", onpress = () => {return <Redirect href='/ProfileIndex' />}}: {title: string, onpress: any }) {
   return (
     <Pressable style={styles.buttonstyling} onPress={onpress}>
       <Text style={styles.buttonText}>{title}</Text>

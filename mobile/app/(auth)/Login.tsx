@@ -39,7 +39,7 @@ const LoginScreen = () => {
       console.log(data);
       setLoading(false);
       await AsyncStorage.setItem("access_token",data.access_token)
-      router.replace('/(tabs)/ProfileIndex');
+      router.replace('/(tabs)/Account');
     } catch (error) {
       console.error("Error:", error);
       // Handle error appropriately

@@ -1,4 +1,4 @@
-import { Button, ScrollView, Text, View } from "react-native";
+import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import ProjectCards from "@/components/ProjectCards";
 import { useCallback, useState } from "react";
@@ -29,14 +29,37 @@ export default function Index({ navigation } : {navigation: any}) {
       }}>
 
       <Text>Home page</Text>
-      <Link href="/(auth)/Login"  style={{padding: 12, margin: 3}} >
+      <Text>Hero - news</Text>
+      <Text>Påmindelse om kommende messe (3 dage)</Text>
+      <Text>highlighted messer</Text>
+
+      <Link href="/(auth)/Login" style={styles.link} >
         <Text>Login side</Text>
       </Link>
-      <Link href="/(auth)/Signup" style={{padding: 12, margin: 3}} >
+      <Link href="/(auth)/Signup" style={styles.link} >
         <Text>Signup side</Text>
       </Link>
-      {/* <ProjectCards navigation={navigation} eventlink={`events/1`} messedata={} address={}/> */}
+      <Link href="/modal" style={styles.link}>
+        Open modal
+      </Link>
+
       </View>
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  link: {
+    backgroundColor: '#2196f3',
+    color: '#ffffff',
+    borderRadius: 12,
+    padding: 12,
+    margin: 4,
+    fontSize: 20,
+  },
+});

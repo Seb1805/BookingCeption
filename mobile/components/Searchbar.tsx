@@ -6,6 +6,7 @@ import { Colors } from '@/constants/Colors';
 export default function Searchbar({data = "", setData, placeholderData=""} : {data: string, setData: any, placeholderData: string}) {
   return (
     <View style={styles.inputarea}>
+      <FontAwesome size={28} name="search" color={"#d2d2d2"} style={styles.searcimage} />
       <TextInput
         style={styles.inputStyle}
         value={data}
@@ -13,7 +14,6 @@ export default function Searchbar({data = "", setData, placeholderData=""} : {da
         placeholder={placeholderData}
         placeholderTextColor='#ddd'
       />
-      <FontAwesome size={28} name="search" color={"#d2d2d2"} style={styles.searcimage} />
     </View>
   );
 }
@@ -21,17 +21,16 @@ export default function Searchbar({data = "", setData, placeholderData=""} : {da
 const styles = StyleSheet.create({
   inputarea: {
     display: 'flex', 
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
-    backgroundColor: Colors.light.primary,
   },
   inputStyle: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 12,
     paddingVertical: 10,
     flex: 1,
-    marginHorizontal: 5 ,
+    marginHorizontal: 5,
     color: Colors.light.background,
+    fontSize: 24,
   },
   searcimage: {
     paddingHorizontal: 10

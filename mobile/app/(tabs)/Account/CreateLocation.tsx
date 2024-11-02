@@ -6,8 +6,11 @@ import locationApi from '@/api/axios/routes/location';
 import { router } from 'expo-router';
 
 export default function CreateLocation() {
+
+
   const [lokationName, setlocationName] = useState("");
   const [lokationAddress, setlocationAddress] = useState("");
+
 
   async function createLocation() {
     try {
@@ -18,7 +21,7 @@ export default function CreateLocation() {
       // const response = await axios.post('/api/v1/locations', locationData);
       const response = ( await locationApi.location(locationData))
       //return response.data;
-      router.replace('/(tabs)/ProfileIndex');
+      router.back()
     } catch (error) {
       console.error('Error creating location:', error);
       throw error;

@@ -31,7 +31,7 @@ export default function EventCard({imagesrc = ""} : {imagesrc: string}) {
 
 const styles = StyleSheet.create({
   cardcontainer: {
-    paddingBottom: 15,
+    paddingVertical: 8,
     paddingHorizontal: 10
   },
   imagecontainer: {

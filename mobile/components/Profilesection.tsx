@@ -13,6 +13,7 @@ export default function Profilesection({title, children} : {title: string, child
 const styles = StyleSheet.create({
   section: {
     marginHorizontal: 8,
+    marginBottom: 12
   },
   sectiontitle: {
     color: '#888',
