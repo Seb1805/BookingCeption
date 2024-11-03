@@ -4,6 +4,7 @@ import EventCard from '@/components/EventCard'
 import Searchbar from '@/components/Searchbar'
 import { Colors } from '@/constants/Colors';
 import CartIcon from '@/components/CartIcon';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 
 export default function Events() {
@@ -11,7 +12,7 @@ export default function Events() {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.headerbar}>
-        <Searchbar data={search} setData={setSearch} placeholderData="Søg her" />
+      <Searchbar data={search} setData={setSearch} placeholderData="Søg her" />
         <CartIcon />
       </View>
       <ScrollView>
@@ -41,5 +42,8 @@ const styles = StyleSheet.create({
   input: {
     paddingHorizontal: 15,
     paddingVertical: 10
+  },
+  searcimage: {
+    paddingHorizontal: 10
   }
 })

@@ -2,14 +2,11 @@ import { Link, router } from 'expo-router';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from "expo-status-bar";
 
-export default function CRUDmodal() {
-  const isPresented = router.canGoBack();
+export default function CRUDmodal({name}: {name: string}) {
 
   return (
     <View style={styles.container}>
       <Text>Modal screen</Text>
-      {!isPresented && <Link href="../">Dismiss modal</Link>}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
     </View>
   );
 }

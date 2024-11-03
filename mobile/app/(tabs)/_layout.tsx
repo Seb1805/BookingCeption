@@ -34,11 +34,6 @@ export default function Index() {
           tabBarIcon: ({ color }) => <AntDesign size={28} name="shoppingcart" color={color} /> }}
       />
       <Tabs.Screen
-        name="Support"
-        options={{ title: "Support", tabBarLabel: "Support",
-          tabBarIcon: ({ color }) => <AntDesign size={28} name="infocirlceo" color={color} /> }}
-      />
-      <Tabs.Screen
         name="Account"
         options={{ title: "Account", tabBarLabel: "Account", tabBarIcon: ({ color }) => <AntDesign size={28} name="user" color={color} /> }}
       />
