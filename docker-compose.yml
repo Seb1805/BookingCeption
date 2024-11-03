@@ -1,0 +1,13 @@
+service:
+  backend:
+    build:
+     context: .
+     dockerfile: Dockerfile
+    container_name: booking-fastapi
+    ports:
+      - '8000:8000'
+  
+networks:
+  default:
+    name: base-network
+    external: true
