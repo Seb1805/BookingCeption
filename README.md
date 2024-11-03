@@ -30,10 +30,10 @@ Run the app in developer mode
 ``` bash
 npm run start
 ```
-
+### Run on mobile
 If you want to try the app on an android or IOS device, install Expo Go from the app store and scan the QR code in the command prompt 
 
-### Caution
+#### Caution
 Ensure your mobile device is using the same network as the computer you're running the app from if you're using Expo Go.
 
 Also remember the env file
