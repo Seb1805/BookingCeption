@@ -7,7 +7,7 @@ export default function Index() {
   const [campaignsData, setcampaignsData] = useState([])
 
   return (
-    <ScrollView>
+    <ScrollView style={{paddingTop: 16}}>
       <View style={{
         justifyContent: "center",
         alignItems: "center",

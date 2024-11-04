@@ -1,18 +1,21 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import EventCard from '@/components/EventCard'
 import Searchbar from '@/components/Searchbar'
 import { Colors } from '@/constants/Colors';
 import CartIcon from '@/components/CartIcon';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { router } from 'expo-router';
 
 
 export default function Events() {
   const [search, setSearch] = useState('');
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, paddingTop: 16 }}>
       <View style={styles.headerbar}>
-      <Searchbar data={search} setData={setSearch} placeholderData="Søg her" />
+        <Pressable style={{ margin: 8}} onPress={() => {router.navigate('/SearchArrangementModal')}}>
+          <FontAwesome name="search" size={48} color={"#ddd"} />
+        </Pressable>
         <CartIcon />
       </View>
       <ScrollView>
