@@ -26,7 +26,7 @@ export default function Index() {
       />
         <Tabs.Screen
           name="BoughtList"
-          options={{ title: "Mine arrangementer", tabBarLabel: "Mine arrangementer", tabBarIcon: ({ color }) => <Fontisto size={28} name="bookmark" color={color} /> }}
+          options={{ title: "Mine Billetter", tabBarLabel: "Mine Billetter", tabBarIcon: ({ color }) => <Fontisto size={28} name="bookmark" color={color} /> }}
         />
       <Tabs.Screen
         name="Events"
