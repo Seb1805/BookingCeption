@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Button, Pressable } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Button, Pressable, Platform } from 'react-native';
 import axios from 'axios';
 import { Location } from '@/constants/DBDatatypes';
 import locationApi from '@/api/axios/routes/location';
@@ -14,6 +14,7 @@ export default function CampaignModal() {
     const [lokationOrganizerId, setlocationOrgaznierId] = useState("");
     const [date,setDate] = useState(new Date())
     const [showPicker, setShowPicker] = useState(false)
+    const [lokationDate, setLokationDate] = useState("")
   
     const toggleDatePicker = () => {
         setShowPicker(!showPicker)
@@ -23,6 +24,12 @@ export default function CampaignModal() {
         if (event.type === 'set') {
           const currentDate = selectedDate || new Date();
           setDate(currentDate);
+
+          if(Platform.OS === "android")
+          {
+            toggleDatePicker();
+            setLokationDate(currentDate.toDateString())
+          }
         } else {
           toggleDatePicker();
         }
@@ -76,16 +83,17 @@ export default function CampaignModal() {
 
         <DateTimePicker mode='date' display='spinner' value={date} onChange={onDateChange}/>
 
-{!showPicker && (<Pressable onPress={toggleDatePicker}>
-    <TextInput
+        {!showPicker && (<Pressable onPress={toggleDatePicker}>
+        <TextInput
           style={styles.input}
           placeholder="Skralde dag. 1"
-          
+          editable={false}
+          value={lokationDate}
           //onChangeText={(text) => setlocationOrgaznierId(text)}
-          keyboardType='numeric'
-        />
 
-</Pressable>
+            />
+
+        </Pressable>
 
 
 
