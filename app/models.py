@@ -100,15 +100,15 @@ class Location(Base):
     organizerId = Column(Integer)
 
 
-    
-class LocationCreate(BaseModel):
-    locationName: str
-    address: str
-
 class LocationBase(BaseModel):
     locationName: str
     address: str
     organizerId: int
+    
+class LocationCreate(LocationBase):
+    locationName: str
+    address: str
+
 
 class LocationCreate(LocationBase):
     pass

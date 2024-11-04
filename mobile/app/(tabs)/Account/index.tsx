@@ -78,7 +78,7 @@ export default function index() {
         </ProfileButtons>
         <ProfileButtons
           title="Kampagner"
-          onpress={() => router.navigate("/(tabs)/Account/modals/CreateLocation")}
+          onpress={() => router.navigate("/(tabs)/Account/modals/CampaignModal")}
         >
           <View style={styles.buttonTypeLink}>
             <AntDesign size={16} name="right" color={Colors.light.text} />

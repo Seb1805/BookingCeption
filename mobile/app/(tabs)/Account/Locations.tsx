@@ -1,6 +1,7 @@
-import { View, Text, ScrollView, FlatList } from 'react-native'
+import { View, Text, ScrollView, FlatList, Pressable, StyleSheet } from 'react-native'
 import React from 'react'
 import ButtonOwn from '@/components/ButtonOwn'
+import { router } from 'expo-router'
 
 const datalocations = [
   {
@@ -28,8 +29,9 @@ export default function Locations() {
         return (
           <View>
             <Text> 
-              asd
+              {item.locationName}
             </Text>
+
           </View>
         )
       }}
@@ -37,3 +39,17 @@ export default function Locations() {
     </ScrollView>
   )
 }
+
+
+const styles = StyleSheet.create({
+  card: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: 'red',
+    borderRadius: 100,
+    width: '10%'
+  },
+  card2: {
+    backgroundColor: 'blue'
+  }
+}); 
