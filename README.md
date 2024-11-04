@@ -1,15 +1,26 @@
 # BookingCeption
 Booking system for booking everything
 
+##Backend
 
-To run the api do the following:
+To run the backend do the following:
 
-activate the venv
-(BookingCeption\fastapiVenv\Scripts\activate.bat)
+Run createvenv.bat to create a virtual enviroment
 
-cd to back to root(BookingCeption)
+``` bash
+createvenv
+```
 
-run command: python run.py
+Navigate and activate the venv
+``` bash
+BookingCeption\fastapiVenv\Scripts\activate
+```
+
+At the root of the project, run the run.py to start the backend
+
+``` bash
+python run.py
+```
 
 
 ## App

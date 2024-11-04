@@ -17,7 +17,7 @@ export default function Index() {
       screenOptions={{
         headerShown: false,
         // tabBarShowLabel: false,
-        tabBarActiveTintColor: '#f00',
+        tabBarActiveTintColor: Colors.light.tint,
       }}
     >
       <Tabs.Screen
