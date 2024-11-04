@@ -1,18 +1,20 @@
 services:
-  mssql:
-    container_name: sql-server
-    image: mcr.microsoft.com/mssql/server:2019-latest
+  postgres-booking:
+    container_name: postgress-server
+    image: postgres:16-alpine
     restart: always
     environment:
-      ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "Test1234!"
+      - POSTGRES_DB=booking
+      - POSTGRES_PASSWORD=Test1234!
+      - POSTGRES_USER=postgres
     ports:
-      - 1433:1433
+      - 5432:5432
     volumes:
-      - mssqlsystem:/var/opt/mssql
-      - mssqluser:/var/opt/sqlserver
+      - pgdata:/var/lib/postgresql/data
+      - postgresdatabases:/databases
     networks:
       - default
+
 
 
   nginx:
