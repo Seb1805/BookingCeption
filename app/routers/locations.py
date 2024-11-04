@@ -29,7 +29,8 @@ def createLocation(location: LocationCreate, db: Session = Depends(get_db),curre
     
     new_location = Location(
         locationName = location.locationName,
-        address = location.address
+        address = location.address,
+        organizerId = location.organizerId
     )
     
     try:

@@ -13,24 +13,24 @@ import { User } from "@/constants/DBDatatypes";
 export default function index() {
   const [userData, setuserData] = useState<User>()
   
-  useFocusEffect(
-    useCallback(() => {
+  // useFocusEffect(
+  //   useCallback(() => {
 
-      getMyInfo().then(response => {
-        if(!response.data) {
-          <Redirect href="/(auth)/Login" />
-          return
-        }
+  //     getMyInfo().then(response => {
+  //       if(!response.data) {
+  //         <Redirect href="/(auth)/Login" />
+  //         return
+  //       }
   
-        setuserData(() => response.data)
+  //       setuserData(() => response.data)
         
-      })
-      return () => {
-        console.log('');
-      }
-    }, [])
+  //     })
+  //     return () => {
+  //       console.log('');
+  //     }
+  //   }, [])
     
-  )
+  // )
 
   async function getMyInfo() {
     const response = await userApi.getUserData()
@@ -78,7 +78,7 @@ export default function index() {
         </ProfileButtons>
         <ProfileButtons
           title="Kampagner"
-          onpress={() => router.navigate("/(tabs)/Account/modals/CreateLocation")}
+          onpress={() => router.navigate("/(tabs)/Account/modals/CampaignModal")}
         >
           <View style={styles.buttonTypeLink}>
             <AntDesign size={16} name="right" color={Colors.light.text} />
