@@ -13,24 +13,24 @@ import { User } from "@/constants/DBDatatypes";
 export default function index() {
   const [userData, setuserData] = useState<User>()
   
-  useFocusEffect(
-    useCallback(() => {
+  // useFocusEffect(
+  //   useCallback(() => {
 
-      getMyInfo().then(response => {
-        if(!response.data) {
-          <Redirect href="/(auth)/Login" />
-          return
-        }
+  //     getMyInfo().then(response => {
+  //       if(!response.data) {
+  //         <Redirect href="/(auth)/Login" />
+  //         return
+  //       }
   
-        setuserData(() => response.data)
+  //       setuserData(() => response.data)
         
-      })
-      return () => {
-        console.log('');
-      }
-    }, [])
+  //     })
+  //     return () => {
+  //       console.log('');
+  //     }
+  //   }, [])
     
-  )
+  // )
 
   async function getMyInfo() {
     const response = await userApi.getUserData()

@@ -4,7 +4,7 @@ import { Colors } from "@/constants/Colors";
 
 
 
-export default function EventCard({imagesrc = ""} : {imagesrc: string}) {
+export default function EventCard({imagesrc = "", title="ads"} : {imagesrc: string, title?: string}) {
 
   function ImageIdentifyer() {
     if (imagesrc.substring(0,4) == "http") {
@@ -23,7 +23,7 @@ export default function EventCard({imagesrc = ""} : {imagesrc: string}) {
       <View style={styles.imagecontainer}>
         {ImageIdentifyer()}
       </View>
-      <Text style={styles.text}>EventCard</Text>
+      <Text style={styles.text}>{title}</Text>
       <Text style={styles.price}>fra DKK 123.50</Text>
     </View>
   )

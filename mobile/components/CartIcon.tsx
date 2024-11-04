@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
-import FontAwesome from '@expo/vector-icons/FontAwesome'
+import Feather from '@expo/vector-icons/Feather'
 
 export default function CartIcon() {
   return (
     <View style={styles.cart}>
-      <FontAwesome name="shopping-cart" size={48} color={"#ddd"} />
+      <Feather name="shopping-cart" size={48} color={"#ddd"} />
     </View>
   );
 }

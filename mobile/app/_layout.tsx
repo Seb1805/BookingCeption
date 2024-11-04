@@ -6,6 +6,7 @@ import CreateLocation from './(tabs)/Account/modals/CreateLocation';
 import { Stack } from 'expo-router';
 
 import Index from './(tabs)/index';
+import { Button, Pressable } from 'react-native';
 
 
 export default function Layout() {
@@ -15,6 +16,7 @@ export default function Layout() {
       <Stack.Screen name="(auth)/Login" options={{ headerTitle: "Login" }} />
       <Stack.Screen name="(auth)/Signup" options={{ headerTitle: "Sign up" }} />
       <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+      <Stack.Screen name="SearchArrangementModal" options={{ presentation: "modal", headerTitle: 'Søg'}}/>
     </Stack>
   );
 }
