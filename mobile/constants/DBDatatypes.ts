@@ -1,7 +1,6 @@
 import { Float } from "react-native/Libraries/Types/CodegenTypes"
 
 export type Campaign = {
-  campaignId: number
   name: string
   description: string
   cocverImage: string
@@ -20,10 +19,31 @@ export type Location = {
 }
 
 export type User = {
-  email: string;
-  password: string;
-  firstname: string;
-  lastname: string;
-  address: string;
+  email: string
+  password: string
+  firstname: string
+  lastname: string
+  address: string
   role: number
+}
+
+export type Section = {
+  //sectionId: Number
+  locationId: number
+  locationItem: number
+  name: string
+  spotId: number
+  roomForParticipants: number
+  layoutImage: string
+}
+
+export type Spot = {
+  status: boolean
+  position: string
+  lengthCM: number
+  widthCM: number
+  priceExtra: number
+  pricePrSquareMeter: number
+  spotType: number
+
 }

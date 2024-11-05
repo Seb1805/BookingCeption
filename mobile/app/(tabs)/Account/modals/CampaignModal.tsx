@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Button, Pressable, Platform } from 'react-native';
 import axios from 'axios';
-import { Location } from '@/constants/DBDatatypes';
+import { Campaign, Location } from '@/constants/DBDatatypes';
 import locationApi from '@/api/axios/routes/location';
 import { router } from 'expo-router';
 import DateTimePicker, {DateTimePickerEvent } from '@react-native-community/datetimepicker';
@@ -9,26 +9,38 @@ import DateTimePicker, {DateTimePickerEvent } from '@react-native-community/date
 
 
 export default function CampaignModal() {
-    const [lokationName, setlocationName] = useState("");
-    const [lokationAddress, setlocationAddress] = useState("");
-    const [lokationOrganizerId, setlocationOrgaznierId] = useState("");
-    const [date,setDate] = useState(new Date())
+    const [campaignName, setlocationName] = useState("");
+
+    const [campaignDate, setcampaignDate] = useState("")
+    const [campaignDescription, setCampaignDescription] = useState("")
+    const [campaignCoverImage, setCampaignCoverImage] = useState("")
+
+
+
+
+    //Date picker stuff    
+    const [dateStart,setDateStart] = useState(new Date())
     const [showPicker, setShowPicker] = useState(false)
-    const [lokationDate, setLokationDate] = useState("")
-  
+
+    const [dateEnd,setDateEnd] = useState(new Date())
+    
+    const [timeStart, setTimeStart] = useState("")
+    const [timeEnd, setTimeEnd] = useState("")
+
     const toggleDatePicker = () => {
         setShowPicker(!showPicker)
     }
+
     //What the fuck is the type - who knows?
     const onDateChange = (event: DateTimePickerEvent, selectedDate: Date | undefined) => {
         if (event.type === 'set') {
           const currentDate = selectedDate || new Date();
-          setDate(currentDate);
+          setDateStart(currentDate);
 
           if(Platform.OS === "android")
           {
             toggleDatePicker();
-            setLokationDate(currentDate.toDateString())
+            setcampaignDate(currentDate.toDateString())
           }
         } else {
           toggleDatePicker();
@@ -37,20 +49,38 @@ export default function CampaignModal() {
       
 
     async function createCampaign() {
-      try {
-        const locationData: Location = {
-          locationName: lokationName,
-          address: lokationAddress,
-          organizerId: 1
-        };
-        // const response = await axios.post('/api/v1/locations', locationData);
-        const response = ( await locationApi.location(locationData))
-        //return response.data;
-        router.back()
-      } catch (error) {
-        console.error('Error creating location:', error);
-        throw error;
+
+      try{
+          const campaignData: Campaign = {
+              name: campaignName,
+              description: campaignDescription,
+              cocverImage: campaignCoverImage,
+              dateStart: dateStart,
+              timeStart: timeStart,
+              dateEnd: dateEnd,
+              timeEnd: timeEnd,
+              sectionId: 1, //Implement
+              price: 100.00, //Implement
+
+          }
+
+          return campaignData
       }
+      catch{
+
+      }
+      // try {
+      //   const campaignData: Campaign = {
+      //     name: 
+      //   };
+      //   // const response = await axios.post('/api/v1/locations', locationData);
+      //   const response = ( await locationApi.location(campaignData))
+      //   //return response.data;
+      //   router.back()
+      // } catch (error) {
+      //   console.error('Error creating location:', error);
+      //   throw error;
+      // }
     }
   
   
@@ -61,34 +91,34 @@ export default function CampaignModal() {
         <TextInput
           style={styles.input}
           placeholder="Navn"
-          value={lokationName}
+          value={campaignName}
           onChangeText={(text) => setlocationName(text)}
         />
         <TextInput
           style={styles.input}
           placeholder="Beksrivelse"
-          value={lokationAddress}
-          onChangeText={(text) => setlocationAddress(text)}
+          value={campaignDescription}
+          onChangeText={(text) => setCampaignDescription(text)}
         />
 
-        <TextInput
+        {/* <TextInput
           style={styles.input}
           placeholder="Organizer"
           value={lokationOrganizerId}
           onChangeText={(text) => setlocationOrgaznierId(text)}
           keyboardType='numeric'
-        />
+        /> */}
 
  
 
-        <DateTimePicker mode='date' display='spinner' value={date} onChange={onDateChange}/>
+        <DateTimePicker mode='date' display='spinner' value={dateStart} onChange={onDateChange}/>
 
         {!showPicker && (<Pressable onPress={toggleDatePicker}>
         <TextInput
           style={styles.input}
           placeholder="Skralde dag. 1"
           editable={false}
-          value={lokationDate}
+          value={campaignDate}
           //onChangeText={(text) => setlocationOrgaznierId(text)}
 
             />
@@ -97,7 +127,7 @@ export default function CampaignModal() {
 
 
 
-)}
+      )}
 
 
         <Button title="Opret lokation" onPress={createCampaign} />

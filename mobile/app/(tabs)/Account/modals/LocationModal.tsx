@@ -8,7 +8,7 @@ import { router } from 'expo-router';
 export default function CreateLocation() {
 
 
-  const [lokationName, setlocationName] = useState("");
+  const [locationName, setlocationName] = useState("");
   const [lokationAddress, setlocationAddress] = useState("");
   const [lokationOrganizerId, setlocationOrgaznierId] = useState("");
 
@@ -16,7 +16,7 @@ export default function CreateLocation() {
   async function createLocation() {
     try {
       const locationData: Location = {
-        locationName: lokationName,
+        locationName: locationName,
         address: lokationAddress,
         organizerId: 1
       };
@@ -38,7 +38,7 @@ export default function CreateLocation() {
       <TextInput
         style={styles.input}
         placeholder="Navn"
-        value={lokationName}
+        value={locationName}
         onChangeText={(text) => setlocationName(text)}
       />
       <TextInput
