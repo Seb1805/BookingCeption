@@ -21,7 +21,7 @@ export default function CreateLocation() {
         organizerId: 1
       };
       // const response = await axios.post('/api/v1/locations', locationData);
-      const response = ( await locationApi.location(locationData))
+      const response = await locationApi.location(locationData)
       //return response.data;
       router.back()
     } catch (error) {

@@ -8,22 +8,22 @@ import { router } from 'expo-router';
 export default function CreateLocation() {
 
 
-  const [locationName, setlocationName] = useState("");
-  const [lokationAddress, setlocationAddress] = useState("");
-  const [lokationOrganizerId, setlocationOrgaznierId] = useState("");
+  const [locationName, setLocationName] = useState("");
+  const [locationAddress, setLocationAddress] = useState("");
+  const [locationOrganizerId, setLocationOrgaznierId] = useState("");
 
 
   async function createLocation() {
     try {
       const locationData: Location = {
         locationName: locationName,
-        address: lokationAddress,
+        address: locationAddress,
         organizerId: 1
       };
       // const response = await axios.post('/api/v1/locations', locationData);
-      const response = ( await locationApi.location(locationData))
+      const response = ( await locationApi.location(locationData));
       //return response.data;
-      router.back()
+      router.back();
     } catch (error) {
       console.error('Error creating location:', error);
       throw error;
@@ -39,19 +39,19 @@ export default function CreateLocation() {
         style={styles.input}
         placeholder="Navn"
         value={locationName}
-        onChangeText={(text) => setlocationName(text)}
+        onChangeText={(text) => setLocationName(text)}
       />
       <TextInput
         style={styles.input}
         placeholder="Adresse"
-        value={lokationAddress}
-        onChangeText={(text) => setlocationAddress(text)}
+        value={locationAddress}
+        onChangeText={(text) => setLocationAddress(text)}
       />
       <TextInput
         style={styles.input}
         placeholder="Organizer"
-        value={lokationOrganizerId}
-        onChangeText={(text) => setlocationOrgaznierId(text)}
+        value={locationOrganizerId}
+        onChangeText={(text) => setLocationOrgaznierId(text)}
         keyboardType='numeric'
       />
 

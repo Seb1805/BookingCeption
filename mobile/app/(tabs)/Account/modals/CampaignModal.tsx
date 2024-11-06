@@ -31,6 +31,9 @@ export default function CampaignModal() {
         setShowPicker(!showPicker)
     }
 
+    const exitApp = () => {
+      throw {};
+    }
     //What the fuck is the type - who knows?
     const onDateChange = (event: DateTimePickerEvent, selectedDate: Date | undefined) => {
         if (event.type === 'set') {
@@ -41,6 +44,12 @@ export default function CampaignModal() {
           {
             toggleDatePicker();
             setcampaignDate(currentDate.toDateString())
+          }
+          else if(Platform.OS == "ios" || Platform.OS == "macos")
+          {
+            //No support for this peasant OS
+            exitApp()
+
           }
         } else {
           toggleDatePicker();
@@ -54,7 +63,7 @@ export default function CampaignModal() {
           const campaignData: Campaign = {
               name: campaignName,
               description: campaignDescription,
-              cocverImage: campaignCoverImage,
+              coverImage: campaignCoverImage,
               dateStart: dateStart,
               timeStart: timeStart,
               dateEnd: dateEnd,
@@ -69,18 +78,6 @@ export default function CampaignModal() {
       catch{
 
       }
-      // try {
-      //   const campaignData: Campaign = {
-      //     name: 
-      //   };
-      //   // const response = await axios.post('/api/v1/locations', locationData);
-      //   const response = ( await locationApi.location(campaignData))
-      //   //return response.data;
-      //   router.back()
-      // } catch (error) {
-      //   console.error('Error creating location:', error);
-      //   throw error;
-      // }
     }
   
   
@@ -100,16 +97,6 @@ export default function CampaignModal() {
           value={campaignDescription}
           onChangeText={(text) => setCampaignDescription(text)}
         />
-
-        {/* <TextInput
-          style={styles.input}
-          placeholder="Organizer"
-          value={lokationOrganizerId}
-          onChangeText={(text) => setlocationOrgaznierId(text)}
-          keyboardType='numeric'
-        /> */}
-
- 
 
         <DateTimePicker mode='date' display='spinner' value={dateStart} onChange={onDateChange}/>
 

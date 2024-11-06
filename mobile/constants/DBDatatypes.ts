@@ -3,7 +3,7 @@ import { Float } from "react-native/Libraries/Types/CodegenTypes"
 export type Campaign = {
   name: string
   description: string
-  cocverImage: string
+  coverImage: string
   dateStart: Date
   timeStart: string
   dateEnd: Date
@@ -28,7 +28,6 @@ export type User = {
 }
 
 export type Section = {
-  //sectionId: Number
   locationId: number
   locationItem: number
   name: string

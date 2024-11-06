@@ -34,7 +34,7 @@ const SignUpScreen = () => {
           router.replace('/(auth)/Login');
         }
         else{
-          throw new Error("Du er skrald jo")
+          throw new Error("Du er skrald jo");
         }
         
       } catch (error) {
