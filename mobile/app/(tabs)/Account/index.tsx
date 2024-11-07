@@ -50,16 +50,13 @@ export default function index() {
   }
   
   return (
-    <ScrollView style={{paddingTop: 16}}>
+    <ScrollView style={{paddingTop: 24}}>
       <View style={styles.profileinfo}>
         <View style={styles.imagecontainer}>{ImageIdentifyer("")}</View>
         <Text style={styles.profilename}>{userData?.firstname}</Text>
       </View>
 
       <Profilesection title="kontrolpanel">
-        {/* <Pressable style={styles.buttonstyling} onPress={() => router.navigate("/(tabs)/Account/modals/CreateLocation")}>
-          <Text style={styles.buttonText}>{"Lokaler"}</Text>
-        </Pressable> */}
         <ProfileButtons
           title="Lokaler"
           onpress={() => router.navigate("/(tabs)/Account/Locations")}
@@ -77,12 +74,11 @@ export default function index() {
           </View>
         </ProfileButtons>
         <ProfileButtons
-          title="Kampagner"
-          onpress={() => router.navigate("/(tabs)/Account/modals/CampaignModal")}
+          title="Arrangementer"
+          onpress={() => router.navigate("/(tabs)/Account/Campaigns")}
         >
           <View style={styles.buttonTypeLink}>
             <AntDesign size={16} name="right" color={Colors.light.text} />
-        
           </View>
         </ProfileButtons>
         <ProfileButtons

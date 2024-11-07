@@ -1,19 +1,23 @@
-FROM python:3.14
+FROM python:3.13
 
-WORKDIR /app
+WORKDIR /backend
 
-COPY app ./
+COPY requirements.txt /backend
 
-COPY requirements.txt ./
+COPY run.py /backend
 
-COPY run.py ./
+COPY log.ini /backend
 
-COPY log.ini ./
+COPY createvenv.bat /backend
+
+COPY app /backend/app
 
 RUN pip install -r requirements.txt
 
-RUN createvenv
+# RUN createvenv
 
-RUN fastapiVenv/Script/activate
+# RUN fastapiVenv/Script/activate
+
+# CMD [ "pip", "install", "-r", "requirements.txt" ]
 
 CMD ["python", "run.py"]

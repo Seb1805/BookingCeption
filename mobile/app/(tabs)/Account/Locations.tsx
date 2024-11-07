@@ -2,6 +2,7 @@ import { View, Text, ScrollView, FlatList, Pressable, StyleSheet } from 'react-n
 import React from 'react'
 import ButtonOwn from '@/components/ButtonOwn'
 import { router } from 'expo-router'
+import PlusEntity from '@/components/PlusEntity'
 
 const datalocations = [
   {
@@ -22,21 +23,15 @@ const datalocations = [
 ]
 export default function Locations() {
   return (
-    <ScrollView>
-      <FlatList 
-      data={datalocations} 
-      renderItem={({item}) => {
-        return (
-          <View>
-            <Text> 
-              {item.locationName}
-            </Text>
-
-          </View>
-        )
-      }}
-      />
+    <>
+    <ScrollView style={{flex: 1, margin: 8}}>
+      {datalocations.map((item, key) => {return (
+        <Text key={key}>{item.locationName}</Text>
+      )})}
     </ScrollView>
+    <PlusEntity func={() => {router.navigate('/(tabs)/Account/modals/CreateLocation')}}/>
+
+    </>
   )
 }
 
