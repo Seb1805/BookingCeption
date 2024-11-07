@@ -8,64 +8,67 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 
 export default function SectionModal() {
+  const [sectionLocationId, setSectionLocationId] = useState("");
+  const [sectionLocationItem, setSectionLocationItem] = useState("");
+  const [sectionName, setSectionName] = useState("");
+  const [sectionSpotId, setSectionSpotId] = useState("");
+  const [sectionRoomForParticipants, setSectionRoomForParticipants] = useState("");
+  const [sectionLayoutImage, setSectionLayoutImage] = useState("");
 
-    const [sectionLocationId,setSectionLocationId] = useState("");
-    const [sectionLocationItem,setSectionLocationItem] = useState("");
-    const [sectionName, setSectionName] = useState("");
-    const [sectionSpotId,setSectionSpotId] = useState("");
-    const [sectionRoomForParticipants,setSectionRoomForParticipants] = useState("");
-    const [sectionLayoutImage, setSectionLayoutImage] = useState("");
+  const [items, setItems] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
 
-    const [items, setItems] = useState([]);
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
-
-      // Fetch data from API or local storage
   useEffect(() => {
-    fetchDataFromDatabase();
+      fetchDataFromDatabase();
   }, []);
 
   const fetchDataFromDatabase = async () => {
-    try {
-      const request = locationApi.getLocations()
-      var jsonData = null;
-      if((await request).status == 200)
-      {
-        jsonData = (await request).data
+      try {
+          const request = locationApi.getLocations();
+          var jsonData = null;
+          if ((await request).status === 200) {
+              jsonData = (await request).data;
+          }
+          else {
+              console.error("Failed to fetch locations");
+              return;
+          }
+
+            // Map the fetched data to the format expected by react-native-picker
+            const formattedItems  = jsonData.map((item: { locationName: string; locationId: number }) => ({
+              label: item.locationName,
+              value: item.locationId.toString()
+          }));
+
+          setItems(formattedItems);
+      } catch (error) {
+          console.error('Error fetching data:', error);
       }
-      else{
-
-      }
-
-      // Map the fetched data to the format expected by react-native-picker
-      const formattedItems = jsonData.map((item: { locationName: any; locationId: any; }) => ({
-        label: item.locationName,
-        value: item.locationId
-      }));
-
-      setItems(formattedItems);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
   };
 
 
     async function createSection(){
         try{
-            const sectionDate: Section = {
-                locationId: 1,
-                locationItem: 1,
-                name: 'Skrald',
-                spotId: 1,
-                roomForParticipants: 1,
-                layoutImage: ''
-            };
+          const sectionDate: Section = {
+            locationId: parseInt(value || ""),
+            locationItem: parseInt(sectionLocationItem),
+            name: sectionName,
+            spotId: parseInt(sectionSpotId),
+            roomForParticipants: parseInt(sectionRoomForParticipants),
+            layoutImage: ''
+        };
         }
         catch{
 
         }
-    }
 
+        
+    }
+    const handleOnSelectItem = (item: { value?: string | undefined; label: string }) => {
+      setSectionLocationId(item.value ?? "");
+      setSectionLocationItem(item.label);
+    };
   return (
     <View>
         <TextInput
@@ -89,12 +92,8 @@ export default function SectionModal() {
           value={value}
           items={items}
           setOpen={setOpen}
-          setValue={setValue}
-          setItems={setItems}
-          onSelectItem={(item: { value: React.SetStateAction<string>; label: React.SetStateAction<string>; }) => {
-            setSectionLocationItem(item.value);
-            setSectionLocationId(item.label);
-          }}
+          setValue={(newValue) => setValue(newValue)}
+          onSelectItem={handleOnSelectItem}
         />
         <Text style={styles.selectedValue}>Selected Location: {sectionLocationId}</Text>
       </View>
