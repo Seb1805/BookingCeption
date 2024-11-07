@@ -15,7 +15,9 @@ export default function SectionModal() {
   const [sectionRoomForParticipants, setSectionRoomForParticipants] = useState("");
   const [sectionLayoutImage, setSectionLayoutImage] = useState("");
 
-  const [items, setItems] = useState([]);
+  //const [items, setItems] = useState([]);
+  const [items, setItems] = useState<Array<{ label: string; value: string }>>([]);
+
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
 
@@ -24,33 +26,41 @@ export default function SectionModal() {
   }, []);
 
   const fetchDataFromDatabase = async () => {
-      try {
-          const request = locationApi.getLocations();
-          var jsonData = null;
-          if ((await request).status === 200) {
-              jsonData = (await request).data;
-          }
-          else {
-              console.error("Failed to fetch locations");
-              return;
-          }
-
-            // Map the fetched data to the format expected by react-native-picker
-            const formattedItems  = jsonData.map((item: { locationName: string; locationId: number }) => ({
-              label: item.locationName,
-              value: item.locationId.toString()
-          }));
-
-          setItems(formattedItems);
-      } catch (error) {
-          console.error('Error fetching data:', error);
+    try {
+      const request = locationApi.getLocations();
+      let jsonData = null;
+      if ((await request).status === 200) {
+        jsonData = (await request).data;
+      } else {
+        console.error("Failed to fetch locations");
+        return;
       }
+  
+      console.log('Raw data:', jsonData); // Added for debugging
+  
+      if (!jsonData || !Array.isArray(jsonData.locations)) {
+        console.error("Received invalid data from API");
+        return;
+      }
+  
+      // Map the fetched data to the format expected by react-native-picker
+      const formattedItems = jsonData.locations.map((item: { locationId: number; locationName: string }) => ({
+        label: item.locationName,
+        value: item.locationId.toString()
+      }));
+  
+      console.log('Formatted items:', formattedItems); // Added for debugging
+  
+      setItems(formattedItems);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
 
 
     async function createSection(){
         try{
-          const sectionDate: Section = {
+          const sectionData: Section = {
             locationId: parseInt(value || ""),
             locationItem: parseInt(sectionLocationItem),
             name: sectionName,
@@ -58,6 +68,7 @@ export default function SectionModal() {
             roomForParticipants: parseInt(sectionRoomForParticipants),
             layoutImage: ''
         };
+        console.log(sectionData)
         }
         catch{
 
@@ -65,10 +76,7 @@ export default function SectionModal() {
 
         
     }
-    const handleOnSelectItem = (item: { value?: string | undefined; label: string }) => {
-      setSectionLocationId(item.value ?? "");
-      setSectionLocationItem(item.label);
-    };
+
   return (
     <View>
         <TextInput
@@ -93,8 +101,8 @@ export default function SectionModal() {
           items={items}
           setOpen={setOpen}
           setValue={(newValue) => setValue(newValue)}
-          onSelectItem={handleOnSelectItem}
-        />
+          onSelectItem={(item) => setSectionLocationId(`${item.value}`)}
+          />
         <Text style={styles.selectedValue}>Selected Location: {sectionLocationId}</Text>
       </View>
 
