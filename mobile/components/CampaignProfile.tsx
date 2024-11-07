@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Image } from 'react-native'
 import React from 'react'
 
-export default function CampaignProfile({imagesrc = '', title, address} : {imagesrc?: string, title: string, address: string}) {
+export default function CampaignProfile({imagesrc = '', title, address, active} : {imagesrc?: string, title: string, address: string, active: boolean}) {
 
   function ImageIdentifyer() {
     if (imagesrc.substring(0,4) == "http") {
@@ -16,7 +16,7 @@ export default function CampaignProfile({imagesrc = '', title, address} : {image
   }
 
   return (
-    <View style={styles.campaignContainer}>
+    <View style={[styles.campaignContainer]}>
       <View style={styles.imageContainer}>
         {ImageIdentifyer()}
       </View>
@@ -27,6 +27,7 @@ export default function CampaignProfile({imagesrc = '', title, address} : {image
         <Text style={styles.dates}>dates</Text>
         <Text style={styles.active}>active</Text>
       </View>
+      {!active ? <View style={styles.grayOverlay} /> : ""}
     </View>
   )
 }
@@ -37,7 +38,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'nowrap',
     height: 125,
-    margin: 8
+    margin: 8,
+  },
+  grayOverlay: {
+    ...StyleSheet.absoluteFillObject,
+     backgroundColor: 'rgba(0,0,0,0.3)',
   },
   imageContainer: {
     display: 'flex',
@@ -49,13 +54,17 @@ const styles = StyleSheet.create({
   },
   image: {
     objectFit: 'contain',
-    height: '100%'
+    height: '100%',
+    minWidth: '100%'
   },
   title: {
     fontSize: 18,
-    fontWeight: '600'
+    fontWeight: '600',
+    textTransform: 'capitalize'
   },
-  address: {},
+  address: {
+    textTransform: 'capitalize'
+  },
   area: {},
   dates: {},
   active: {},
