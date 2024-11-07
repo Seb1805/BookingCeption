@@ -1,9 +1,10 @@
-service:
+services:
   backend:
     build:
      context: .
      dockerfile: Dockerfile
     container_name: booking-fastapi
+    # command: tail -F anything
     ports:
       - '8000:8000'
   
