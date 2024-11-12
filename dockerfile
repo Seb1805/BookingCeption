@@ -1,23 +1,25 @@
-FROM python:3.13
+FROM python:3-alpine
 
 WORKDIR /backend
 
 COPY requirements.txt /backend
 
-COPY run.py /backend
 
 COPY log.ini /backend
 
-COPY createvenv.bat /backend
-
 COPY app /backend/app
 
-RUN pip install -r requirements.txt
+RUN \
+ apk add --no-cache postgresql-libs && \
+ apk add --no-cache --virtual .build-deps musl-dev postgresql-dev 
+ 
+RUN apk add gcc \
+  && apk add g++ \
+  && apk add unixodbc unixodbc-dev 
 
-# RUN createvenv
 
-# RUN fastapiVenv/Script/activate
+RUN pip install -r /backend/requirements.txt
 
-# CMD [ "pip", "install", "-r", "requirements.txt" ]
+COPY run.py /backend
 
-CMD ["python", "run.py"]
+CMD ["python", "/backend/run.py"]
