@@ -33,7 +33,7 @@ export default function Campaigns() {
     <>
     <ScrollView style={{flex: 1, margin: 8}}>
       {datalocations.map((item, key) => {return (
-        <CampaignProfile imagesrc={item.image} title={item.title} address={item.address} active={item.active}/>
+        <CampaignProfile key={key} imagesrc={item.image} title={item.title} address={item.address} active={item.active}/>
       )})}
     </ScrollView>
     <PlusEntity func={() => {router.navigate('/(tabs)/Account/modals/CampaignModal')}}/>

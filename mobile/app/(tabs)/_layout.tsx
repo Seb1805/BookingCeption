@@ -2,13 +2,8 @@ import { Text, View } from "react-native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Fontisto from '@expo/vector-icons/Fontisto';
-import { Stack, Tabs } from "expo-router";
-import Home from "./index";
-import Profile from "./Account";
-import Events from "./Events";
+import { Tabs } from "expo-router";
 
-import TabIcon from "../../components/navigation/tabIcon";
-import icons from "../../constants/Icons";
 import { Colors } from "@/constants/Colors";
 
 export default function Index() {
@@ -29,7 +24,7 @@ export default function Index() {
           options={{ title: "Mine Billetter", tabBarLabel: "Mine Billetter", tabBarIcon: ({ color }) => <Fontisto size={28} name="bookmark" color={color} /> }}
         />
       <Tabs.Screen
-        name="Events"
+        name="Shop"
         options={{ title: "Messer", tabBarLabel: "Messer",
           tabBarIcon: ({ color }) => <AntDesign size={28} name="shoppingcart" color={color} /> }}
       />

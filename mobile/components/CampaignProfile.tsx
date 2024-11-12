@@ -27,7 +27,7 @@ export default function CampaignProfile({imagesrc = '', title, address, active} 
         <Text style={styles.dates}>dates</Text>
         <Text style={styles.active}>active</Text>
       </View>
-      {!active ? <View style={styles.grayOverlay} /> : ""}
+      {!active ? <View style={styles.grayOverlay} /> : <View></View>}
     </View>
   )
 }
@@ -53,9 +53,9 @@ const styles = StyleSheet.create({
     marginRight: 8
   },
   image: {
-    objectFit: 'contain',
+    objectFit: 'cover',
     height: '100%',
-    minWidth: '100%'
+    maxWidth: '100%'
   },
   title: {
     fontSize: 18,

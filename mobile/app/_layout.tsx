@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import Login from './(auth)/Login';
 import SignUp from './(auth)/Signup';
 import CreateLocation from './(tabs)/Account/modals/CreateLocation';
 import { Stack } from 'expo-router';
+import { setStatusBarStyle } from 'expo-status-bar';
 
 import Index from './(tabs)/index';
 import { Button, Pressable } from 'react-native';
 
 
+
 export default function Layout() {
+  useEffect(()=> {
+    setStatusBarStyle('light')
+  })
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

@@ -4,7 +4,7 @@ import { Colors } from '@/constants/Colors'
 import { Redirect } from 'expo-router'
 
 
-export default function ProfileButtons({title = "", onpress = () => {return <Redirect href='/(tabs)/Account' />}, children}: {title: string, onpress: any, children?: any }) {
+export default function ProfileButtons({title, onpress, children}: {title: string, onpress: any, children?: any }) {
 
   return (
     <Pressable style={styles.buttonstyling} onPress={onpress}>

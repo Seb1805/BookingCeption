@@ -9,6 +9,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import userApi from "@/api/axios/routes/users";
 import { User } from "@/constants/DBDatatypes";
+import Constants from 'expo-constants'
 
 export default function index() {
   const [userData, setuserData] = useState<User>()
@@ -53,7 +54,10 @@ export default function index() {
     <ScrollView style={{paddingTop: 24}}>
       <View style={styles.profileinfo}>
         <View style={styles.imagecontainer}>{ImageIdentifyer("")}</View>
-        <Text style={styles.profilename}>{userData?.firstname}</Text>
+        <Text style={styles.profilename}>
+          test
+        {/* {userData?.firstname} */}
+        </Text>
       </View>
 
       <Profilesection title="kontrolpanel">
@@ -131,9 +135,7 @@ export default function index() {
       </Profilesection>
 
       <Text>Profil oplysninger, mulighed for oprette lokationer</Text>
-      <Link href={{pathname:  "/(tabs)/Account/modals/CRUDmodal", params: {name: 'test title'}}} style={{padding: 16, backgroundColor: "#2a7"}}>
-        Open modal
-      </Link>
+
     </ScrollView>
   );
 }
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
   profileinfo: {
     display: 'flex',
     alignItems: 'center',
-    marginVertical: 20,
+    marginVertical: Constants.statusBarHeight,
   },
   imagecontainer: {
     width: 80, 
@@ -158,6 +160,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginVertical: 8,
     fontSize: 16,
+    textTransform: 'capitalize'
   },
   buttonstyling: {
     display: 'flex',

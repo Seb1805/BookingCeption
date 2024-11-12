@@ -5,7 +5,7 @@ import React from 'react'
 export default function BoughtList() {
   return (
     <ScrollView>
-      <Text>BoughtList</Text>
+      <View style={{paddingTop: 24}}></View>
       <BoughtTicketCard imagesrc=''/>
       <BoughtTicketCard imagesrc=''/>
       <BoughtTicketCard imagesrc='https://thevirtualinstructor.com/blog/wp-content/uploads/2013/08/understanding-abstract-art.jpg'/>
