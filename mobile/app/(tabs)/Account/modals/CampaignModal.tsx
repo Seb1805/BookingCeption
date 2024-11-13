@@ -28,7 +28,7 @@ export default function CampaignModal() {
     const [timeEnd, setTimeEnd] = useState("")
 
     const toggleDatePicker = () => {
-        setShowPicker(!showPicker)
+        setShowPicker(() => !showPicker)
     }
 
     const exitApp = () => {
@@ -69,7 +69,7 @@ export default function CampaignModal() {
               dateEnd: dateEnd,
               timeEnd: timeEnd,
               sectionId: 1, //Implement
-              price: 100.00, //Implement
+              active: true
 
           }
 
@@ -98,23 +98,18 @@ export default function CampaignModal() {
           onChangeText={(text) => setCampaignDescription(text)}
         />
 
-        <DateTimePicker mode='date' display='spinner' value={dateStart} onChange={onDateChange}/>
-
-        {!showPicker && (<Pressable onPress={toggleDatePicker}>
+        {showPicker && <DateTimePicker mode='date' display='spinner' value={dateStart} onChange={onDateChange}/>}
+        <Pressable onPress={toggleDatePicker}>
         <TextInput
           style={styles.input}
           placeholder="Skralde dag. 1"
           editable={false}
           value={campaignDate}
           //onChangeText={(text) => setlocationOrgaznierId(text)}
-
             />
 
         </Pressable>
 
-
-
-      )}
 
 
         <Button title="Opret lokation" onPress={createCampaign} />

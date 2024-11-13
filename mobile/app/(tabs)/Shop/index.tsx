@@ -21,21 +21,25 @@ import Constants from 'expo-constants'
 
 const datasdf = [
   {
+    id: 12,
     title: "Viby",
     image:
-      "https://thevirtualinstructor.com/blog/wp-content/uploads/2013/08/understanding-abstract-art.jpg",
+      "",
   },
   {
+    id: 13,
     title: "Aarhus",
     image:
       "https://thevirtualinstructor.com/blog/wp-content/uploads/2013/08/understanding-abstract-art.jpg",
   },
   {
+    id: 16,
     title: "Randers",
     image:
-      "https://thevirtualinstructor.com/blog/wp-content/uploads/2013/08/understanding-abstract-art.jpg",
+      "",
   },
   {
+    id: 18,
     title: "Aalborg",
     image:
       "https://thevirtualinstructor.com/blog/wp-content/uploads/2013/08/understanding-abstract-art.jpg",
@@ -61,13 +65,10 @@ export default function index() {
           <CartIcon color={Colors.light.textInverse}/>
         </View>
       </View>
-      <ScrollView>
-        <View>
-          <EventCard imagesrc="" />
-          <EventCard imagesrc="https://thevirtualinstructor.com/blog/wp-content/uploads/2013/08/understanding-abstract-art.jpg" />
-          <EventCard imagesrc="" />
-          <EventCard imagesrc="" />
-        </View>
+      <ScrollView style={{flex: 1}}>
+        {datasdf.map((item, key) => {
+          return (<EventCard key={key} id={item.id} imagesrc={item.image} />)
+        })}
       </ScrollView>
     </View>
   );

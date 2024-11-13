@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import React from 'react'
 import { Colors } from "@/constants/Colors";
+import { Link, router } from 'expo-router';
 
 
 
-export default function EventCard({imagesrc = "", title="ads"} : {imagesrc: string, title?: string}) {
+export default function EventCard({id, imagesrc = "", title="ads"} : {id: number, imagesrc: string, title?: string}) {
 
   function ImageIdentifyer() {
     if (imagesrc.substring(0,4) == "http") {
@@ -19,20 +20,23 @@ export default function EventCard({imagesrc = "", title="ads"} : {imagesrc: stri
   }
 
   return (
-    <View style={styles.cardcontainer}>
-      <View style={styles.imagecontainer}>
-        {ImageIdentifyer()}
-      </View>
-      <Text style={styles.text}>{title}</Text>
-      <Text style={styles.price}>fra DKK 123.50</Text>
-    </View>
-  )
+      <Pressable onPress={() => {
+        router.push({pathname: '/(tabs)/Shop/[id]', params: {id}})
+      }}>
+        <View style={styles.cardcontainer}>
+          <View style={styles.imagecontainer}>{ImageIdentifyer()}</View>
+          <Text style={styles.text}>{title}</Text>
+          <Text style={styles.price}>fra DKK 123.50</Text>
+        </View>
+      </Pressable>
+  );
 }
 
 const styles = StyleSheet.create({
   cardcontainer: {
     paddingVertical: 8,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    width: '100%'
   },
   imagecontainer: {
     overflow: 'hidden',

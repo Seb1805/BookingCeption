@@ -9,7 +9,8 @@ export type Campaign = {
   dateEnd: Date
   timeEnd: string
   sectionId: number
-  price: number //Typescript is super cool hehe xd
+  active: boolean
+  // price: number //Typescript is super cool hehe xd
 }
 
 export type Location = {
