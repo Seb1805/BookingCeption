@@ -2,50 +2,79 @@ import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import { Link, NavigationContainer } from "@react-navigation/native";
 // import { login } from loginApi
-import loginApi from "@/api/axios/routes/login";
+import {loginApi } from "@/api/axios/axiosClient";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 // import { createStackNavigator } from '@react-navigation-stack';
 interface LoginScreenState {
   email: string;
   password: string;
 }
 const LoginScreen = () => {
+  const baseUrl = `${process.env.EXPO_PUBLIC_SCHEMA_SERVER}${process.env.EXPO_PUBLIC_SERVER_DOMAIN}`
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
-    if (loading) return;
+    console.log("Called login")
+    // if (loading) return;
 
-    setLoading(true);
+    // setLoading(true);
     
     try {
+      console.log("Inside try")
+      // fetch('https://jsonplaceholder.typicode.com/todos/1')
+      // .then(response => response.json())
+      // .then(json => console.log(json))
+
       const formData = new FormData();
       formData.append('username', email);
       formData.append('password', password);
-      const response = await loginApi.login(formData)
-      // const response = await fetch('http://fm-jensen.dk:8000/token', {
-      //   method: 'POST',
-      //   body: formData,
-      // });
+      console.log(formData)
+      //const response = await loginApi.login(formData);
+      
+      
+      console.log(formData)
+      const response = await fetch(`${baseUrl}/token/`, {
+        method: 'POST',
+        body: formData,
+      });
 
-
+      const data = await response.json();
+      if (response.status === 200) {
+        // Token was successfully returned
+        await AsyncStorage.setItem("access_token", data.access_token);
+      }
+      
       if (response.status !== 200) {
-        throw new Error('Network response was not ok: ' + response.status);
+        console.log(response.statusText)
+        console.log(response.headers)
+        //console.log(response.body)
+        console.log(response.status)
+        //console.log(response.bodyUsed)
+        throw new Error('Network response was not ok');
       }
 
-      const data = await response.data;
+      //const data = await response.json();
       console.log(data);
-      // setLoading(false);
-      // await AsyncStorage.setItem("access_token",data.access_token)
-      router.replace('/(tabs)/Account');
-    } catch (error) {
-      console.error("Error:", error);
-      // Handle error appropriately
       setLoading(false);
+
+      router.replace('/(tabs)/Account');
+     
+      
+      //console.error('API Error:', error.response?.data || error.message);
+
+      // Handle error appropriately
+      // setLoading(false);
     }
+    catch (error) {
+      //console.log(error.message)
+      console.error("Error:", error);
   };
+}
 
 // const LoginScreen = ({ navigation }: { navigation: any }) => {
 //   const [state, setState] = useState<LoginScreenState>({
