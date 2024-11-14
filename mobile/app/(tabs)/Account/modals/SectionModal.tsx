@@ -94,8 +94,13 @@ export default function SectionModal() {
         keyboardType='number-pad'
         onChangeText={(text) => setSectionRoomForParticipants(text)}
         />
-      <View style={styles.container}>
-        <DropDownPicker
+      <View style={{ zIndex: open ? 1000 : 0 }}>
+        <DropDownPicker 
+          containerStyle={{
+            width: '100%',
+            
+            paddingTop: 10
+          }}
           open={open}
           value={value}
           items={items}
@@ -121,8 +126,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   container: {
-    flex: 1,
-    padding: 16,
+    height: 40,
+    borderWidth: 1,
+    marginBottom: 15,
+    paddingHorizontal: 10,
   },
   selectedValue: {
     marginTop: 16,
