@@ -93,6 +93,14 @@ export default function index() {
             <AntDesign size={16} name="right" color={Colors.light.text} />
             </View>
           </ProfileButtons>
+          <ProfileButtons
+          title="Spot"
+          onpress={() => router.navigate("/(tabs)/Account/modals/SpotModal")}
+        >
+          <View style={styles.buttonTypeLink}>
+            <AntDesign size={16} name="right" color={Colors.light.text} />
+            </View>
+          </ProfileButtons>
 
       </Profilesection>
 
