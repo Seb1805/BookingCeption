@@ -24,21 +24,24 @@ export default function TicketCard({item} : {item: Ticket}) {
     }
     else {
       let excistingCart: Cart = JSON.parse(value)
-      const moretickets = excistingCart.cartItems.map((item, index) => {
-        if(item.ticketId == selectedTicket) return index
-      })
 
-      if(typeof(moretickets) == "number") {
+      let dateCheck = new Date()
+      dateCheck.setDate((dateCheck.getDate() - 2))
+      if(new Date(excistingCart.lastUpdate) < dateCheck) {
+        const cartItems: Cart = {lastUpdate: new Date().toLocaleDateString(), cartItems: [{ticketId: selectedTicket, amount: 1}]}
+        await AsyncStorage.setItem('cart', JSON.stringify(cartItems))
+        return;
+      }
+
+      const moretickets = excistingCart.cartItems.findIndex((item) => item.ticketId == selectedTicket)
+
+      if(moretickets >= 0) {
         excistingCart.cartItems[moretickets].amount++
       }
       else {
         excistingCart.cartItems.push({ticketId: selectedTicket, amount: 1})
       }
-
-      // excistingCart.cartItems.push(ticketId)
-      // await AsyncStorage.setItem('cart', JSON.stringify(excistingCart))
-
-      console.log(excistingCart);
+      await AsyncStorage.setItem('cart', JSON.stringify(excistingCart))
     }    
 
   }
