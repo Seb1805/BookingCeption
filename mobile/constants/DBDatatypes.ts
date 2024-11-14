@@ -19,6 +19,14 @@ export type Location = {
   organizerId: number
 }
 
+export type LocationNew = {
+  locationName: string
+  address: string
+  city: string
+  organizerId: number
+}
+
+
 export type User = {
   email: string
   password: string
@@ -46,4 +54,29 @@ export type Spot = {
   pricePrSquareMeter: number
   spotType: number
 
+}
+
+export type Ticket = {
+  ticketId: number
+  name: string
+  price: Float
+  validDateStart: string
+  validDateEnd: string
+  validTimeStart: string
+  spotId?: number
+  // sectionId: number
+  location: LocationNew
+  campaignId: number
+  active: boolean
+  amount?: number
+}
+
+export type Cart = {
+  lastUpdate: string,
+  cartItems: CartItem[]
+}
+
+export type CartItem = {
+  ticketId: number,
+  amount: number
 }
