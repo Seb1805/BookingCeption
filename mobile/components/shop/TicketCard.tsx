@@ -15,15 +15,26 @@ export default function TicketCard({item} : {item: Ticket}) {
     return new Date('1990-01-07T' + datastring)
   }
 
-  async function AddToCart(ticketId: number) {
+  async function AddToCart(selectedTicket: number) {
     const value: string | null = await AsyncStorage.getItem('cart');
     
     if(!value) {
-      const cartItems: Cart = {lastUpdate: new Date().toLocaleDateString(), cartItems: [{ticketId: ticketId, amount: 1}]}
+      const cartItems: Cart = {lastUpdate: new Date().toLocaleDateString(), cartItems: [{ticketId: selectedTicket, amount: 1}]}
       await AsyncStorage.setItem('cart', JSON.stringify(cartItems))
     }
     else {
       let excistingCart: Cart = JSON.parse(value)
+      const moretickets = excistingCart.cartItems.map((item, index) => {
+        if(item.ticketId == selectedTicket) return index
+      })
+
+      if(typeof(moretickets) == "number") {
+        excistingCart.cartItems[moretickets].amount++
+      }
+      else {
+        excistingCart.cartItems.push({ticketId: selectedTicket, amount: 1})
+      }
+
       // excistingCart.cartItems.push(ticketId)
       // await AsyncStorage.setItem('cart', JSON.stringify(excistingCart))
 
