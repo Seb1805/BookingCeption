@@ -24,21 +24,21 @@ const LoginScreen = () => {
       const formData = new FormData();
       formData.append('username', email);
       formData.append('password', password);
-      const response = (await loginApi.login(formData))
-      // const response = await fetch('http://localhost:8000/token/', {
+      const response = await loginApi.login(formData)
+      // const response = await fetch('http://fm-jensen.dk:8000/token', {
       //   method: 'POST',
       //   body: formData,
       // });
 
+
       if (response.status !== 200) {
-        throw new Error('Network response was not ok');
+        throw new Error('Network response was not ok: ' + response.status);
       }
 
-      //const data = await response.json();
-      const data = response.data;
+      const data = await response.data;
       console.log(data);
-      setLoading(false);
-      await AsyncStorage.setItem("access_token",data.access_token)
+      // setLoading(false);
+      // await AsyncStorage.setItem("access_token",data.access_token)
       router.replace('/(tabs)/Account');
     } catch (error) {
       console.error("Error:", error);
