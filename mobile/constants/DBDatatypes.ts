@@ -46,14 +46,13 @@ export type Section = {
 }
 
 export type Spot = {
-  status: boolean
   position: string
   lengthCM: number
   widthCM: number
   priceExtra: number
   pricePrSquareMeter: number
   spotType: number
-
+  occupied: boolean
 }
 
 export type Ticket = {

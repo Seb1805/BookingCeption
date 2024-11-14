@@ -2,7 +2,8 @@ import React, { useState,useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
 import { Section } from '@/constants/DBDatatypes';
 import { Router } from 'expo-router';
-import locationApi from '@/api/axios/routes/location';
+import sectionApi from '@/api/axios/routes/section';
+import locationApi from '@/api/axios/routes/location'
 import DropDownPicker from 'react-native-dropdown-picker';
 
 
@@ -67,8 +68,10 @@ export default function SectionModal() {
             spotId: parseInt(sectionSpotId),
             roomForParticipants: parseInt(sectionRoomForParticipants),
             layoutImage: ''
-        };
-        console.log(sectionData)
+        }
+        const response = sectionApi.section(sectionData);
+        ;
+        //console.log(sectionData)
         }
         catch{
 
