@@ -12,6 +12,8 @@ interface LoginScreenState {
   password: string;
 }
 const LoginScreen = () => {
+  const baseUrl = `${process.env.EXPO_PUBLIC_SCHEMA_SERVER}${process.env.EXPO_PUBLIC_SERVER_DOMAIN}`
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -36,7 +38,7 @@ const LoginScreen = () => {
       
       
       console.log(formData)
-      const response = await fetch('http://fm-jensen.dk:8000/token/', {
+      const response = await fetch(`${baseUrl}/token/`, {
         method: 'POST',
         body: formData,
       });
