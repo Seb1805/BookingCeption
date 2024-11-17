@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Pressable,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Campaign, Ticket } from "@/constants/DBDatatypes";
 import campaignApi from "@/api/axios/routes/campaign";
 import { useLocalSearchParams } from "expo-router";

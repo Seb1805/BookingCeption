@@ -10,7 +10,7 @@ export default function BoughtList() {
       <View style={{marginTop: Constants.statusBarHeight}}></View>
       <BoughtTicketCard imagesrc=''/>
       <BoughtTicketCard imagesrc=''/>
-      <BoughtTicketCard imagesrc='https://thevirtualinstructor.com/blog/wp-content/uploads/2013/08/understanding-abstract-art.jpg'/>
+      <BoughtTicketCard imagesrc=''/>
       <BoughtTicketCard imagesrc=''/>
     </ScrollView>
   )

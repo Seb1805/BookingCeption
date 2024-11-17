@@ -2,7 +2,8 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 import React from 'react'
 import AntDesign from '@expo/vector-icons/AntDesign'
 import { Colors } from '@/constants/Colors'
-import { Cart, Ticket } from '@/constants/DBDatatypes'
+import { Ticket } from '@/constants/DBDatatypes'
+import { Cart } from '@/constants/OtherDatatypes'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function TicketCard({item} : {item: Ticket}) {

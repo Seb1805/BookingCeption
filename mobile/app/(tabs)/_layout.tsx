@@ -24,7 +24,7 @@ export default function Index() {
           options={{ title: "Mine Billetter", tabBarLabel: "Mine Billetter", tabBarIcon: ({ color }) => <Fontisto size={28} name="bookmark" color={color} /> }}
         />
       <Tabs.Screen
-        name="Shop"
+        name="Messer"
         options={{ title: "Messer", tabBarLabel: "Messer",
           tabBarIcon: ({ color }) => <AntDesign size={28} name="shoppingcart" color={color} /> }}
       />

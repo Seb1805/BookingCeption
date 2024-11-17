@@ -21,7 +21,7 @@ export default function EventCard({id, imagesrc = "", title="ads"} : {id: number
 
   return (
       <Pressable onPress={() => {
-        router.push({pathname: '/(tabs)/Shop/[id]', params: {id}})
+        router.push({pathname: '../Shop/[id]', params: {id}})
       }}>
         <View style={styles.cardcontainer}>
           <View style={styles.imagecontainer}>{ImageIdentifyer()}</View>

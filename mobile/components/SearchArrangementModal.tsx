@@ -16,24 +16,28 @@ import { Colors } from "@/constants/Colors";
 
 const datasdf = [
   {
+    id: 12,
     title: "Viby",
     image:
-      "https://thevirtualinstructor.com/blog/wp-content/uploads/2013/08/understanding-abstract-art.jpg",
+      "",
   },
   {
+    id: 13,
     title: "Aarhus",
     image:
-      "https://thevirtualinstructor.com/blog/wp-content/uploads/2013/08/understanding-abstract-art.jpg",
+      "",
   },
   {
+    id: 16,
     title: "Randers",
     image:
-      "https://thevirtualinstructor.com/blog/wp-content/uploads/2013/08/understanding-abstract-art.jpg",
+      "",
   },
   {
+    id: 18,
     title: "Aalborg",
     image:
-      "https://thevirtualinstructor.com/blog/wp-content/uploads/2013/08/understanding-abstract-art.jpg",
+      "",
   },
 ];
 
@@ -71,22 +75,17 @@ export default function SearchLocationModal({
           <ScrollView>
             {datasdf.map((item, key) => {
               if (
-                item.title.toLowerCase().includes(searchinput.toLowerCase())
+                item.title.toLowerCase().includes(searchinput.toLowerCase()) || searchinput.length == 0
               ) {
                 return (
+                  <Pressable onPress={() => setVisibility(() => false)} key={key}>
+
                   <EventCard
-                    key={key}
+                    id={item.id}
                     title={item.title}
                     imagesrc={item.image}
-                  />
-                );
-              } else if (searchinput.length == 0) {
-                return (
-                  <EventCard
-                    key={key}
-                    title={item.title}
-                    imagesrc={item.image}
-                  />
+                    />
+                    </Pressable>
                 );
               } else return null;
             })}

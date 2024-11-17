@@ -30,7 +30,7 @@ const datasdf = [
     id: 13,
     title: "Aarhus",
     image:
-      "https://thevirtualinstructor.com/blog/wp-content/uploads/2013/08/understanding-abstract-art.jpg",
+      "",
   },
   {
     id: 16,
@@ -42,10 +42,10 @@ const datasdf = [
     id: 18,
     title: "Aalborg",
     image:
-      "https://thevirtualinstructor.com/blog/wp-content/uploads/2013/08/understanding-abstract-art.jpg",
+      "",
   },
 ];
-export default function index() {
+export default function Shop() {
   const [search, setSearch] = useState("");
   const [searchModalVisible, setsearchModalVisible] = useState(false);
 
