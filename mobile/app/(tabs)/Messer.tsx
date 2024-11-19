@@ -7,13 +7,13 @@ import {
   Modal,
   TextInput,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import EventCard from "@/components/EventCard";
 import Searchbar from "@/components/Searchbar";
 import { Colors } from "@/constants/Colors";
 import CartIcon from "@/components/CartIcon";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import SearchLocationModal from "@/components/SearchArrangementModal";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Constants from 'expo-constants'
@@ -49,15 +49,23 @@ export default function Shop() {
   const [search, setSearch] = useState("");
   const [searchModalVisible, setsearchModalVisible] = useState(false);
 
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        setsearchModalVisible(() => false)
+      }
+    },[])
+  )
+
   return (
     <View style={{ flex: 1 }}>
       <SearchLocationModal visibility={searchModalVisible} setVisibility={setsearchModalVisible}/>
       
       <View style={styles.headerbar}>
         <Text style={styles.headerText}>Arrangementer</Text>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
           <Pressable
-            style={{ margin: 8 }}
+            style={{ marginHorizontal: 8 }}
             onPress={() => setsearchModalVisible(true)}
           >
             <AntDesign name="search1" size={28} color={Colors.light.textInverse} />
@@ -81,16 +89,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: 'center',
     width: "100%",
-    paddingTop: Constants.statusBarHeight,
-    paddingHorizontal: 24,
+    height: 64,
+    paddingHorizontal: 16,
     backgroundColor: Colors.light.primary,
   },
   headerText: {
     fontSize: 20,
+    fontWeight: 'semibold',
     color: Colors.light.textInverse
-  },
-  cart: {
-    margin: 8,
   },
   input: {
     paddingHorizontal: 15,

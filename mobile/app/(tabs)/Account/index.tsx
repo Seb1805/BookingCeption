@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Button, StyleSheet, Pressable, Image } from "react-native";
+import { View, Text, ScrollView, Button, StyleSheet, Pressable, Image, Modal, Alert } from "react-native";
 import React, { useCallback, useState } from "react";
 import { Link, Redirect, router, useFocusEffect } from "expo-router";
 import { Colors } from "@/constants/Colors";
@@ -16,21 +16,13 @@ export default function index() {
   
   // useFocusEffect(
   //   useCallback(() => {
-
   //     getMyInfo().then(response => {
-  //       if(!response.data) {
-  //         <Redirect href="/(auth)/Login" />
-  //         return
+  //       if(!response.status === 200) {
+  //         router.navigate('/(auth)/Login')
   //       }
-  
   //       setuserData(() => response.data)
-        
   //     })
-  //     return () => {
-  //       console.log('');
-  //     }
   //   }, [])
-    
   // )
 
   async function getMyInfo() {
@@ -117,7 +109,7 @@ export default function index() {
           title="Email"
           onpress={() => router.navigate("/(tabs)/Account/modals/CreateLocation")}
         >
-          {}
+          
         </ProfileButtons>
         <ProfileButtons
           title="Password"
@@ -134,15 +126,27 @@ export default function index() {
         >
           
         </ProfileButtons>
+
+
+
         <ProfileButtons
           title="Log out"
-          onpress={() => router.navigate("/(tabs)/Account/modals/CreateLocation")}
+          onpress={() => {
+
+            Alert.alert('Logout', 'Er du sikker du vil log af?', [
+              {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+              },
+              {text: 'OK', onPress: () => console.log('test')},
+            ]);
+            
+          }}
         >
           
         </ProfileButtons>
       </Profilesection>
-
-      <Text>Profil oplysninger, mulighed for oprette lokationer</Text>
 
     </ScrollView>
   );

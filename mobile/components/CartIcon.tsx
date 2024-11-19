@@ -8,10 +8,11 @@ import { router, useFocusEffect } from 'expo-router'
 export default function CartIcon({color}: {color: string}) {
   const [cart, setCart] = useState<Cart>()
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //   GetCart()
-  // }, [cart]))
+  useFocusEffect(
+    useCallback(() => {
+    GetCart()
+    
+  }, []))
 
   async function GetCart() {
     try {
@@ -27,7 +28,7 @@ export default function CartIcon({color}: {color: string}) {
 
   function CountCartItems() {
     let itemCounter = 0;
-    if (cart) {
+    if (typeof(cart) !== "undefined") {
       cart.cartItems.map((item) => (itemCounter += item.amount));
       return (
         <View style={styles.cartCounter}>
@@ -49,7 +50,7 @@ export default function CartIcon({color}: {color: string}) {
 
 const styles = StyleSheet.create({
   cart: {
-    margin: 8
+    // margin: 8
   },
   cartCounter: {
     position: 'absolute',

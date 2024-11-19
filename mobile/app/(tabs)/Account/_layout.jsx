@@ -10,7 +10,7 @@ export default function _layout() {
         
         <Stack.Screen name="Locations" options={{ headerShown: true, headerTitle: 'Mine lokationer'}}/>
         <Stack.Screen name="Campaigns" options={{ headerShown: true, headerTitle: 'Mine Arrangementer'}}/>
-        <Stack.Screen name="CampaignsDetails" options={{ headerShown: true, headerTitle: 'Oplysninger'}}/>
+        <Stack.Screen name="CampaignDetails" options={{ headerShown: true, headerTitle: 'Oplysninger'}}/>
         <Stack.Screen name="modals/CreateLocation"  options={{ headerShown: true, headerTitle: 'Opret lokation'}} />
         <Stack.Screen name="modals/CRUDmodal" options={({route}) => ({ title: route.params.name, headerShown: true ,presentation: 'modal' })} />
         <Stack.Screen name="modals/CampaignModal" options={{headerShown: true, headerTitle: 'Opret Kampagne'}} />

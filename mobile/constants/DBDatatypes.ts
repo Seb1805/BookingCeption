@@ -13,13 +13,13 @@ export type Campaign = {
   // price: number //Typescript is super cool hehe xd
 }
 
-export type Location = {
-  locationName: string
-  address: string
-  organizerId: number
-}
+// export type Location = {
+//   locationName: string
+//   address: string
+//   organizerId: number
+// }
 
-export type LocationNew = {
+export type Location = {
   locationName: string
   address: string
   city: string
@@ -64,7 +64,7 @@ export type Ticket = {
   validTimeStart: string
   spotId?: number
   // sectionId: number
-  location: LocationNew
+  location: Location
   campaignId: number
   active: boolean
   amount?: number

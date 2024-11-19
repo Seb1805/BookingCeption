@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   vertical: {
     display: 'flex',
-
+    paddingVertical: 4
   },
   ticketdate: {
     paddingHorizontal: 12,

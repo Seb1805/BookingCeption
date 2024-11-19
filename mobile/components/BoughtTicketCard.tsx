@@ -21,10 +21,9 @@ export default function TicketCard({imagesrc = ""} : {imagesrc: string}) {
         {ImageIdentifyer()}
       </View>
       <View>
-        <View><Text>Labels</Text></View>
-        <Text>TicketCard</Text>
+        <Text style={styles.fontBold}>TicketCard</Text>
         <Text>Address</Text>
-        <Text>dato</Text>
+        <Text>dato start ( - dato end)</Text>
         <Text>Tidspunkt</Text>
       </View>
     </View>
@@ -53,5 +52,9 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: '100%'
+  },
+  fontBold: {
+    fontWeight: 'bold',
+    fontSize: 16,
   }
 })

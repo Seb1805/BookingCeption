@@ -1,7 +1,8 @@
-import { Text, StyleSheet, Pressable } from 'react-native'
+import { Text, StyleSheet, Pressable, Alert } from 'react-native'
 import React from 'react'
 import { Colors } from '@/constants/Colors'
 import { Redirect } from 'expo-router'
+
 
 
 export default function ProfileButtons({title, onpress, children}: {title: string, onpress: any, children?: any }) {

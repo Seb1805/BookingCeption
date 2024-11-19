@@ -15,10 +15,10 @@ export default function index() {
 
   const [cartFull, setcartFull] = useState<ticketWithAmount[]>()
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //   GetCartData().then((cart) => setcartFull(() => cart))
-  // }, []))
+  useFocusEffect(
+    useCallback(() => {
+    GetCartData().then((cart) => setcartFull(() => cart))
+  }, []))
 
   async function GetCartData() {
     const cartData = await AsyncStorage.getItem('cart')
