@@ -10,6 +10,8 @@ export default function CreateLocation() {
 
   const [lokationName, setlocationName] = useState("");
   const [lokationAddress, setlocationAddress] = useState("");
+  const [locationZip, setLocationZip] = useState("");
+  const [locationCity, setLocationCity] = useState("");
   const [lokationOrganizerId, setlocationOrgaznierId] = useState("");
 
 
@@ -18,6 +20,7 @@ export default function CreateLocation() {
       const locationData: Location = {
         locationName: lokationName,
         address: lokationAddress,
+        city: `${locationZip} ${locationCity}`,
         organizerId: 1
       };
       // const response = await axios.post('/api/v1/locations', locationData);
@@ -46,6 +49,19 @@ export default function CreateLocation() {
         placeholder="Adresse"
         value={lokationAddress}
         onChangeText={(text) => setlocationAddress(text)}
+      />
+            <TextInput 
+      style={styles.input}
+      inputMode='numeric'
+      placeholder="Postnummer"
+      value={locationZip}
+      onChangeText={(text) => setLocationZip(text)}
+      />
+      <TextInput 
+      style={styles.input}
+      placeholder="By"
+      value={locationCity}
+      onChangeText={(text) => setLocationCity(text)}
       />
       <TextInput
         style={styles.input}
