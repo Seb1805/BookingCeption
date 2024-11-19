@@ -42,6 +42,11 @@ export default function index() {
       <Text>CartPage</Text>
       
       <CartBooking id={1} amount={2} />
+      {cartFull?.map((item, key) => {
+        return (
+          <CartBooking id={item.ticket.ticketId} item={item.ticket} amount={item.amount} key={key}/>
+        )
+      })}
 
       {/* {cartFull?.map((item, key) => {
         return (

@@ -1,7 +1,8 @@
 import { View, Text, Image, StyleSheet } from 'react-native'
 import React from 'react'
+import { TicketBought } from '@/constants/DBDatatypes'
 
-export default function TicketCard({imagesrc = ""} : {imagesrc: string}) {
+export default function TicketCard({ticket, imagesrc = ""} : {ticket?: TicketBought,imagesrc: string}) {
 
   function ImageIdentifyer() {
     if (imagesrc.substring(0,4) == "http") {
@@ -21,10 +22,11 @@ export default function TicketCard({imagesrc = ""} : {imagesrc: string}) {
         {ImageIdentifyer()}
       </View>
       <View>
-        <Text style={styles.fontBold}>TicketCard</Text>
-        <Text>Address</Text>
-        <Text>dato start ( - dato end)</Text>
-        <Text>Tidspunkt</Text>
+        <Text style={styles.fontBold}>TicketCard {ticket?.name}</Text>
+        <Text>{ticket?.campaignName}</Text>
+        <Text>Address {ticket?.address}</Text>
+        <Text>dato start ( - dato end) {ticket?.validDateEnd} {ticket?.validDateEnd !== ticket?.validDateStart && ` - ${ticket?.validDateEnd}` }</Text>
+        <Text>Tidspunkt {ticket?.validTimeStart}</Text>
       </View>
     </View>
   )

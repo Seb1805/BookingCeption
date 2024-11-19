@@ -69,3 +69,16 @@ export type Ticket = {
   active: boolean
   amount?: number
 }
+
+export type TicketBought = {
+  name: string
+  validDateStart: string
+  validDateEnd: string
+  validTimeStart: string
+  address: string
+  sectionName: string
+  spotNumber?: number
+  boughtAmount: number
+  campaignName: string
+  campaignCoverImage?: string
+}
