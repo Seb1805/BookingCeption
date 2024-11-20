@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from ..utils.security_old import get_current_user
 from sqlalchemy.orm import Session
 from ..database import get_db
-from ..models import Booking,BookingCreate,BookingPydantic,BookingUpdate,User
+from ..models import Booking,BookingCreate,BookingPydantic,BookingUpdate,User, BookingCampaign, Ticket, Section, Location, Campaign, Spot
 from ..utils.security import get_current_active_user
+from datetime import date
 
 
 router = APIRouter(prefix="/bookings", tags=["bookings"])
@@ -31,7 +32,7 @@ def create_booking(booking: BookingCreate, db: Session = Depends(get_db),current
     new_booking = Booking(
         userId=current_user.userId,
         bookingStatusId=booking.bookingStatusId,
-        bookingCampaignId=booking.bookingCampaignId
+        dateCreated=booking.dateCreated
     )
     
     try:

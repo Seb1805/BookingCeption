@@ -264,7 +264,7 @@ class Booking(Base):
     bookingId = Column(Integer, primary_key=True)
     userId = Column(Integer)
     bookingStatusId = Column(Integer)
-    bookingCampaignId = Column(Integer)
+    dateCreated = Column(Date)
 
     #user = relationship("User", back_populates="bookings")
     # booking_status = relationship("BookingStatus", back_populates="bookings")
@@ -274,7 +274,7 @@ class Booking(Base):
 class BookingBase(BaseModel):
     userId: int
     bookingStatusId: int
-    bookingCampaignId: int
+    dateCreated: date
 
 class BookingCreate(BookingBase):
     pass
@@ -283,10 +283,8 @@ class BookingUpdate(BookingBase):
     pass
 
 class BookingPydantic(BookingBase):
-    bookingId: int
-    userId: int
-    bookingStatusId: int
-    bookingCampaignId: int
+    bookingStatusId: dict = {}
+    userId: dict = {}
 
     class Config:
         orm_mode = True
@@ -315,13 +313,15 @@ class BookingCampaign(Base):
     
     bookingCampaignId = Column(Integer, primary_key=True)
     ticketId = Column(Integer)
+    bookingId = Column(Integer)
     ticketAmount = Column(Integer)
-    sumPrice = Column(float)
+    sumPrice = Column(Float)
 
     #ticket = relationship("Ticket", back_populates="bookings")
 
 class BookingCampaignBase(BaseModel):
     ticketId: int
+    bookingId: int
     ticketAmount: int
     sumPrice: float
 
@@ -333,6 +333,8 @@ class BookingCampaignUpdate(BookingCampaignBase):
 
 class BookingCampaignPydantic(BookingCampaignBase):
     bookingCampaignId: int
+    ticketId: dict = {}
+    bookingId: dict = {}
 
     class Config:
         orm_mode = True
