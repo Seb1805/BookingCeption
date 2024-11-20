@@ -53,6 +53,7 @@ export type Spot = {
   pricePrSquareMeter: number
   spotType: number
   occupied: boolean
+  spotnumber: number
 }
 
 export type Ticket = {

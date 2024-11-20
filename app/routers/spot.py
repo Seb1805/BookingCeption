@@ -26,7 +26,8 @@ def create_spot(spot: SpotCreate, db: Session = Depends(get_db)):
         priceExtra=spot.priceExtra,
         pricePrSquareMeter=spot.pricePrSquareMeter,
         spotType=spot.spotType,
-        sectionId=spot.sectionId
+        sectionId=spot.sectionId,
+        spotnumber = spot.spotnumber
     )
     
     try:

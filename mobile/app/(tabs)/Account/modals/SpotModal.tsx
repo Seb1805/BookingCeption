@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
 import { Spot } from '@/constants/DBDatatypes';
-import { Router } from 'expo-router';
+import { router, Router } from 'expo-router';
 import spotApi from '@/api/axios/routes/spot';
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -27,14 +27,16 @@ export default function SpotModal() {
             priceExtra: 0, //Implement some logic to handle this
             pricePrSquareMeter: parseInt(spotPricePrSquareMeter),
             spotType: 1, //No clue, Ask frank
-            occupied: false // Assume a spot is not taken upon creation, discuss with frank
+            occupied: false, // Assume a spot is not taken upon creation, discuss with frank
+            spotnumber: 1 // Create 
         }
-        const response = spotApi.spot(spotData);
-        
+        const response = await spotApi.spot(spotData);
+        router.back()
         console.log(spotData)
         }
-        catch{
-
+        catch(error)
+        {
+          console.log(error)
         }
 
         
@@ -84,7 +86,7 @@ export default function SpotModal() {
 <TextInput
         style={styles.input}
         placeholder="Spot type"
-        value={spotPriceExtra}
+        value={spotSpotType}
         keyboardType='number-pad'
         onChangeText={(text) => setSpotSpotType(text)}
         />
