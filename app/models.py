@@ -120,7 +120,7 @@ class OrganizerPydantic(OrganizerBase):
         orm_mode = True
 
 class CampaignOrganizerAssociation(Base):
-    __tablename__ = "campaignorganizerassociation"
+    __tablename__ = "CampaignOrganizerAssociation"
     
     userCompanyAssosiationId = Column(Integer, primary_key=True)
     campaignId = Column(Integer)
@@ -216,7 +216,7 @@ class CampaignPydantic(CampaignBase):
 #Booking
 
 class Booking(Base):
-    __tablename__ = "booking"
+    __tablename__ = "Booking"
     
     bookingId = Column(Integer, primary_key=True)
     userId = Column(Integer)
@@ -248,7 +248,7 @@ class BookingPydantic(BookingBase):
 
 #Booking status
 class BookingStatus(Base):
-    __tablename__ = "bookingstatus"
+    __tablename__ = "BookingStatus"
     
     bookingStatusId = Column(Integer, primary_key=True)
     status = Column(String)
@@ -263,7 +263,7 @@ class BookingStatusPydantic:
 
 #Booking Campaign
 class BookingCampaign(Base):
-    __tablename__ = "bookingcampaign"
+    __tablename__ = "BookingCampaign"
     
     bookingCampaignId = Column(Integer, primary_key=True)
     ticketId = Column(Integer)
@@ -295,7 +295,7 @@ class BookingCampaignPydantic(BookingCampaignBase):
 
 #User Role
 class UserRole(Base):
-    __tablename__ = "userrole"
+    __tablename__ = "UserRole"
     
     userRole = Column(Integer, primary_key=True)
     name = Column(String)
@@ -317,7 +317,7 @@ class UserRolePydantic(UserRoleBase):
         orm_mode = True
 #Company
 class Company(Base):
-    __tablename__ = "company"
+    __tablename__ = "Company"
     
     company_id = Column(Integer, primary_key=True)
     name = Column(String)
@@ -345,7 +345,7 @@ class CompanyPydantic(CompanyBase):
 
 #UserCompanyAssociation
 class UserCompanyAssociation(Base):
-    __tablename__ = "usercompanyassociation"
+    __tablename__ = "UserCompanyAssociation"
     
     userCompanyAssosiationId = Column(Integer, primary_key=True)
     userId = Column(Integer)
@@ -375,7 +375,7 @@ class UserCompanyAssociationPydantic(UserCompanyAssociationBase):
 
 #Ticket
 class Ticket(Base):
-    __tablename__ = "ticket"
+    __tablename__ = "Ticket"
     
     ticketId = Column(Integer, primary_key=True)
     name = Column(String)
@@ -419,7 +419,7 @@ class TicketPydantic(TicketBase):
 
 #Section
 class Section(Base):
-    __tablename__ = "section"
+    __tablename__ = "Section"
     
     sectionId = Column(Integer, primary_key=True)
     locationId = Column(Integer)
@@ -450,7 +450,7 @@ class SectionPydantic(SectionBase):
 
 #Spot
 class Spot(Base):
-    __tablename__ = "spot"
+    __tablename__ = "Spot"
     
     spotId = Column(Integer, primary_key=True)
     status = Column(Boolean)
@@ -492,8 +492,8 @@ class SpotPydantic(SpotBase):
 
 #UserOrganizerAssociation
 
-class UserOrganizerAssociation(Base):
-    __tablename__ = "userorganizerassociation"
+class UserOrganizerAssosiation(Base):
+    __tablename__ = "UserOrganizerAssosiation"
     
     user_organizer_association_id = Column(Integer, primary_key=True)
     user_id = Column(Integer)
@@ -520,7 +520,7 @@ class UserOrganizerAssociationPydantic(UserOrganizerAssociationBase):
 
 #Spottype
 class SpotType(Base):
-    __tablename__ = "spottype"
+    __tablename__ = "SpotType"
     
     spotTypeId = Column(Integer, primary_key=True)
     name = Column(String)
