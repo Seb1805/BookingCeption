@@ -97,17 +97,21 @@ class Location(Base):
     locationId = Column(Integer, primary_key=True)
     locationName = Column(String(150))
     address = Column(String(150))
+    city = Column(String(150))
     organizerId = Column(Integer)
 
 
 class LocationBase(BaseModel):
     locationName: str
     address: str
+    city: str
     organizerId: int
     
 class LocationCreate(LocationBase):
     locationName: str
     address: str
+    city: str
+    organizerId: int
 
 
 class LocationCreate(LocationBase):
@@ -118,7 +122,7 @@ class LocationUpdate(LocationBase):
 
 class LocationPydantic(LocationBase):
     location_id: int
-    sections: List["SectionPydantic"] = []
+    organizer_id: List["OrganizerPydantic"] = []
 
     class Config:
         orm_mode = True
@@ -135,8 +139,6 @@ class Organizer(Base):
     __tablename__ = "Organizer"
 
     organizerId  = Column(Integer, primary_key=True)
-    locationId = Column(Integer)
-    campaignId = Column(Integer)
     name = Column(String)
 
 
@@ -146,7 +148,6 @@ class Organizer(Base):
 #     name: str
 
 class OrganizerBase(BaseModel):
-    campaign_id: int
     name: str
 
 class OrganizerCreate(OrganizerBase):
@@ -157,11 +158,37 @@ class OrganizerUpdate(OrganizerBase):
 
 class OrganizerPydantic(OrganizerBase):
     organizer_id: int
-    locations: List["LocationPydantic"] = []
 
     class Config:
         orm_mode = True
 
+class CampaignOrganizerAssociation(Base):
+    __tablename__ = "campaignorganizerassociation"
+    
+    campaign_organizer_association_id = Column(Integer, primary_key=True)
+    campaign_id = Column(Integer)
+    organizer_id = Column(Integer)
+
+    # user = relationship("User", back_populates="organizers")
+    # organizer = relationship("Organizer", back_populates="users")
+
+class CampaignOrganizerAssociationBase(BaseModel):
+    campaign_id: int
+    organizer_id: int
+
+class CampaignOrganizerAssociationCreate(CampaignOrganizerAssociationBase):
+    pass
+
+class CampaignOrganizerAssociationUpdate(CampaignOrganizerAssociationBase):
+    pass
+
+class CampaignOrganizerAssociationPydantic(CampaignOrganizerAssociationBase):
+    campaign_organizer_association_id: int
+    campaign_id: List["CampaignPydantic"] = []
+    organizer_id: List["OrganizerPydantic"] = []
+
+    class Config:
+        orm_mode = True
 
 #Campaign
 class Campaign(Base):
@@ -176,7 +203,7 @@ class Campaign(Base):
     dateEnd = Column(Date)
     timeEnd = Column(Time)
     sectionId = Column(Integer)
-    price =  Column(Float)
+    active =  Column(Boolean)
 
 # class Campaign(Base):
 #     __tablename__ = "campaign"
@@ -214,7 +241,7 @@ class CampaignBase(BaseModel):
     dateEnd : date
     timeEnd : time
     sectionId : int
-    price : float
+    active : bool
 
 class CampaignCreate(CampaignBase):
     pass
@@ -289,12 +316,14 @@ class BookingCampaign(Base):
     bookingCampaignId = Column(Integer, primary_key=True)
     ticketId = Column(Integer)
     ticketAmount = Column(Integer)
+    sumPrice = Column(float)
 
     #ticket = relationship("Ticket", back_populates="bookings")
 
 class BookingCampaignBase(BaseModel):
     ticketId: int
     ticketAmount: int
+    sumPrice: float
 
 class BookingCampaignCreate(BookingCampaignBase):
     pass
@@ -400,6 +429,8 @@ class Ticket(Base):
     validTimeStart = Column(Time)
     spotId = Column(Integer)
     campaignId = Column(Integer)
+    active = Column(Boolean)
+    amount = Column(Integer)
 
 
 
@@ -411,6 +442,8 @@ class TicketBase(BaseModel):
     validTimeStart: time
     spotId: int
     campaignId: int
+    active: bool
+    amount: int
 
 class TicketCreate(TicketBase):
     pass
@@ -434,18 +467,14 @@ class Section(Base):
     
     sectionId = Column(Integer, primary_key=True)
     locationId = Column(Integer)
-    locationItem = Column(Integer)
     name = Column(String)
-    spotId = Column(Integer)
     roomForParticipants = Column(Integer)
 
 
 class SectionBase(BaseModel):
     sectionId: int
     locationId: int
-    locationItem: int
     name: str
-    spotId: int
     roomForParticipants: int
 
 class SectionCreate(SectionBase):
@@ -456,7 +485,7 @@ class SectionUpdate(SectionBase):
 
 class SectionPydantic(SectionBase):
     sectionId: int
-    spot: dict = {}
+    location_id: dict = {}
 
     class Config:
         orm_mode = True
@@ -473,6 +502,7 @@ class Spot(Base):
     priceExtra = Column(Float)
     pricePrSquareMeter = Column(Boolean)
     spotType = Column(Integer)
+    sectionId = Column(Integer)
 
 
 class SpotBase(BaseModel):
@@ -483,6 +513,7 @@ class SpotBase(BaseModel):
     priceExtra: float
     pricePrSquareMeter: bool
     spotType: int
+    sectionId: int
 
 class SpotCreate(SpotBase):
     pass
@@ -494,6 +525,7 @@ class SpotPydantic(SpotBase):
     spot_id: int
     sections: List["SectionPydantic"] = []
     spot_types: dict = {}
+    section_id: dict = {}
 
     class Config:
         orm_mode = True

@@ -30,6 +30,7 @@ def createLocation(location: LocationCreate, db: Session = Depends(get_db),curre
     new_location = Location(
         locationName = location.locationName,
         address = location.address,
+        city = location.city,
         organizerId = location.organizerId
     )
     

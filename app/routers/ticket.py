@@ -27,7 +27,9 @@ def create_ticket(ticket: TicketCreate, db: Session = Depends(get_db)):
         validDateEnd=ticket.validDateEnd,
         validTimeStart=ticket.validTimeStart,
         spotId=ticket.spotId,
-        campaignId=ticket.campaignId
+        campaignId=ticket.campaignId,
+        active=ticket.active,
+        amount=ticket.amount
     )
     
     try:

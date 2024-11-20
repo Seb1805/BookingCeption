@@ -28,7 +28,7 @@ def create_campaign(campaign: CampaignCreate, db: Session = Depends(get_db)):
         dateEnd=campaign.dateEnd,
         timeEnd=campaign.timeEnd,
         sectionId=campaign.sectionId,
-        price=campaign.price
+        active=campaign.active
     )
     
     try:

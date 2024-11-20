@@ -21,9 +21,7 @@ def create_section(section: SectionCreate, db: Session = Depends(get_db)):
     new_section = Section(
         sectionId=section.sectionId,
         locationId=section.locationId,
-        locationItem=section.locationItem,
         name=section.name,
-        spotId=section.spotId,
         roomForParticipants=section.roomForParticipants
     )
     

@@ -26,8 +26,6 @@ def createLocation(organizer: OrganizerCreate, db: Session = Depends(get_db),cur
     
     
     new_organizer = Organizer(
-        locationId = organizer.locationId,
-        campaignId = organizer.campaignId,
         name = organizer.name
     )
     
