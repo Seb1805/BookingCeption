@@ -25,6 +25,7 @@ export default function SpotModal() {
             status: false,
             lengthCM: parseInt(spotLengthCM),
             widthCM: parseInt(spotWidthCM),
+            sectionId: 1,
             priceExtra: 0, //Implement some logic to handle this
             pricePrSquareMeter: parseInt(spotPricePrSquareMeter),
             spotType: 1, //No clue, Ask frank

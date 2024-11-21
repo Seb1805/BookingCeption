@@ -53,6 +53,7 @@ export type Spot = {
   priceExtra: number
   pricePrSquareMeter: number
   spotType: number
+  sectionId: number
   spotnumber: number
 }
 
