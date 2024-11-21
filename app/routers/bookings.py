@@ -34,7 +34,6 @@ def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_c
             INNER JOIN "Location" l ON l."locationId" = s."locationId"
             LEFT JOIN "Spot" sp ON sp."spotId" = t."spotId"
             INNER JOIN "Campaign" c ON c."sectionId" = s."sectionId"
-            WHERE u."email" = '{user.email}'
         """)).all()
         
         return {"bought_tickets": bought_tickets }
