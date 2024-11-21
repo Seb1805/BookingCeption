@@ -5,6 +5,8 @@ from ..database import get_db
 from ..models import Booking,BookingCreate,BookingPydantic,BookingUpdate,User, BookingCampaign, Ticket, Section, Location, Campaign, Spot
 from ..utils.security import get_current_active_user
 from datetime import date
+from sqlalchemy.sql import text
+
 
 
 
@@ -19,7 +21,7 @@ def get_bookings(db: Session = Depends(get_db)):
 def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_current_active_user)):
     
     try:
-        bought_tickets = db.query(f"""select t."name" , t."validDateStart" , t."validDateEnd",t."validTimeStart",s."name" ,l."address", c."campaignId", c."coverImage",  sp."spotnumber" from "User" u 
+        bought_tickets = db.query(text(f"""select t."name" , t."validDateStart" , t."validDateEnd",t."validTimeStart",s."name" ,l."address", c."campaignId", c."coverImage",  sp."spotnumber" from "User" u 
 inner join "Booking" b on b."userId" = u."userId" 
 inner join "BookingCampaign" bc on bc.bookingid = b."bookingId" 
 inner join "Ticket" t on t."TicketId" = bc."ticketId" 
@@ -28,7 +30,8 @@ inner join "Ticket" t on t."TicketId" = bc."ticketId"
 	   left join "Spot" sp on sp."spotId" = t."spotId" 
 		 inner join "Campaign" c on c."sectionId" = s."sectionId"
 WHERE u.email = '{user.email}'"""
-             ).all()
+             )).all()
+        
         return {"bought_tickets": bought_tickets }
 
     except Exception as e:
