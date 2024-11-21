@@ -20,7 +20,7 @@ def get_company(company_id: int, db: Session = Depends(get_db), User : User = ge
 
 
 @router.post("/")
-def create_company(company: CompanyCreate,db: Session = Depends(get_db))
+def create_company(company: CompanyCreate,db: Session = Depends(get_db)):
     new_company = Company(
         name = company.name,
         address = company.address,

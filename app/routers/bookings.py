@@ -5,6 +5,8 @@ from ..database import get_db
 from ..models import Booking,BookingCreate,BookingPydantic,BookingUpdate,User, BookingCampaign, Ticket, Section, Location, Campaign, Spot
 from ..utils.security import get_current_active_user
 from datetime import date
+from routers import ticket
+
 
 
 router = APIRouter(prefix="/bookings", tags=["bookings"])
@@ -34,6 +36,8 @@ def create_booking(booking: BookingCreate, db: Session = Depends(get_db),current
         bookingStatusId=booking.bookingStatusId,
         dateCreated=booking.dateCreated
     )
+
+    
     
     try:
         db.add(new_booking)
@@ -44,6 +48,7 @@ def create_booking(booking: BookingCreate, db: Session = Depends(get_db),current
         print(str(e))
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
     
+
     return new_booking
 
 
