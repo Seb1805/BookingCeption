@@ -19,7 +19,7 @@ def get_bookings(db: Session = Depends(get_db)):
 def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     
     try:
-        bought_tickets = db.query("""select t."name" , t."validDateStart" , t."validDateEnd",t."validTimeStart",s."name" ,l."address", c."campaignId", c."coverImage",  sp."spotnumber" from "User" u 
+        bought_tickets = db.query(f"""select t."name" , t."validDateStart" , t."validDateEnd",t."validTimeStart",s."name" ,l."address", c."campaignId", c."coverImage",  sp."spotnumber" from "User" u 
 inner join "Booking" b on b."userId" = u."userId" 
 inner join "BookingCampaign" bc on bc.bookingid = b."bookingId" 
 inner join "Ticket" t on t."TicketId" = bc."ticketId" 
@@ -27,7 +27,7 @@ inner join "Ticket" t on t."TicketId" = bc."ticketId"
 	 inner join "Location" l on l."locationId"  = s."locationId" 
 	   left join "Spot" sp on sp."spotId" = t."spotId" 
 		 inner join "Campaign" c on c."sectionId" = s."sectionId"
-WHERE u.email = """ + f"'{user.email}'"
+WHERE u.email = '{user.email}'"""
              ).all()
         return {"bought_tickets": bought_tickets }
 
