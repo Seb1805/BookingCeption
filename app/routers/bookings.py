@@ -16,7 +16,7 @@ def get_bookings(db: Session = Depends(get_db)):
 
 
 @router.get("/bought_tickets")
-def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_current_active_user)):
     
     try:
         bought_tickets = db.query(f"""select t."name" , t."validDateStart" , t."validDateEnd",t."validTimeStart",s."name" ,l."address", c."campaignId", c."coverImage",  sp."spotnumber" from "User" u 
