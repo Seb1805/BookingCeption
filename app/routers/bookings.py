@@ -36,8 +36,6 @@ def create_booking(booking: BookingCreate, db: Session = Depends(get_db),current
         dateCreated=booking.dateCreated
     )
 
-    
-    
     try:
         db.add(new_booking)
         db.commit()
@@ -88,3 +86,25 @@ def delete_booking(booking_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
     
     return {"message": "Booking deleted successfully"}
+
+
+@router.get("/bought_tickets")
+def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    
+    try:
+        bought_tickets = db.query("""select t."name" , t."validDateStart" , t."validDateEnd",t."validTimeStart",s."name" ,l."address", c."campaignId", c."coverImage",  sp."spotnumber" from "User" u 
+inner join "Booking" b on b."userId" = u."userId" 
+inner join "BookingCampaign" bc on bc.bookingid = b."bookingId" 
+inner join "Ticket" t on t."TicketId" = bc."ticketId" 
+    inner join "Section" s on s."sectionId"  = t."sectionId" 
+	 inner join "Location" l on l."locationId"  = s."locationId" 
+	   left join "Spot" sp on sp."spotId" = t."spotId" 
+		 inner join "Campaign" c on c."sectionId" = s."sectionId"
+WHERE u.email = """ + user.email
+             ).all()
+        return {"bought_tickets": bought_tickets }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
+
