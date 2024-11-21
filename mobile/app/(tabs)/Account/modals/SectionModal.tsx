@@ -63,7 +63,7 @@ export default function SectionModal() {
         try{
           const sectionData: Section = {
             locationId: parseInt(value || ""),
-            locationItem: parseInt(sectionLocationItem),
+            locationItem: parseInt(sectionLocationItem ),
             name: sectionName,
             spotId: parseInt(sectionSpotId),
             roomForParticipants: parseInt(sectionRoomForParticipants),

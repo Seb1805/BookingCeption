@@ -5,7 +5,8 @@ from ..database import get_db
 from ..models import Booking,BookingCreate,BookingPydantic,BookingUpdate,User, BookingCampaign, Ticket, Section, Location, Campaign, Spot
 from ..utils.security import get_current_active_user
 from datetime import date
-from routers import ticket
+from sqlalchemy.sql import text
+
 
 
 
@@ -14,6 +15,32 @@ router = APIRouter(prefix="/bookings", tags=["bookings"])
 def get_bookings(db: Session = Depends(get_db)):
     bookings = db.query(Booking).all()
     return {"bookings": bookings}
+
+
+@router.get("/bought_tickets")
+def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_current_active_user)):
+    
+    try:
+        bought_tickets = db.execute(text(f"""
+            SELECT t."name", t."validDateStart", t."validDateEnd",
+                   t."validTimeStart", s."name" AS section_name,
+                   l."address", c."campaignId", c."coverImage",
+                   sp."spotnumber"
+            FROM "User" u
+            INNER JOIN "Booking" b ON b."userId" = u."userId"
+            INNER JOIN "BookingCampaign" bc ON bc."bookingid" = b."bookingId"
+            INNER JOIN "Ticket" t ON t."TicketId" = bc."ticketId"
+            INNER JOIN "Section" s ON s."sectionId"  = t."sectionId"
+            INNER JOIN "Location" l ON l."locationId" = s."locationId"
+            LEFT JOIN "Spot" sp ON sp."spotId" = t."spotId"
+            INNER JOIN "Campaign" c ON c."sectionId" = s."sectionId"
+            WHERE u."email" = '{user.email}'
+        """)).all()
+        
+        return {"bought_tickets": bought_tickets }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
 @router.get("/{booking_id}")
 def get_booking(booking_id: int, db: Session = Depends(get_db)):
@@ -37,8 +64,6 @@ def create_booking(booking: BookingCreate, db: Session = Depends(get_db),current
         dateCreated=booking.dateCreated
     )
 
-    
-    
     try:
         db.add(new_booking)
         db.commit()
@@ -89,3 +114,8 @@ def delete_booking(booking_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
     
     return {"message": "Booking deleted successfully"}
+
+
+
+
+

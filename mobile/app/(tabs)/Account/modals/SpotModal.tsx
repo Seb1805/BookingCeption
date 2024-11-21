@@ -22,17 +22,20 @@ export default function SpotModal() {
         try{
           const spotData: Spot = {
             position: spotPosition,
+            status: false,
             lengthCM: parseInt(spotLengthCM),
             widthCM: parseInt(spotWidthCM),
+            sectionId: 1,
             priceExtra: 0, //Implement some logic to handle this
             pricePrSquareMeter: parseInt(spotPricePrSquareMeter),
             spotType: 1, //No clue, Ask frank
-            occupied: false, // Assume a spot is not taken upon creation, discuss with frank
+            //occupied: false, // Assume a spot is not taken upon creation, discuss with frank
             spotnumber: 1 // Create 
         }
         const response = await spotApi.spot(spotData);
-        router.back()
-        console.log(spotData)
+        if(response.status == 200)
+          router.back()
+  //      console.log(spotData)
         }
         catch(error)
         {

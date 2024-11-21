@@ -458,7 +458,7 @@ class Spot(Base):
     lengthCM = Column(Integer)
     widthCM = Column(Integer)
     priceExtra = Column(Float)
-    pricePrSquareMeter = Column(Boolean)
+    pricePrSquareMeter = Column(Float)
     spotType = Column(Integer)
     sectionId = Column(Integer)
     spotnumber = Column(Integer)
@@ -470,7 +470,7 @@ class SpotBase(BaseModel):
     lengthCM: int
     widthCM: int
     priceExtra: float
-    pricePrSquareMeter: bool
+    pricePrSquareMeter: float
     spotType: int
     sectionId: int
     spotnumber: int
