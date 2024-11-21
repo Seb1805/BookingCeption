@@ -36,10 +36,10 @@ def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_c
         """)
 
         # Execute query and fetch all results
-        bought_tickets = db.query(query, {"email": user.email}).all()
+        result = db.execute(query, {"email": user.email}).fetchall()
 
         # Convert the result to a list of dictionaries
-        tickets_list = [dict(zip([column.name for column in query.columns], row)) for row in bought_tickets]
+        tickets_list = [dict(zip([column.name for column in query.columns], row)) for row in result]
         
         return {"bought_tickets": tickets_list}
 
