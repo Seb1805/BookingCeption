@@ -27,7 +27,7 @@ inner join "Ticket" t on t."TicketId" = bc."ticketId"
 	 inner join "Location" l on l."locationId"  = s."locationId" 
 	   left join "Spot" sp on sp."spotId" = t."spotId" 
 		 inner join "Campaign" c on c."sectionId" = s."sectionId"
-WHERE u.email = """ + user.email
+WHERE u.email = """ + f"'{user.email}'"
              ).all()
         return {"bought_tickets": bought_tickets }
 
