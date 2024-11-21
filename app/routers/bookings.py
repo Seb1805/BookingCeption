@@ -38,10 +38,8 @@ def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_c
         # Execute query and fetch all results
         result = db.execute(query, {"email": user.email}).fetchall()
 
-        # Convert the result to a list of dictionaries
-        tickets_list = [dict(zip([column.name for column in query.columns], row)) for row in result]
         
-        return {"bought_tickets": tickets_list}
+        return {"bought_tickets": result}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
