@@ -47,12 +47,12 @@ export type Section = {
 
 export type Spot = {
   position: string
+  status: boolean
   lengthCM: number
   widthCM: number
   priceExtra: number
   pricePrSquareMeter: number
   spotType: number
-  occupied: boolean
   spotnumber: number
 }
 
