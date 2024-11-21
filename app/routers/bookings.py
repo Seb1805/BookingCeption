@@ -34,12 +34,21 @@ def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_c
             INNER JOIN "Campaign" c ON c."sectionId" = s."sectionId"
             WHERE u."email" = :email
         """)
-
+        print(query)
         # Execute query and fetch all results
+        # Execute the query with the email parameter
         result = db.execute(query, {"email": user.email}).fetchall()
 
-        
-        return {"bought_tickets": result}
+        # Manually define the column names based on the SELECT query
+        column_names = [
+            "name", "validDateStart", "validDateEnd", "validTimeStart", 
+            "section_name", "address", "campaignId", "coverImage", "spotnumber"
+        ]
+
+        # Convert the result (a list of Row objects) to a list of dictionaries
+        tickets_list = [dict(zip(column_names, row)) for row in result]
+
+        return {"bought_tickets": tickets_list}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
