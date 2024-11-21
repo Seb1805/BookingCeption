@@ -1,3 +1,6 @@
+from ..models import Company,User,CompanyCreate
+
+
 @router.get("/user_company_associations/")
 def get_user_company_associations(db: Session = Depends(get_db)):
     associations = db.query(UserCompanyAssosiation).all()
