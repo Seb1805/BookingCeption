@@ -1,4 +1,14 @@
-import { View, Text, ScrollView, Button, StyleSheet, Pressable, Image, Modal, Alert } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Button,
+  StyleSheet,
+  Pressable,
+  Image,
+  Modal,
+  Alert,
+} from "react-native";
 import React, { useCallback, useState } from "react";
 import { Link, Redirect, router, useFocusEffect } from "expo-router";
 import { Colors } from "@/constants/Colors";
@@ -9,46 +19,56 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import userApi from "@/api/axios/routes/users";
 import { User } from "@/constants/DBDatatypes";
-import Constants from 'expo-constants'
+import Constants from "expo-constants";
 
 export default function index() {
-  const [userData, setuserData] = useState<User>()
-  
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     getMyInfo().then(response => {
-  //       if(!response.status === 200) {
-  //         router.navigate('/(auth)/Login')
-  //       }
-  //       setuserData(() => response.data)
-  //     })
-  //   }, [])
-  // )
+  const [userData, setuserData] = useState<User | undefined>();
 
-  async function getMyInfo() {
-    const response = await userApi.getUserData()
-    return response
-  }
-  
+  useFocusEffect(
+    useCallback(() => {
+        async function fetchData() {
+          try {
+            const response = await userApi.getUserData()
+            const data = response.data
+            if (response.status !== 200) {
+              router.navigate("/(auth)/Login");
+            }
+            setuserData(() => data)
+          } catch (error) {
+            console.log(error);
+            router.navigate("/(auth)/Login");
+          }
+        };
+
+        
+          if(!userData) {
+            fetchData()
+          }
+        
+ 
+        
+    }, [userData])
+  );
+
   function ImageIdentifyer(imagesrc: string) {
-    if (imagesrc.substring(0,4) == "http") {
-      return (
-        <Image source={{uri: imagesrc}} style={styles.image} />
-      )
+    if (imagesrc.substring(0, 4) == "http") {
+      return <Image source={{ uri: imagesrc }} style={styles.image} />;
     }
 
     return (
-      <Image source={require('@/assets/images/placeholders/profile-placeholder-icon.png')} style={styles.image} />
-    )
+      <Image
+        source={require("@/assets/images/placeholders/profile-placeholder-icon.png")}
+        style={styles.image}
+      />
+    );
   }
-  
+
   return (
-    <ScrollView style={{paddingTop: 24}}>
+    <ScrollView style={{ paddingTop: 24 }}>
       <View style={styles.profileinfo}>
         <View style={styles.imagecontainer}>{ImageIdentifyer("")}</View>
         <Text style={styles.profilename}>
-          test
-        {/* {userData?.firstname} */}
+          {userData?.firstname} {userData?.lastname} 
         </Text>
       </View>
 
@@ -63,7 +83,9 @@ export default function index() {
         </ProfileButtons>
         <ProfileButtons
           title="Areal opdeling"
-          onpress={() => router.navigate("/(tabs)/Account/modals/CreateLocation")}
+          onpress={() =>
+            router.navigate("/(tabs)/Account/modals/CreateLocation")
+          }
         >
           <View style={styles.buttonTypeLink}>
             <AntDesign size={16} name="right" color={Colors.light.text} />
@@ -83,23 +105,24 @@ export default function index() {
         >
           <View style={styles.buttonTypeLink}>
             <AntDesign size={16} name="right" color={Colors.light.text} />
-            </View>
-          </ProfileButtons>
-          <ProfileButtons
+          </View>
+        </ProfileButtons>
+        <ProfileButtons
           title="Spot"
           onpress={() => router.navigate("/(tabs)/Account/modals/SpotModal")}
         >
           <View style={styles.buttonTypeLink}>
             <AntDesign size={16} name="right" color={Colors.light.text} />
-            </View>
-          </ProfileButtons>
-
+          </View>
+        </ProfileButtons>
       </Profilesection>
 
       <Profilesection title="Preferencer">
         <ProfileButtons
           title="Notifikationer"
-          onpress={() => router.navigate("/(tabs)/Account/modals/CreateLocation")}
+          onpress={() =>
+            router.navigate("/(tabs)/Account/modals/CreateLocation")
+          }
         >
           <View style={styles.buttonTypeLink}>
             <AntDesign size={16} name="right" color={Colors.light.text} />
@@ -107,87 +130,86 @@ export default function index() {
         </ProfileButtons>
         <ProfileButtons
           title="Email"
-          onpress={() => router.navigate("/(tabs)/Account/modals/CreateLocation")}
-        >
-          
-        </ProfileButtons>
+          onpress={() =>
+            router.navigate("/(tabs)/Account/modals/CreateLocation")
+          }
+        ></ProfileButtons>
         <ProfileButtons
           title="Password"
-          onpress={() => router.navigate("/(tabs)/Account/modals/CreateLocation")}
-        >
-          
-        </ProfileButtons>
+          onpress={() =>
+            router.navigate("/(tabs)/Account/modals/CreateLocation")
+          }
+        ></ProfileButtons>
       </Profilesection>
 
       <Profilesection title="">
         <ProfileButtons
           title="Support"
-          onpress={() => router.navigate("/(tabs)/Account/modals/CreateLocation")}
-        >
-          
-        </ProfileButtons>
-
-
+          onpress={() =>
+            router.navigate("/(tabs)/Account/modals/CreateLocation")
+          }
+        ></ProfileButtons>
 
         <ProfileButtons
           title="Log out"
           onpress={() => {
-
-            Alert.alert('Logout', 'Er du sikker du vil log af?', [
+            Alert.alert("Logout", "Er du sikker du vil log af?", [
               {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel',
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel",
               },
-              {text: 'OK', onPress: () => console.log('test')},
+              {
+                text: "OK",
+                onPress: async () => {
+                  await AsyncStorage.removeItem("access_token")
+                  setuserData(() => undefined)
+                  router.navigate('/')
+                  },
+              },
             ]);
-            
           }}
-        >
-          
-        </ProfileButtons>
+        ></ProfileButtons>
       </Profilesection>
-
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   profileinfo: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
     marginVertical: Constants.statusBarHeight,
   },
   imagecontainer: {
-    width: 80, 
-    height: 80, 
+    width: 80,
+    height: 80,
     borderRadius: 40,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   image: {
-    width: '100%',
+    width: "100%",
     height: "100%",
   },
   profilename: {
-    fontWeight: '600',
+    fontWeight: "600",
     marginVertical: 8,
     fontSize: 16,
-    textTransform: 'capitalize'
+    textTransform: "capitalize",
   },
   buttonstyling: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
     paddingVertical: 8,
-    borderBottomColor: '#aaa',
-    borderBottomWidth: 1
+    borderBottomColor: "#aaa",
+    borderBottomWidth: 1,
   },
   buttonText: {
     color: Colors.light.text,
     textTransform: "capitalize",
   },
   buttonTypeLink: {
-    paddingTop: 4
-  }
-
-})
+    paddingTop: 4,
+  },
+});
