@@ -16,7 +16,7 @@ def get_bookings(db: Session = Depends(get_db)):
     bookings = db.query(Booking).all()
     return {"bookings": bookings}
 
-
+@router.get("/bought_tickets")
 def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_current_active_user)):
     try:
         query = text("""
