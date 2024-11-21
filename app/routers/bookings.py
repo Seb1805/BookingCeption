@@ -21,7 +21,7 @@ def get_bookings(db: Session = Depends(get_db)):
 def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_current_active_user)):
     
     try:
-        bought_tickets = db.query(text(f"""
+        bought_tickets = db.query(text("""
             SELECT t."name", t."validDateStart", t."validDateEnd",
                    t."validTimeStart", s."name" AS section_name,
                    l."address", c."campaignId", c."coverImage",
