@@ -2,7 +2,6 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const baseUrl = `${process.env.EXPO_PUBLIC_SCHEMA_SERVER}${process.env.EXPO_PUBLIC_SERVER_DOMAIN}`
-console.log(baseUrl)
 
 export const axiosClient = axios.create({
     baseURL: baseUrl,

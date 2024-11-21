@@ -5,7 +5,6 @@ from ..database import get_db
 from ..models import Booking,BookingCreate,BookingPydantic,BookingUpdate,User, BookingCampaign, Ticket, Section, Location, Campaign, Spot
 from ..utils.security import get_current_active_user
 from datetime import date
-from routers import ticket
 
 
 
