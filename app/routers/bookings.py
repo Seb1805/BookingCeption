@@ -17,11 +17,9 @@ def get_bookings(db: Session = Depends(get_db)):
     return {"bookings": bookings}
 
 
-@router.get("/bought_tickets")
 def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_current_active_user)):
-    
     try:
-        bought_tickets = db.query(text(f"""
+        query = text("""
             SELECT t."name", t."validDateStart", t."validDateEnd",
                    t."validTimeStart", s."name" AS section_name,
                    l."address", c."campaignId", c."coverImage",
@@ -30,14 +28,20 @@ def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_c
             INNER JOIN "Booking" b ON b."userId" = u."userId"
             INNER JOIN "BookingCampaign" bc ON bc."bookingid" = b."bookingId"
             INNER JOIN "Ticket" t ON t."TicketId" = bc."ticketId"
-            INNER JOIN "Section" s ON s."sectionId"  = t."sectionId"
+            INNER JOIN "Section" s ON s."sectionId" = t."sectionId"
             INNER JOIN "Location" l ON l."locationId" = s."locationId"
             LEFT JOIN "Spot" sp ON sp."spotId" = t."spotId"
             INNER JOIN "Campaign" c ON c."sectionId" = s."sectionId"
-            WHERE u."email" = '{user.email}'
-        """)).all()
+            WHERE u."email" = :email
+        """)
+
+        # Execute query and fetch all results
+        bought_tickets = db.query(query, {"email": user.email}).all()
+
+        # Convert the result to a list of dictionaries
+        tickets_list = [dict(zip([column.name for column in query.columns], row)) for row in bought_tickets]
         
-        return {"bought_tickets": bought_tickets }
+        return {"bought_tickets": tickets_list}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
