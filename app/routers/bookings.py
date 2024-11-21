@@ -22,19 +22,19 @@ def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_c
     
     try:
         bought_tickets = db.query(text(f"""
-            SELECT t.name, t.validDateStart, t.validDateEnd,
-                   t.validTimeStart, s.name AS section_name,
-                   l.address, c.campaignId, c.coverImage,
-                   sp.spotnumber
-            FROM User u
-            INNER JOIN Booking b ON b.userId = u.userId
-            INNER JOIN BookingCampaign bc ON bc.bookingid = b.bookingId
-            INNER JOIN Ticket t ON t.TicketId = bc.ticketId
-            INNER JOIN Section s ON s.sectionId  = t.sectionId
-            INNER JOIN Location l ON l.locationId = s.locationId
-            LEFT JOIN Spot sp ON sp.spotId = t.spotId
-            INNER JOIN Campaign c ON c.sectionId = s.sectionId
-            WHERE u.email = '{user.email}'
+            SELECT t."name", t."validDateStart", t."validDateEnd",
+                   t."validTimeStart", s."name" AS section_name,
+                   l."address", c."campaignId", c."coverImage",
+                   sp."spotnumber"
+            FROM "User" u
+            INNER JOIN "Booking" b ON b."userId" = u."userId"
+            INNER JOIN "BookingCampaign" bc ON bc."bookingid" = b."bookingId"
+            INNER JOIN "Ticket" t ON t."TicketId" = bc."ticketId"
+            INNER JOIN "Section" s ON s."sectionId"  = t."sectionId"
+            INNER JOIN "Location" l ON l."locationId" = s."locationId"
+            LEFT JOIN "Spot" sp ON sp."spotId" = t."spotId"
+            INNER JOIN "Campaign" c ON c."sectionId" = s."sectionId"
+            WHERE u."email" = '{user.email}'
         """)).all()
         
         return {"bought_tickets": bought_tickets }
