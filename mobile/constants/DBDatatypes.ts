@@ -84,3 +84,23 @@ export type TicketBought = {
   campaignName: string
   campaignCoverImage?: string
 }
+
+export type Booking = {
+  userId: number
+  bookingStatus: number
+  dateCreated: Date
+}
+
+export type BookingCampaign = {
+  ticketId: number
+  bookingId: number
+  ticketAmount: number
+  sumPrice: Float
+}
+
+export type BookingExtended = {
+  userId: number
+  bookingStatus: number
+  dateCreated: Date
+  bookingCampaigns: BookingCampaign[]
+}

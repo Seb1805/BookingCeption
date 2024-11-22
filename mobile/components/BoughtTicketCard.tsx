@@ -2,7 +2,7 @@ import { View, Text, Image, StyleSheet } from 'react-native'
 import React from 'react'
 import { TicketBought } from '@/constants/DBDatatypes'
 
-export default function TicketCard({ticket, imagesrc = ""} : {ticket?: TicketBought,imagesrc: string}) {
+export default function TicketCard({ticket, imagesrc = ""} : {ticket: TicketBought,imagesrc: string}) {
 
   function ImageIdentifyer() {
     if (imagesrc.substring(0,4) == "http") {
@@ -16,17 +16,22 @@ export default function TicketCard({ticket, imagesrc = ""} : {ticket?: TicketBou
     )
   }
 
+  function getDate(datedata: string) {
+    const date = new Date(datedata)
+
+    return date.toDateString()
+  }
   return (
     <View style={styles.cardcontainer}>
       <View style={styles.imagecontainer}>
         {ImageIdentifyer()}
       </View>
       <View>
-        <Text style={styles.fontBold}>TicketCard {ticket?.name}</Text>
-        <Text>{ticket?.campaignName}</Text>
-        <Text>Address {ticket?.address}</Text>
-        <Text>dato start ( - dato end) {ticket?.validDateEnd} {ticket?.validDateEnd !== ticket?.validDateStart && ` - ${ticket?.validDateEnd}` }</Text>
-        <Text>Tidspunkt {ticket?.validTimeStart}</Text>
+        <Text style={styles.fontBold}>{ticket.name}</Text>
+        <Text>{ticket.campaignName}</Text>
+        <Text>{ticket.address}</Text>
+        <Text>{getDate(ticket.validDateEnd)} {getDate(ticket?.validDateEnd) !== getDate(ticket?.validDateStart) && ` - ${getDate(ticket?.validDateEnd)}` }</Text>
+        <Text>{ticket.validTimeStart}</Text>
       </View>
     </View>
   )
