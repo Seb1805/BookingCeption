@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from ..utils.security_old import get_current_user
 from sqlalchemy.orm import Session
 from ..database import get_db
-from ..models import Booking,BookingCreate,BookingPydantic,BookingUpdate,User, BookingCampaign, Ticket, Section, Location, Campaign, Spot
+from ..models import Booking,BookingCreate,BookingPydantic,BookingUpdate,User, BookingCampaign, Ticket, Section, Location, Campaign, Spot,BookingExtendedPydantic,BookingExtendedCreate
 from ..utils.security import get_current_active_user
 from datetime import date
 from sqlalchemy.sql import text
@@ -128,5 +128,52 @@ def delete_booking(booking_id: int, db: Session = Depends(get_db)):
 
 
 
+@router.post("/order", response_model=BookingExtendedPydantic)
+def create_booking_order(booking_data: BookingExtendedCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_active_user)):
+    try:
+        # Validate booking data
+        if not booking_data.bookingStatusId:
+            raise HTTPException(status_code=400, detail="Booking status ID is required")
+        
+        # Create a new booking entry
+        new_booking = Booking(
+            userId=current_user.userId,
+            bookingStatusId=booking_data.bookingStatusId,
+            dateCreated=date.today()
+        )
+        
+        # Add the new booking to the database
+        db.add(new_booking)
+        
+        # Create BookingCampaign entries
+        for campaign in booking_data.bookingCampaigns:
+            ticket_id = campaign['ticketId']
+            ticket_amount = campaign['ticketAmount']
+            
+            # Check if the ticket exists
+            db_ticket = db.query(Ticket).filter(Ticket.ticketId == ticket_id).first()
+            if not db_ticket:
+                raise HTTPException(status_code=400, detail=f"Ticket with ID {ticket_id} does not exist")
+            
+            # Create a new BookingCampaign entry
+            new_campaign = BookingCampaign(
+                ticketId=ticket_id,
+                ticketAmount=ticket_amount,
+                sumPrice=db_ticket.price * ticket_amount  # Assuming price is stored in the Ticket model
+            )
+            db.add(new_campaign)
+        
+        # Commit all changes
+        db.commit()
+        
+        # Refresh the booking to get the newly created bookingId
+        db.refresh(new_booking)
+        
+        return BookingExtendedPydantic.from_orm(new_booking)
+        
+    except Exception as e:
+        db.rollback()
+        print(str(e))
+        raise HTTPException(status_code=500, detail=f"An error occurred while creating the booking order: {str(e)}")
 
 

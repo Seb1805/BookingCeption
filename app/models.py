@@ -216,16 +216,13 @@ class CampaignPydantic(CampaignBase):
 #Booking
 
 class Booking(Base):
-    __tablename__ = "Booking"
+    __tablename__ = "bookings"
     
-    bookingId = Column(Integer, primary_key=True)
-    userId = Column(Integer)
-    bookingStatusId = Column(Integer)
-    dateCreated = Column(Date)
-
-    #user = relationship("User", back_populates="bookings")
-    # booking_status = relationship("BookingStatus", back_populates="bookings")
-    # booking_campaign = relationship("BookingCampaign", back_populates="bookings")
+    bookingId = Column(Integer, primary_key=True, index=True)
+    userId = Column(Integer, ForeignKey("users.userId"))
+    bookingStatusId = Column(Integer, ForeignKey("BookingStatus.bookingStatusId"))
+    dateCreated = Column(Date, default=date.today)
+    bookingCampaigns = relationship("BookingCampaign", back_populates="booking")
 
 
 class BookingBase(BaseModel):
@@ -245,6 +242,28 @@ class BookingPydantic(BookingBase):
 
     class Config:
         orm_mode = True
+
+from pydantic import BaseModel
+
+class BookingExtendedCreate(BaseModel):
+    userId: int
+    bookingStatusId: int
+    bookingCampaigns: List[dict]
+
+class BookingExtendedUpdate(BookingExtendedCreate):
+    bookingId: int
+
+class BookingExtendedPydantic(BaseModel):
+    bookingId: int
+    userId: int
+    bookingStatusId: int
+    dateCreated: date
+    bookingCampaigns: List[dict]
+
+    class Config:
+        orm_mode = True
+
+
 
 #Booking status
 class BookingStatus(Base):
@@ -266,12 +285,13 @@ class BookingCampaign(Base):
     __tablename__ = "BookingCampaign"
     
     bookingCampaignId = Column(Integer, primary_key=True)
-    ticketId = Column(Integer)
+    ticketId = Column(Integer,ForeignKey("Ticket.ticketId"))
     ticketAmount = Column(Integer)
     sumPrice = Column(Float)
-    bookingId = Column(Integer)
-
+    bookingId = Column(Integer,ForeignKey("Bookings.bookingId"))
+    booking = relationship("Booking", back_populates="bookingCampaigns")
     #ticket = relationship("Ticket", back_populates="bookings")
+
 
 class BookingCampaignBase(BaseModel):
     ticketId: int
