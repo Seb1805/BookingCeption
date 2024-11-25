@@ -216,13 +216,13 @@ class CampaignPydantic(CampaignBase):
 #Booking
 
 class Booking(Base):
-    __tablename__ = "bookings"
+    __tablename__ = "Booking"
     
     bookingId = Column(Integer, primary_key=True, index=True)
-    userId = Column(Integer, ForeignKey("users.userId"))
+    userId = Column(Integer, ForeignKey("User.userId"))
     bookingStatusId = Column(Integer, ForeignKey("BookingStatus.bookingStatusId"))
     dateCreated = Column(Date, default=date.today)
-    bookingCampaigns = relationship("BookingCampaign", back_populates="booking")
+    #bookingCampaigns = relationship("BookingCampaign", back_populates="booking")
 
 
 class BookingBase(BaseModel):
@@ -288,8 +288,8 @@ class BookingCampaign(Base):
     ticketId = Column(Integer,ForeignKey("Ticket.ticketId"))
     ticketAmount = Column(Integer)
     sumPrice = Column(Float)
-    bookingId = Column(Integer,ForeignKey("Bookings.bookingId"))
-    booking = relationship("Booking", back_populates="bookingCampaigns")
+    bookingId = Column(Integer,ForeignKey("Booking.bookingId"))
+    #booking = relationship("Booking", back_populates="bookingCampaigns")
     #ticket = relationship("Ticket", back_populates="bookings")
 
 
