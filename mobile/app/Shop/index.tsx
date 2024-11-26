@@ -37,8 +37,8 @@ export default function index() {
       // Use Promise.all to wait for all API calls to complete
       tickets = await Promise.all(
         cartObj.cartItems.map(async (x: CartItem) => {
-          console.log("Before api");
-          console.log("Iam x",x)
+          // console.log("Before api");
+          // console.log("Iam x",x)
           try{
             const response = await ticketApi.getTicket(x.ticketId)
             console.log("Iam code",response.status)
@@ -48,11 +48,10 @@ export default function index() {
                 ticket: data,
                 amount: x.amount
               };
-              console.log("theShit", theShit);
               return theShit;
             } else {
               console.log("Not a status code 200, but trash");
-              console.log(response.status);
+              // console.log(response.status);
               throw new Error(`Failed to fetch ticket data for ${x.ticketId}`);
             }
           }
@@ -70,6 +69,7 @@ export default function index() {
   
 
   async function OrderConfirm() {
+
     console.log(cartFull)
     if (!cartFull.length) 
       {
@@ -83,11 +83,10 @@ export default function index() {
       ticketAmount: item.amount,
       sumPrice: 1
     }));
-
     const bookingExtendItem: BookingExtended = {
-      userId: data.userId ?? 1,
+      userId: data.userId,
       bookingStatus: 1,
-      dateCreated: new Date(),
+      dateCreated: new Date().getDate().toLocaleString("yyyy-mm-dd"),
       bookingCampaigns: bc
     };
 

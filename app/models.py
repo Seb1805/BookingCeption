@@ -243,11 +243,11 @@ class BookingPydantic(BookingBase):
     class Config:
         orm_mode = True
 
-from pydantic import BaseModel
 
 class BookingExtendedCreate(BaseModel):
     userId: int
     bookingStatusId: int
+    dateCreated: str
     bookingCampaigns: List[dict]
 
 class BookingExtendedUpdate(BookingExtendedCreate):

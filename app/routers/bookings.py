@@ -140,7 +140,7 @@ def create_booking_order(booking_data: BookingExtendedCreate, db: Session = Depe
         new_booking = Booking(
             userId=current_user.userId,
             bookingStatusId=booking_data.bookingStatusId,
-            dateCreated=datetime.datetime.now().date()
+            dateCreated=booking_data.dateCreated
 
         )
         
