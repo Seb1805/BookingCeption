@@ -51,8 +51,11 @@ export default function index() {
   // }
 
   async function OrderConfirm(ticket : ticketWithAmount[]) {
-    if (!ticket.length) return;
-
+    if (!ticket.length) 
+      {
+        console.log("Skrald")
+        return;
+      }
     const response = await userApi.getUserData()
     const data = response.data;
     const bc: BookingCampaign[] = ticket.map(item => ({
