@@ -14,8 +14,8 @@ def get_tickets(db: Session = Depends(get_db)):
     return {"tickets": tickets}
 
 @router.get("/{ticket_id}")
-def get_ticket(ticketId: int, db: Session = Depends(get_db)):
-    ticket = db.query(Ticket).filter(Ticket.ticketId == ticketId).first()
+def get_ticket(ticket_id: int, db: Session = Depends(get_db)):
+    ticket = db.query(Ticket).filter(Ticket.ticketId == ticket_id).first()
     return {"ticket": ticket}
 
 @router.post("/", response_model=TicketPydantic)
