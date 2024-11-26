@@ -69,30 +69,43 @@ export default function index() {
   
 
   async function OrderConfirm() {
+    try{
 
+    
     console.log(cartFull)
     if (!cartFull.length) 
       {
         console.log("Skrald")
         return;
       }
-    const response = await userApi.getUserData()
-    const data = response.data;
+    // const response = await userApi.getUserData()
+    // const data = response.data;
     const bc: BookingCampaign[] = cartFull.map(item => ({
       ticketId: item.ticket.ticketId,
       ticketAmount: item.amount,
       sumPrice: 1
     }));
+
+    function dateFix() {
+      const date = new Date();
+      return `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
+    }
+
     const bookingExtendItem: BookingExtended = {
-      userId: data.userId,
-      bookingStatus: 1,
-      dateCreated: new Date().getDate().toLocaleString("yyyy-mm-dd"),
+      userId: 1,
+      bookingStatusId: 1,
+      dateCreated: dateFix(),
       bookingCampaigns: bc
     };
-
+    console.log("Iam booking extended",bookingExtendItem)
     const bk = await bookingApi.bookingOrder(bookingExtendItem)
     console.log("wohoo")
     router.back()
+  }
+  catch(error)
+  {
+    console.log(error)
+  }
   }
 
   return (

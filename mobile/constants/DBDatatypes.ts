@@ -100,7 +100,7 @@ export type BookingCampaign = {
 
 export type BookingExtended = {
   userId: number
-  bookingStatus: number
+  bookingStatusId: number
   dateCreated: string
   bookingCampaigns: BookingCampaign[]
 }
