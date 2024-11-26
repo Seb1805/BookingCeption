@@ -21,7 +21,7 @@ export default function CreateLocation() {
         locationName: locationName,
         address: locationAddress,
         city: `${locationZip} ${locationCity}`,
-        organizerId: 1
+        organizerId: 1 //TODO: IMPLEMENT CORRECTLY
       };
       // const response = await axios.post('/api/v1/locations', locationData);
       const response = ( await locationApi.location(locationData));

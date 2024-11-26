@@ -3,8 +3,12 @@ import React, { useCallback, useState } from 'react'
 import CartBooking from '@/components/shop/CartBooking'
 import { Cart } from '@/constants/OtherDatatypes'
 import { Ticket } from '@/constants/DBDatatypes'
+import { BookingCampaign } from '@/constants/DBDatatypes'
+import bookingApi from '@/api/axios/routes/booking'
+import userApi from '@/api/axios/routes/users'
+import { BookingExtended } from '@/constants/DBDatatypes'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useFocusEffect } from 'expo-router'
+import { router, useFocusEffect } from 'expo-router'
 
 type ticketWithAmount = {
   ticket : Ticket,
@@ -33,8 +37,35 @@ export default function index() {
     return tickets;
   }
 
-  function OrderConfirm() {
+  async function OrderConfirm(ticket : ticketWithAmount) {
+    const response = await userApi.getUserData()
+    const data = response.data;
+    const theTicket : ticketWithAmount = ticket;
+    let tAmount = 1;
+    if(ticket.ticket === undefined){
+        tAmount = 1;
+    }
+    const bc : BookingCampaign = {
+      ticketId: ticket.ticket.ticketId,
+      // bookingId: ticket.ticket. //ORM SHOULD ADD
+      ticketAmount: tAmount,
+      sumPrice: 1
 
+    }
+
+    let collection : BookingCampaign[] = []
+
+    collection.push(bc)
+    const bookingExtendItem : BookingExtended = {
+        userId: 1, //data.userId ??
+        bookingStatus: 1,
+        dateCreated: new Date(),
+        bookingCampaigns: collection
+
+    }
+      const bk = await bookingApi.bookingOrder(bookingExtendItem)
+      console.log("wohoo")
+      router.back()
   }
 
   return (

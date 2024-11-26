@@ -47,8 +47,7 @@ export default function CampaignModal() {
           }
           else if(Platform.OS == "ios" || Platform.OS == "macos")
           {
-            //No support for this peasant OS
-            exitApp()
+            //No support currently
 
           }
         } else {
@@ -68,7 +67,7 @@ export default function CampaignModal() {
               timeStart: timeStart,
               dateEnd: dateEnd,
               timeEnd: timeEnd,
-              sectionId: 1, //Implement
+              sectionId: 1, //TODO: Implement
               active: true
 
           }

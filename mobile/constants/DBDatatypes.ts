@@ -93,7 +93,7 @@ export type Booking = {
 
 export type BookingCampaign = {
   ticketId: number
-  bookingId: number
+  bookingId?: number
   ticketAmount: number
   sumPrice: Float
 }
