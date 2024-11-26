@@ -6,6 +6,7 @@ from ..models import Booking,BookingCreate,BookingPydantic,BookingUpdate,User, B
 from ..utils.security import get_current_active_user
 from datetime import date
 from sqlalchemy.sql import text
+import datetime
 
 
 
@@ -139,7 +140,8 @@ def create_booking_order(booking_data: BookingExtendedCreate, db: Session = Depe
         new_booking = Booking(
             userId=current_user.userId,
             bookingStatusId=booking_data.bookingStatusId,
-            dateCreated=date.today()
+            dateCreated=datetime.datetime.now().date()
+
         )
         
         # Add the new booking to the database

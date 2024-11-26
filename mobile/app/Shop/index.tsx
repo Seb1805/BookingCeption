@@ -43,7 +43,7 @@ export default function index() {
             const response = await ticketApi.getTicket(x.ticketId)
             console.log("Iam code",response.status)
             if(response.status === 200) {
-              const data = response.data;
+              const data = response.data.ticket;
               const theShit = {
                 ticket: data,
                 amount: x.amount
