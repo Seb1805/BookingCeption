@@ -16,56 +16,61 @@ type ticketWithAmount = {
 }
 
 export default function index() {
-
-  const [cartFull, setcartFull] = useState<ticketWithAmount[]>()
+  //Fix undefined by initialize as array instead of undefined
+  const [cartFull, setcartFull] = useState<ticketWithAmount[]>([])
 
   useFocusEffect(
     useCallback(() => {
-    GetCartData().then((cart) => setcartFull(() => cart))
-  }, []))
+      GetCartData().then((cart) => setcartFull(cart))
+    }, [])
+  )
 
   async function GetCartData() {
     const cartData = await AsyncStorage.getItem('cart')
     let tickets: ticketWithAmount[] = [];
     if(cartData) {
       const cartDataObj: Cart = JSON.parse(cartData)
-      // cartDataObj.cartItems.map( async (item) => {
+      // tickets = cartDataObj.cartItems.map(async (item) => {
       //   const data = await ticketApi.getTicket(item.ticketId)
-      //   tickets.push({data, item.amount})
+      //   return {data, item.amount}
       // })
     }
     return tickets;
   }
+  // async function GetCartData() {
+  //   const cartData = await AsyncStorage.getItem('cart')
+  //   let tickets: ticketWithAmount[] = [];
+  //   if(cartData) {
+  //     const cartDataObj: Cart = JSON.parse(cartData)
+  //     // cartDataObj.cartItems.map( async (item) => {
+  //     //   const data = await ticketApi.getTicket(item.ticketId)
+  //     //   tickets.push({data, item.amount})
+  //     // })
+  //   }
+  //   return tickets;
+  // }
 
-  async function OrderConfirm(ticket : ticketWithAmount) {
+  async function OrderConfirm(ticket : ticketWithAmount[]) {
+    if (!ticket.length) return;
+
     const response = await userApi.getUserData()
     const data = response.data;
-    const theTicket : ticketWithAmount = ticket;
-    let tAmount = 1;
-    if(ticket.ticket === undefined){
-        tAmount = 1;
-    }
-    const bc : BookingCampaign = {
-      ticketId: ticket.ticket.ticketId,
-      // bookingId: ticket.ticket. //ORM SHOULD ADD
-      ticketAmount: tAmount,
+    const bc: BookingCampaign[] = ticket.map(item => ({
+      ticketId: item.ticket.ticketId,
+      ticketAmount: item.amount,
       sumPrice: 1
+    }));
 
-    }
+    const bookingExtendItem: BookingExtended = {
+      userId: data.userId ?? 1,
+      bookingStatus: 1,
+      dateCreated: new Date(),
+      bookingCampaigns: bc
+    };
 
-    let collection : BookingCampaign[] = []
-
-    collection.push(bc)
-    const bookingExtendItem : BookingExtended = {
-        userId: 1, //data.userId ??
-        bookingStatus: 1,
-        dateCreated: new Date(),
-        bookingCampaigns: collection
-
-    }
-      const bk = await bookingApi.bookingOrder(bookingExtendItem)
-      console.log("wohoo")
-      router.back()
+    const bk = await bookingApi.bookingOrder(bookingExtendItem)
+    console.log("wohoo")
+    router.back()
   }
 
   return (
@@ -84,7 +89,7 @@ export default function index() {
           <CartBooking item={item.ticket} amount={item.amount} key={key} />
         )
       })} */}
-      <Pressable style={styles.Accept} onPress={OrderConfirm}>
+      <Pressable style={styles.Accept} onPress={() => OrderConfirm(cartFull)}>
         <Text style={styles.AcceptText}>Accepter bestilling</Text>
       </Pressable>
     </ScrollView>
