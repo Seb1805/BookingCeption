@@ -404,6 +404,7 @@ class Ticket(Base):
     validDateEnd = Column(Date)
     validTimeStart = Column(Time)
     spotId = Column(Integer)
+    sectionId = Column(Integer)
     campaignId = Column(Integer)
     active = Column(Boolean)
     amount = Column(Integer)
@@ -417,6 +418,7 @@ class TicketBase(BaseModel):
     validDateEnd: date
     validTimeStart: time
     spotId: int
+    sectionId: int
     campaignId: int
     active: bool
     amount: int

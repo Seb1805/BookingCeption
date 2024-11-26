@@ -1,14 +1,15 @@
 import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import CartBooking from '@/components/shop/CartBooking'
-import { Cart } from '@/constants/OtherDatatypes'
 import { Ticket } from '@/constants/DBDatatypes'
 import { BookingCampaign } from '@/constants/DBDatatypes'
 import bookingApi from '@/api/axios/routes/booking'
+import ticketApi from '@/api/axios/routes/ticket'
 import userApi from '@/api/axios/routes/users'
 import { BookingExtended } from '@/constants/DBDatatypes'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { router, useFocusEffect } from 'expo-router'
+import { Cart, CartItem } from '@/constants/OtherDatatypes'
 
 type ticketWithAmount = {
   ticket : Ticket,
@@ -26,39 +27,58 @@ export default function index() {
   )
 
   async function GetCartData() {
-    const cartData = await AsyncStorage.getItem('cart')
-    let tickets: ticketWithAmount[] = [];
+    const cartData = await AsyncStorage.getItem('cart');
+    
+    let tickets = [];
+  
     if(cartData) {
-      const cartDataObj: Cart = JSON.parse(cartData)
-      // tickets = cartDataObj.cartItems.map(async (item) => {
-      //   const data = await ticketApi.getTicket(item.ticketId)
-      //   return {data, item.amount}
-      // })
+      const cartObj = JSON.parse(cartData);
+      console.log("Iam cartObj",cartObj)
+      // Use Promise.all to wait for all API calls to complete
+      tickets = await Promise.all(
+        cartObj.cartItems.map(async (x: CartItem) => {
+          console.log("Before api");
+          console.log("Iam x",x)
+          try{
+            const response = await ticketApi.getTicket(x.ticketId)
+            console.log("Iam code",response.status)
+            if(response.status === 200) {
+              const data = response.data;
+              const theShit = {
+                ticket: data,
+                amount: x.amount
+              };
+              console.log("theShit", theShit);
+              return theShit;
+            } else {
+              console.log("Not a status code 200, but trash");
+              console.log(response.status);
+              throw new Error(`Failed to fetch ticket data for ${x.ticketId}`);
+            }
+          }
+          catch(error){
+            console.log("HELLO I AM FAT ERROR",error)
+          }
+
+        })
+      );
     }
+    console.log("The ticket i return",tickets);
     return tickets;
   }
-  // async function GetCartData() {
-  //   const cartData = await AsyncStorage.getItem('cart')
-  //   let tickets: ticketWithAmount[] = [];
-  //   if(cartData) {
-  //     const cartDataObj: Cart = JSON.parse(cartData)
-  //     // cartDataObj.cartItems.map( async (item) => {
-  //     //   const data = await ticketApi.getTicket(item.ticketId)
-  //     //   tickets.push({data, item.amount})
-  //     // })
-  //   }
-  //   return tickets;
-  // }
+  
+  
 
-  async function OrderConfirm(ticket : ticketWithAmount[]) {
-    if (!ticket.length) 
+  async function OrderConfirm() {
+    console.log(cartFull)
+    if (!cartFull.length) 
       {
         console.log("Skrald")
         return;
       }
     const response = await userApi.getUserData()
     const data = response.data;
-    const bc: BookingCampaign[] = ticket.map(item => ({
+    const bc: BookingCampaign[] = cartFull.map(item => ({
       ticketId: item.ticket.ticketId,
       ticketAmount: item.amount,
       sumPrice: 1
@@ -92,7 +112,7 @@ export default function index() {
           <CartBooking item={item.ticket} amount={item.amount} key={key} />
         )
       })} */}
-      <Pressable style={styles.Accept} onPress={() => OrderConfirm(cartFull)}>
+      <Pressable style={styles.Accept} onPress={() => OrderConfirm()}>
         <Text style={styles.AcceptText}>Accepter bestilling</Text>
       </Pressable>
     </ScrollView>
