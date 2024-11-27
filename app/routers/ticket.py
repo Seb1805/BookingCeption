@@ -20,6 +20,41 @@ def get_ticket(ticket_id: int, db: Session = Depends(get_db)):
     ticket = db.query(Ticket).filter(Ticket.ticketId == ticket_id).first()
     return {"ticket": ticket}
 
+@router.get("/{ticket_id}/extended")
+def get_ticket(ticket_id: int, db: Session = Depends(get_db)):
+    try:
+        query = text("""
+                     SELECT t."ticketId", t."name", t."price", t."validDateStart", t."validDateEnd", t."validTimeStart", t."spotId", ca."campaignId", ca."name", t."active", l."locationName", l."city", l."address"
+                     from "Ticket" t
+                     INNER JOIN "Section" se ON se."sectionId" = t."sectionId"
+                     INNER JOIN "Location" l ON l."locationId" = se."locationId"
+                     INNER JOIN "Campaign" ca ON ca."campaignId" = t."campaignId"
+                     where t."ticketId" = :selectedTicket
+                     
+                     """)
+
+        print(query)
+        # Execute query and fetch all results
+        # Execute the query with the email parameter
+
+
+        result = db.execute(query, {"selectedTicket" : ticket_id}).fetchone()
+        # result = db.execute(query, {"dateEnd" : datetoday.strftime("%Y-%m-%d") }).offset(offsetcalc).limit(fetchamount)
+
+        # Manually define the column names based on the SELECT query
+        column_names = [
+            "ticketId", "name", "price", "validDateStart", "validDateEnd", "validTimeStart", "spotId", "campaignId", "campaignName", "active", "locationName", "city", "address"
+        ]
+
+        # Convert the result (a list of Row objects) to a list of dictionaries
+        ticket_extended = [zip(column_names, result)]
+
+        return {"ticket": ticket_extended}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
+
 @router.get("/buy/{campaign_id}")
 def get_ticket(campaign_id: int, db: Session = Depends(get_db)):
     try:
