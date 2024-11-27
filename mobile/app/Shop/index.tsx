@@ -125,8 +125,7 @@ export default function index() {
 
   const clearCart = async () => {
     await AsyncStorage.removeItem('cart');
-    setcartFull([]);
-  };
+    setcartFull(() => [])  };
   return (
     <ScrollView>
       {cartFull?.map((item, key) => (
