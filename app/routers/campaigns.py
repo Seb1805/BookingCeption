@@ -23,7 +23,7 @@ def get_campaigns_chunk(campaign_page: int,  db: Session = Depends(get_db)):
                      from "Campaign" c
                      INNER JOIN "Ticket" t ON t."campaignId" = c."campaignId"
                      where c."dateStart" > :customDateStart
-                     group by c."name"
+                     group by c."name", c."campaignId", c."coverImage"
                      """)
 
         print(query)
@@ -31,12 +31,13 @@ def get_campaigns_chunk(campaign_page: int,  db: Session = Depends(get_db)):
         # Execute the query with the email parameter
         offsetcalc = campaign_page * fetchamount
         datetoday = datetime.datetime.now()
+        
         result = db.execute(query, {"customDateStart" : datetoday.strftime("%Y-%m-%d") }).fetchall()
         # result = db.execute(query, {"dateEnd" : datetoday.strftime("%Y-%m-%d") }).offset(offsetcalc).limit(fetchamount)
 
         # Manually define the column names based on the SELECT query
         column_names = [
-            "name", "price", "coverImage"
+            "id", "name", "price", "coverImage"
         ]
 
         # Convert the result (a list of Row objects) to a list of dictionaries
