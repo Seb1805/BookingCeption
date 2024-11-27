@@ -161,6 +161,7 @@ def create_booking_order(booking_data: BookingExtendedCreate, db: Session = Depe
             new_campaign = BookingCampaign(
                 ticketId=ticket_id,
                 ticketAmount=ticket_amount,
+                bookingId = new_booking.bookingId, #Forgot this
                 sumPrice=db_ticket.price * ticket_amount  # Assuming price is stored in the Ticket model
             )
             db.add(new_campaign)
