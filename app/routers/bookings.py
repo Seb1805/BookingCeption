@@ -28,7 +28,7 @@ def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_c
             FROM "User" u
             INNER JOIN "Booking" b ON b."userId" = u."userId"
             INNER JOIN "BookingCampaign" bc ON bc."bookingId" = b."bookingId"
-            INNER JOIN "Ticket" t ON t."TicketId" = bc."ticketId"
+            INNER JOIN "Ticket" t ON t."ticketId" = bc."ticketId"
             INNER JOIN "Section" s ON s."sectionId" = t."sectionId"
             INNER JOIN "Location" l ON l."locationId" = s."locationId"
             LEFT JOIN "Spot" sp ON sp."spotId" = t."spotId"
