@@ -19,6 +19,7 @@ from sqlalchemy.orm import declarative_base
 Base = declarative_base()
 
 
+
 #User
 class User(Base):
     __tablename__ = "User"
@@ -162,33 +163,7 @@ class Campaign(Base):
     sectionId = Column(Integer)
     active =  Column(Boolean)
 
-# class Campaign(Base):
-#     __tablename__ = "campaign"
-    
-#     campaign_id = Column(Integer, primary_key=True)
-#     name = Column(String)
-#     description = Column(String)
-#     cover_image = Column(String)
-#     date_start = Column(Date)
-#     time_start = Column(Time)
-#     date_end = Column(Date)
-#     time_end = Column(Time)
-#     section_id = Column(Integer, ForeignKey("section.section_id"))
-#     price = Column(Float)
 
-#     section = relationship("Section", back_populates="campaigns")
-
-
-# class CampaignCreate(BaseModel):
-#     name : str
-#     description : str
-#     coverImage : str #maybe blob
-#     dateStart : date
-#     timeStart : time
-#     dateEnd : date
-#     timeEnd : time
-#     sectionId : int
-#     price : float
 class CampaignBase(BaseModel):
     name : str
     description : str
@@ -230,6 +205,11 @@ class BookingBase(BaseModel):
     bookingStatusId: int
     dateCreated: date
 
+    class Config:
+        orm_mode = True
+        from_attributes = True
+
+
 class BookingCreate(BookingBase):
     pass
 
@@ -242,26 +222,12 @@ class BookingPydantic(BookingBase):
 
     class Config:
         orm_mode = True
+        from_attributes = True
 
 
-class BookingExtendedCreate(BaseModel):
-    userId: int
-    bookingStatusId: int
-    dateCreated: str
-    bookingCampaigns: List[dict]
 
-class BookingExtendedUpdate(BookingExtendedCreate):
-    bookingId: int
 
-class BookingExtendedPydantic(BaseModel):
-    bookingId: int
-    userId: int
-    bookingStatusId: int
-    dateCreated: date
-    bookingCampaigns: List[dict]
 
-    class Config:
-        orm_mode = True
 
 
 
@@ -289,15 +255,25 @@ class BookingCampaign(Base):
     ticketAmount = Column(Integer)
     sumPrice = Column(Float)
     bookingId = Column(Integer,ForeignKey("Booking.bookingId"))
+
+    #bookingId = Column(Integer,ForeignKey("Booking.bookingId"))
     #booking = relationship("Booking", back_populates="bookingCampaigns")
     #ticket = relationship("Ticket", back_populates="bookings")
+
+
 
 
 class BookingCampaignBase(BaseModel):
     ticketId: int
     ticketAmount: int
     sumPrice: float
-    bookingId: int
+    
+
+    class config:
+        orm_mode = True
+        from_attributes = True
+        arbitrary_types_allowed=True
+
 
 class BookingCampaignCreate(BookingCampaignBase):
     pass
@@ -312,6 +288,8 @@ class BookingCampaignPydantic(BookingCampaignBase):
 
     class Config:
         orm_mode = True
+        arbitrary_types_allowed=True
+
 
 #User Role
 class UserRole(Base):
@@ -560,6 +538,27 @@ class SpotTypeUpdate(SpotTypeBase):
 
 class SpotTypePydantic(SpotTypeBase):
     spotTypeId: int
+
+class BookingExtendedPydantic(BaseModel):
+    bookingId: int
+    userId: int
+    bookingStatusId: int
+    dateCreated: date
+    bookingCampaigns: List[BookingCampaign]
+
+    class Config:
+        orm_mode = True
+        from_attributes = True
+        arbitrary_types_allowed = True
+
+class BookingExtendedCreate(BaseModel):
+    userId: int
+    bookingStatusId: int
+    dateCreated: date
+    bookingCampaigns: List[dict]
+
+class BookingExtendedUpdate(BookingExtendedCreate):
+    bookingId: int
 
 
 
