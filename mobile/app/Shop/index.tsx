@@ -41,7 +41,7 @@ export default function index() {
           // console.log("Before api");
           // console.log("Iam x",x)
           try{
-            const response = await ticketApi.getTicket(x.ticketId)
+            const response = await ticketApi.getTicketExtended(x.ticketId)
             console.log("Iam code",response.status)
             if(response.status === 200) {
               const data = response.data.ticket;
