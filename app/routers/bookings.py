@@ -129,7 +129,7 @@ def delete_booking(booking_id: int, db: Session = Depends(get_db)):
 
 
 
-@router.post("/order", response_model=BookingExtendedPydantic)
+@router.post("/order", response_model=None)
 def create_booking_order(booking_data: BookingExtendedCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_active_user)):
     try:
         # Validate booking data
@@ -171,7 +171,7 @@ def create_booking_order(booking_data: BookingExtendedCreate, db: Session = Depe
         # Refresh the booking to get the newly created bookingId
         db.refresh(new_booking)
         
-        return BookingExtendedPydantic.from_orm(new_booking)
+        return new_booking
         
     except Exception as e:
         db.rollback()
