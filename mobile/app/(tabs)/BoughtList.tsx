@@ -53,7 +53,6 @@ export default function BoughtList() {
         
         {ticketsOwned.length > 0 ? (
           <ScrollView> 
-            <Text>{ticketsOwned.length}</Text>
             {ticketsOwned?.map((item, key) => {
           return (
             <BoughtTicketCard ticket={item} imagesrc='' key={key}/>

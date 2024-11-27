@@ -31,7 +31,7 @@ def get_campaigns_chunk(campaign_page: int,  db: Session = Depends(get_db)):
         # Execute the query with the email parameter
         offsetcalc = campaign_page * fetchamount
         datetoday = datetime.datetime.now()
-        
+
         result = db.execute(query, {"customDateStart" : datetoday.strftime("%Y-%m-%d") }).fetchall()
         # result = db.execute(query, {"dateEnd" : datetoday.strftime("%Y-%m-%d") }).offset(offsetcalc).limit(fetchamount)
 
@@ -43,7 +43,7 @@ def get_campaigns_chunk(campaign_page: int,  db: Session = Depends(get_db)):
         # Convert the result (a list of Row objects) to a list of dictionaries
         campaigns_list = [dict(zip(column_names, row)) for row in result]
 
-        return campaigns_list
+        return {"campaigns": campaigns_list}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")

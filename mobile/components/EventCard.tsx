@@ -5,7 +5,7 @@ import { Link, router } from 'expo-router';
 
 
 
-export default function EventCard({id, imagesrc = "", title="ads"} : {id: number, imagesrc: string, title?: string}) {
+export default function EventCard({id, imagesrc = "", title="ads", price} : {id: number, imagesrc?: string, title?: string, price: number}) {
 
   function ImageIdentifyer() {
     if (imagesrc.substring(0,4) == "http") {
@@ -26,7 +26,7 @@ export default function EventCard({id, imagesrc = "", title="ads"} : {id: number
         <View style={styles.cardcontainer}>
           <View style={styles.imagecontainer}>{ImageIdentifyer()}</View>
           <Text style={styles.text}>{title}</Text>
-          <Text style={styles.price}>fra DKK 123.50</Text>
+          <Text style={styles.price}>fra DKK {price}</Text>
         </View>
       </Pressable>
   );
