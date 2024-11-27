@@ -63,8 +63,7 @@ export default function BoughtList() {
         ) : (
           
             <Text style={styles.noticketstext}>
-              asd {ticketsOwned.length}
-              Der er ingen billetter at vise
+              Ingen billetter at vise
             </Text>
       )}
     </View>

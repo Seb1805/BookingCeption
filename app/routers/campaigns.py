@@ -3,6 +3,8 @@ from ..utils.security import get_current_user
 from ..models import Campaign,CampaignPydantic,CampaignCreate,CampaignUpdate
 from ..database import get_db
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import text
+import datetime
 
 router = APIRouter(prefix="/campaigns", tags=["campaigns"])
 
@@ -11,6 +13,37 @@ router = APIRouter(prefix="/campaigns", tags=["campaigns"])
 def get_campaigns(db: Session = Depends(get_db)):
     campaigns = db.query(Campaign).all()
     return {"campaigns": campaigns}
+
+@router.get("/page/{campaign_page}")
+def get_campaigns_chunk(campaign_page: int,  db: Session = Depends(get_db)):
+    fetchamount = 20
+    try:
+        query = text("""
+                     SELECT c."name", t."price"
+                     from "Campaign" c
+                     INNER JOIN Ticket t ON t."campaignId" = c."campaignId"
+                     WHERE c.dateEnd < dateEnd::date""")
+
+        print(query)
+        # Execute query and fetch all results
+        # Execute the query with the email parameter
+        offsetcalc = campaign_page * fetchamount
+        datetoday = datetime.datetime.now()
+        result = db.execute(query, {"dateEnd" : datetoday.strftime("%Y-%m-%d") }).offset(offsetcalc).limit(fetchamount)
+
+        # Manually define the column names based on the SELECT query
+        column_names = [
+            "name", "validDateStart", "validDateEnd", "validTimeStart", 
+            "section_name", "address", "campaignId", "coverImage", "spotnumber"
+        ]
+
+        # Convert the result (a list of Row objects) to a list of dictionaries
+        tickets_list = [dict(zip(column_names, row)) for row in result]
+
+        return {"bought_tickets": tickets_list}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
 @router.get("/{campaign_id}")
 def get_campaign(campaign_id: int, db: Session = Depends(get_db)):
