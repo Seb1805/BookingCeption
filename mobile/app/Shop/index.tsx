@@ -27,6 +27,7 @@ export default function index() {
     }, [])
   )
 
+
   async function GetCartData() {
     const cartData = await AsyncStorage.getItem('cart');
     
@@ -66,7 +67,6 @@ export default function index() {
     console.log("The ticket i return",tickets);
     return tickets;
   }
-  
   
 
   async function OrderConfirm() {
@@ -108,29 +108,49 @@ export default function index() {
     console.log(error)
   }
   }
+  const handleQuantityChange = useCallback((index: number, isIncrementing: boolean) => {
+    const newCart = [...cartFull];
+    newCart[index].amount += isIncrementing ? 1 : -1;
+    setcartFull(newCart);
+    updateCartInStorage(newCart);
+  }, [cartFull]);
+  
 
+  const updateCartInStorage = async (newCart: ticketWithAmount[]) => {
+    const cartData = {
+      cartItems: newCart.map(item => ({ ticketId: item.ticket.ticketId, amount: item.amount }))
+    };
+    await AsyncStorage.setItem('cart', JSON.stringify(cartData));
+  };
+
+  const clearCart = async () => {
+    await AsyncStorage.removeItem('cart');
+    setcartFull([]);
+  };
   return (
     <ScrollView>
-      <Text>CartPage</Text>
+      {cartFull?.map((item, key) => (
+        <CartBooking 
+          key={key} 
+          item={item.ticket} 
+          amount={item.amount} 
+          onQuantityChange={(isIncrementing) => handleQuantityChange(key, isIncrementing)}
+        />
+      ))}
       
-      {cartFull?.map((item, key) => {
-        return (
-          <CartBooking item={item.ticket} amount={item.amount} key={key}/>
-        )
-      })}
-
-      {/* {cartFull?.map((item, key) => {
-        return (
-          <CartBooking item={item.ticket} amount={item.amount} key={key} />
-        )
-      })} */}
       <Pressable style={styles.Accept} onPress={() => OrderConfirm()}>
         <Text style={styles.AcceptText}>Accepter bestilling</Text>
       </Pressable>
+      
+      <Pressable style={styles.ClearCart} onPress={clearCart}>
+        <Text style={styles.ClearCartText}>Clear Cart</Text>
+      </Pressable>
+      
       <Toast />
     </ScrollView>
-  )
-}
+  );
+};
+
 
 const styles = StyleSheet.create({
   Accept: {
@@ -139,13 +159,30 @@ const styles = StyleSheet.create({
     minHeight: 24,
     margin: 8,
     borderRadius: 8,
-    backgroundColor: '#0a0'
+    backgroundColor: '#0a0',
+    marginTop: 16,
   },
   AcceptText: {
     textAlign: 'center',
     fontSize: 20,
     padding: 0,
     margin: 0,
-    color: '#fff'
+    color: '#fff',
+  },
+  ClearCart: {
+    justifyContent: 'center',
+    paddingVertical: 12,
+    minHeight: 24,
+    margin: 8,
+    borderRadius: 8,
+    backgroundColor: '#ff0000',
+    marginTop: 16,
+  },
+  ClearCartText: {
+    textAlign: 'center',
+    fontSize: 18,
+    padding: 0,
+    margin: 0,
+    color: '#fff',
   }
-})
+});
