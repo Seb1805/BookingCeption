@@ -42,7 +42,7 @@ def get_campaigns_chunk(campaign_page: int,  db: Session = Depends(get_db)):
         # Convert the result (a list of Row objects) to a list of dictionaries
         campaigns_list = [dict(zip(column_names, row)) for row in result]
 
-        return {"campaigns": campaigns_list}
+        return campaigns_list
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
