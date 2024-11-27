@@ -42,7 +42,7 @@ def get_ticket(campaign_id: int, db: Session = Depends(get_db)):
 
         # Manually define the column names based on the SELECT query
         column_names = [
-            "ticketId", "name" "price" "validDateStart", "validDateEnd", "validTimeStart", "spotId", "campaignId", "active", "locationName", "city", "address"
+            "ticketId", "name", "price", "validDateStart", "validDateEnd", "validTimeStart", "spotId", "campaignId", "active", "locationName", "city", "address"
         ]
 
         # Convert the result (a list of Row objects) to a list of dictionaries
