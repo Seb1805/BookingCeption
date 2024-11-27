@@ -27,6 +27,7 @@ const ticketsTest: Ticket[] = [
       city: "københavn",
  
     campaignId: 2,
+    campaignName:"",
     active: true,
   },
   {
@@ -41,6 +42,7 @@ const ticketsTest: Ticket[] = [
       address: "center blvd. 5",
       city: "københavn",
     campaignId: 2,
+    campaignName:"",
     active: true,
   },
 ];
