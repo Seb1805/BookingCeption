@@ -19,28 +19,30 @@ def get_campaigns_chunk(campaign_page: int,  db: Session = Depends(get_db)):
     fetchamount = 20
     try:
         query = text("""
-                     SELECT c."name", t."price"
+                     SELECT c."name", min(t."price"), c."coverImage"
                      from "Campaign" c
-                     INNER JOIN Ticket t ON t."campaignId" = c."campaignId"
-                     WHERE c.dateEnd < dateEnd::date""")
+                     INNER JOIN "Ticket" t ON t."campaignId" = c."campaignId"
+                     where c."dateStart" > :customDateStart
+                     group by c."name"
+                     """)
 
         print(query)
         # Execute query and fetch all results
         # Execute the query with the email parameter
         offsetcalc = campaign_page * fetchamount
         datetoday = datetime.datetime.now()
-        result = db.execute(query, {"dateEnd" : datetoday.strftime("%Y-%m-%d") }).offset(offsetcalc).limit(fetchamount)
+        result = db.execute(query, {"customDateStart" : datetoday.strftime("%Y-%m-%d") }).fetchall()
+        # result = db.execute(query, {"dateEnd" : datetoday.strftime("%Y-%m-%d") }).offset(offsetcalc).limit(fetchamount)
 
         # Manually define the column names based on the SELECT query
         column_names = [
-            "name", "validDateStart", "validDateEnd", "validTimeStart", 
-            "section_name", "address", "campaignId", "coverImage", "spotnumber"
+            "name", "price", "coverImage"
         ]
 
         # Convert the result (a list of Row objects) to a list of dictionaries
-        tickets_list = [dict(zip(column_names, row)) for row in result]
+        campaigns_list = [dict(zip(column_names, row)) for row in result]
 
-        return {"bought_tickets": tickets_list}
+        return {"campaigns": campaigns_list}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
