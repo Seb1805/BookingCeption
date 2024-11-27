@@ -8,12 +8,14 @@ import { Link, router } from 'expo-router';
 export default function EventCard({id, imagesrc = "", title="ads", price} : {id: number, imagesrc?: string, title?: string, price: number}) {
 
   function ImageIdentifyer() {
-    if (imagesrc.substring(0,4) == "http") {
-      return (
-        <Image source={{uri: imagesrc}} style={styles.image} />
-      )
+    if(imagesrc) {
+      if (imagesrc.substring(0,4) == "http") {
+        return (
+          <Image source={{uri: imagesrc}} style={styles.image} />
+        )
+      }
     }
-
+        
     return (
       <Image source={require('@/assets/images/placeholders/placeholder-ticket.jpg')} style={styles.image} />
     )
