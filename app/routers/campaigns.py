@@ -19,7 +19,7 @@ def get_campaigns_chunk(campaign_page: int,  db: Session = Depends(get_db)):
     fetchamount = 20
     try:
         query = text("""
-                     SELECT c."name", min(t."price"), c."coverImage"
+                     SELECT c."campaignId", c."name", min(t."price"), c."coverImage"
                      from "Campaign" c
                      INNER JOIN "Ticket" t ON t."campaignId" = c."campaignId"
                      where c."dateStart" > :customDateStart
