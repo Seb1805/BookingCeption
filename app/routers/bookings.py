@@ -27,7 +27,7 @@ def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_c
                    sp."spotnumber"
             FROM "User" u
             INNER JOIN "Booking" b ON b."userId" = u."userId"
-            INNER JOIN "BookingCampaign" bc ON bc."bookingid" = b."bookingId"
+            INNER JOIN "BookingCampaign" bc ON bc."bookingId" = b."bookingId"
             INNER JOIN "Ticket" t ON t."TicketId" = bc."ticketId"
             INNER JOIN "Section" s ON s."sectionId" = t."sectionId"
             INNER JOIN "Location" l ON l."locationId" = s."locationId"
@@ -89,7 +89,7 @@ def create_booking(booking: BookingCreate, db: Session = Depends(get_db),current
     return new_booking
 
 
-@router.put("/{booking_id}", response_model=None)
+@router.put("/{booking_id}", response_model=BookingPydantic)
 def update_booking(booking_id: int, booking_data: BookingUpdate, db: Session = Depends(get_db)):
     existing_booking = db.query(Booking).filter(Booking.bookingId == booking_id).first()
     
@@ -129,7 +129,7 @@ def delete_booking(booking_id: int, db: Session = Depends(get_db)):
 
 
 
-@router.post("/order", response_model=None)
+@router.post("/order", response_model=BookingExtendedPydantic)
 def create_booking_order(booking_data: BookingExtendedCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_active_user)):
     try:
         # Validate booking data
@@ -143,10 +143,7 @@ def create_booking_order(booking_data: BookingExtendedCreate, db: Session = Depe
             dateCreated=booking_data.dateCreated
 
         )
-        print(new_booking)
-        print('hello')
-        print(new_booking.bookingId)
-
+        
         # Add the new booking to the database
         db.add(new_booking)
         
@@ -155,25 +152,17 @@ def create_booking_order(booking_data: BookingExtendedCreate, db: Session = Depe
             ticket_id = campaign['ticketId']
             ticket_amount = campaign['ticketAmount']
             
-            print(f'ticket: {ticket_id}')
             # Check if the ticket exists
             db_ticket = db.query(Ticket).filter(Ticket.ticketId == ticket_id).first()
             if not db_ticket:
                 raise HTTPException(status_code=400, detail=f"Ticket with ID {ticket_id} does not exist")
-            print(f'i am ticket {db_ticket}')
-            bId = new_booking.bookingId
-            sum = db_ticket.price * ticket_amount
-            print(f'i am sum {sum}')
-            print(f'booking: {bId}')
+            
             # Create a new BookingCampaign entry
             new_campaign = BookingCampaign(
                 ticketId=ticket_id,
                 ticketAmount=ticket_amount,
-                sumPrice=sum,
-                bookingId=bId  # Use the newly created booking's id
+                sumPrice=db_ticket.price * ticket_amount  # Assuming price is stored in the Ticket model
             )
-
-            print(new_campaign)
             db.add(new_campaign)
         
         # Commit all changes
@@ -182,7 +171,7 @@ def create_booking_order(booking_data: BookingExtendedCreate, db: Session = Depe
         # Refresh the booking to get the newly created bookingId
         db.refresh(new_booking)
         
-        return new_booking
+        return BookingExtendedPydantic.from_orm(new_booking)
         
     except Exception as e:
         db.rollback()
