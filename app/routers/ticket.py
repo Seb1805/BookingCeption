@@ -24,10 +24,11 @@ def get_ticket(ticket_id: int, db: Session = Depends(get_db)):
 def get_ticket(campaign_id: int, db: Session = Depends(get_db)):
     try:
         query = text("""
-                     SELECT t."ticketId", t."name", t."price", t."validDateStart", t."validDateEnd", t."validTimeStart", t."spotId", t."campaignId", t."active", l."locationName", l."city", l."address"
+                     SELECT t."ticketId", t."name", t."price", t."validDateStart", t."validDateEnd", t."validTimeStart", t."spotId", ca."campaignId" ca."name", t."active", l."locationName", l."city", l."address"
                      from "Ticket" t
                      INNER JOIN "Section" se ON se."sectionId" = t."sectionId"
                      INNER JOIN "Location" l ON l."locationId" = se."locationId"
+                     INNER JOIN "Campaign" ca ON ca."campaignId" = t."campaignId"
                      where t."campaignId" = :selectedTicket
                      
                      """)
@@ -42,7 +43,7 @@ def get_ticket(campaign_id: int, db: Session = Depends(get_db)):
 
         # Manually define the column names based on the SELECT query
         column_names = [
-            "ticketId", "name", "price", "validDateStart", "validDateEnd", "validTimeStart", "spotId", "campaignId", "active", "locationName", "city", "address"
+            "ticketId", "name", "price", "validDateStart", "validDateEnd", "validTimeStart", "spotId", "campaignId", "campaignName", "active", "locationName", "city", "address"
         ]
 
         # Convert the result (a list of Row objects) to a list of dictionaries
