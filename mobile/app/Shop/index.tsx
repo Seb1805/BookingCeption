@@ -10,6 +10,7 @@ import { BookingExtended } from '@/constants/DBDatatypes'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { router, useFocusEffect } from 'expo-router'
 import { Cart, CartItem } from '@/constants/OtherDatatypes'
+import Toast from 'react-native-toast-message'
 
 type ticketWithAmount = {
   ticket : Ticket,
@@ -112,10 +113,9 @@ export default function index() {
     <ScrollView>
       <Text>CartPage</Text>
       
-      <CartBooking id={1} amount={2} />
       {cartFull?.map((item, key) => {
         return (
-          <CartBooking id={item.ticket.ticketId} item={item.ticket} amount={item.amount} key={key}/>
+          <CartBooking item={item.ticket} amount={item.amount} key={key}/>
         )
       })}
 
@@ -127,6 +127,7 @@ export default function index() {
       <Pressable style={styles.Accept} onPress={() => OrderConfirm()}>
         <Text style={styles.AcceptText}>Accepter bestilling</Text>
       </Pressable>
+      <Toast />
     </ScrollView>
   )
 }

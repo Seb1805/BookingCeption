@@ -70,6 +70,7 @@ export type Ticket = {
   address: string
   city: string
   campaignId: number
+  campaignName: string
   active: boolean
   amount?: number
 }
