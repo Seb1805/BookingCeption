@@ -47,7 +47,7 @@ def get_ticket(ticket_id: int, db: Session = Depends(get_db)):
         ]
 
         # Convert the result (a list of Row objects) to a list of dictionaries
-        ticket_extended = [zip(column_names, result)]
+        ticket_extended = zip(column_names, result)
 
         return {"ticket": ticket_extended}
 

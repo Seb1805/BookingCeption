@@ -45,7 +45,7 @@ export default function index() {
             console.log("Iam code",response.status)
             if(response.status === 200) {
               const data = response.data.ticket;
-              const theShit = {
+              const theShit : ticketWithAmount = {
                 ticket: data,
                 amount: x.amount
               };
