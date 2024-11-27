@@ -66,7 +66,9 @@ export type Ticket = {
   validTimeStart: string
   spotId?: number
   // sectionId: number
-  location: Location
+  locationName: string
+  address: string
+  city: string
   campaignId: number
   active: boolean
   amount?: number

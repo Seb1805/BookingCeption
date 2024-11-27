@@ -3,7 +3,8 @@ import { Ticket } from "@/constants/DBDatatypes";
 
 const ticketApi = {
     getTicket:(id: number) => axiosClientJson.get(`/tickets/${id}`),
-    getTicketS: () => axiosClientJson.get('/tickets') 
+    getTicketS: () => axiosClientJson.get('/tickets'),
+    getTicketsShop: (id: number) => axiosClientJson.get(`/buy/${id}`)
     //spot: (data: Ticket) => axiosClientJson.post('/spots',data),
 
 }

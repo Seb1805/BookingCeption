@@ -58,8 +58,8 @@ export default function TicketCard({item} : {item: Ticket}) {
         <View>
 
         <Text style={[styles.textBold, styles.title]}>{item.name}</Text>
-        <Text>{item.location.city}</Text>
-        <Text>{item.location.locationName}</Text>
+        <Text>{item.city}</Text>
+        <Text>{item.locationName}</Text>
         </View>
         <View>
           <Text style={[styles.textBold, styles.price]}>{item.price} DKK</Text>

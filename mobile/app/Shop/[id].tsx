@@ -6,12 +6,13 @@ import {
   StyleSheet,
   Pressable,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Campaign, Ticket } from "@/constants/DBDatatypes";
 import campaignApi from "@/api/axios/routes/campaign";
-import { useLocalSearchParams } from "expo-router";
+import { useFocusEffect, useLocalSearchParams } from "expo-router";
 import Constants from "expo-constants";
 import TicketCard from "@/components/shop/TicketCard";
+import ticketApi from "@/api/axios/routes/ticket";
 
 const ticketsTest: Ticket[] = [
   {
@@ -21,12 +22,10 @@ const ticketsTest: Ticket[] = [
     validDateStart: "2024-12-23",
     validDateEnd: "2024-12-23",
     validTimeStart: "08:00:00",
-    location: {
       locationName: "bella center",
       address: "center blvd. 5",
       city: "københavn",
-      organizerId: 1,
-    },
+ 
     campaignId: 2,
     active: true,
   },
@@ -38,12 +37,9 @@ const ticketsTest: Ticket[] = [
     validDateEnd: "2024-12-23",
     validTimeStart: "08:00:00",
     spotId: 1,
-    location: {
       locationName: "bella center",
       address: "center blvd. 5",
       city: "københavn",
-      organizerId: 1,
-    },
     campaignId: 2,
     active: true,
   },
@@ -51,11 +47,26 @@ const ticketsTest: Ticket[] = [
 
 export default function CampaignDetailsScreen() {
   const [campaignData, setcampaignData] = useState<Campaign>();
+  const [ticketList, setticketList] = useState<Ticket[]>([]);
   const { id } = useLocalSearchParams<{ id: string }>();
 
-  // useEffect(() => {
-  //   campaignApi.getCampaignSingle(parseInt(id))
-  // })
+  useFocusEffect(
+    useCallback(() => {
+      getTickets();
+    }, [])
+  );
+
+  async function getTickets() {
+    try {
+      const response = await ticketApi.getTicketsShop(parseInt(id))
+
+    if(response.status == 200) {
+      setticketList(() => response.data.tickets)
+    }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   function ImageIdentifyer() {
     if (campaignData) {
@@ -96,7 +107,10 @@ export default function CampaignDetailsScreen() {
 
       <View style={{ marginHorizontal: 8 }}>
         <Text style={styles.titles}>Events</Text>
-        {ticketsTest.map((item, key) => {
+        {/* {ticketsTest.map((item, key) => {
+          return <TicketCard item={item} key={key} />;
+        })} */}
+        {ticketList.map((item, key) => {
           return <TicketCard item={item} key={key} />;
         })}
       </View>

@@ -4,6 +4,8 @@ from ..utils.security import get_current_user
 
 from ..database import get_db
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import text
+
 
 router = APIRouter(prefix="/tickets", tags=["tickets"])
 
@@ -17,6 +19,40 @@ def get_tickets(db: Session = Depends(get_db)):
 def get_ticket(ticket_id: int, db: Session = Depends(get_db)):
     ticket = db.query(Ticket).filter(Ticket.ticketId == ticket_id).first()
     return {"ticket": ticket}
+
+@router.get("/buy/{campaign_id}")
+def get_ticket(campaign_id: int, db: Session = Depends(get_db)):
+    try:
+        query = text("""
+                     SELECT t."ticketId", t."name", t."price", t."validDateStart", t."validDateEnd", t."validTimeStart", t."spotId", t."campaignId", t."active", l."locationName", l."city", l."address"
+                     from "Ticket" t
+                     INNER JOIN "Section" se ON se."sectionId" = t."sectionId"
+                     INNER JOIN "Location" l ON l."locationId" = se."locationId"
+                     where t."campaignId" = :selectedTicket
+                     
+                     """)
+
+        print(query)
+        # Execute query and fetch all results
+        # Execute the query with the email parameter
+
+
+        result = db.execute(query, {"selectedTicket" : campaign_id}).fetchall()
+        # result = db.execute(query, {"dateEnd" : datetoday.strftime("%Y-%m-%d") }).offset(offsetcalc).limit(fetchamount)
+
+        # Manually define the column names based on the SELECT query
+        column_names = [
+            "ticketId", "name" "price" "validDateStart", "validDateEnd", "validTimeStart", "spotId", "campaignId", "active", "locationName", "city", "address"
+        ]
+
+        # Convert the result (a list of Row objects) to a list of dictionaries
+        tickets_list = [dict(zip(column_names, row)) for row in result]
+
+        return {"tickets": tickets_list}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
 
 @router.post("/", response_model=TicketPydantic)
 def create_ticket(ticket: TicketCreate, db: Session = Depends(get_db)):
