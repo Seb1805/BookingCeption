@@ -72,50 +72,53 @@ export default function index() {
         </Text>
       </View>
 
+      { userData?.role == 1 && 
       <Profilesection title="kontrolpanel">
-        <ProfileButtons
-          title="Lokaler"
-          onpress={() => router.navigate("/(tabs)/Account/Locations")}
-        >
-          <View style={styles.buttonTypeLink}>
-            <AntDesign size={16} name="right" color={Colors.light.text} />
-          </View>
-        </ProfileButtons>
-        <ProfileButtons
-          title="Areal opdeling"
-          onpress={() =>
-            router.navigate("/(tabs)/Account/modals/CreateLocation")
-          }
-        >
-          <View style={styles.buttonTypeLink}>
-            <AntDesign size={16} name="right" color={Colors.light.text} />
-          </View>
-        </ProfileButtons>
-        <ProfileButtons
-          title="Arrangementer"
-          onpress={() => router.navigate("/(tabs)/Account/Campaigns")}
-        >
-          <View style={styles.buttonTypeLink}>
-            <AntDesign size={16} name="right" color={Colors.light.text} />
-          </View>
-        </ProfileButtons>
-        <ProfileButtons
-          title="Section"
-          onpress={() => router.navigate("/(tabs)/Account/modals/SectionModal")}
-        >
-          <View style={styles.buttonTypeLink}>
-            <AntDesign size={16} name="right" color={Colors.light.text} />
-          </View>
-        </ProfileButtons>
-        <ProfileButtons
-          title="Spot"
-          onpress={() => router.navigate("/(tabs)/Account/modals/SpotModal")}
-        >
-          <View style={styles.buttonTypeLink}>
-            <AntDesign size={16} name="right" color={Colors.light.text} />
-          </View>
-        </ProfileButtons>
-      </Profilesection>
+      <ProfileButtons
+        title="Lokaler"
+        onpress={() => router.navigate("/(tabs)/Account/Locations")}
+      >
+        <View style={styles.buttonTypeLink}>
+          <AntDesign size={16} name="right" color={Colors.light.text} />
+        </View>
+      </ProfileButtons>
+      <ProfileButtons
+        title="Areal opdeling"
+        onpress={() =>
+          router.navigate("/(tabs)/Account/modals/CreateLocation")
+        }
+      >
+        <View style={styles.buttonTypeLink}>
+          <AntDesign size={16} name="right" color={Colors.light.text} />
+        </View>
+      </ProfileButtons>
+      <ProfileButtons
+        title="Arrangementer"
+        onpress={() => router.navigate("/(tabs)/Account/Campaigns")}
+      >
+        <View style={styles.buttonTypeLink}>
+          <AntDesign size={16} name="right" color={Colors.light.text} />
+        </View>
+      </ProfileButtons>
+      <ProfileButtons
+        title="Section"
+        onpress={() => router.navigate("/(tabs)/Account/modals/SectionModal")}
+      >
+        <View style={styles.buttonTypeLink}>
+          <AntDesign size={16} name="right" color={Colors.light.text} />
+        </View>
+      </ProfileButtons>
+      <ProfileButtons
+        title="Spot"
+        onpress={() => router.navigate("/(tabs)/Account/modals/SpotModal")}
+      >
+        <View style={styles.buttonTypeLink}>
+          <AntDesign size={16} name="right" color={Colors.light.text} />
+        </View>
+      </ProfileButtons>
+    </Profilesection>
+    }
+      
 
       <Profilesection title="Preferencer">
         <ProfileButtons
