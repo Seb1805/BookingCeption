@@ -4,9 +4,9 @@ export type Campaign = {
   name: string
   description: string
   coverImage: string
-  dateStart: Date
+  dateStart: string
   timeStart: string
-  dateEnd: Date
+  dateEnd: string
   timeEnd: string
   sectionId: number
   active: boolean

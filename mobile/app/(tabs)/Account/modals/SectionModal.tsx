@@ -1,11 +1,12 @@
 import React, { useState,useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
 import { Section } from '@/constants/DBDatatypes';
-import { Router } from 'expo-router';
+import { router, Router } from 'expo-router';
 import sectionApi from '@/api/axios/routes/section';
 import locationApi from '@/api/axios/routes/location'
 import DropDownPicker from 'react-native-dropdown-picker';
 import Selectormodal from '@/components/Selectormodal';
+
 
 
 
@@ -72,8 +73,7 @@ export default function SectionModal() {
         }
         console.log("Iam section data",sectionData)
         const response = sectionApi.section(sectionData);
-        ;
-        //console.log(sectionData)
+        router.back()
         }
         catch{
 

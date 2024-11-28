@@ -8,8 +8,9 @@ import DateTimePicker, {DateTimePickerEvent } from '@react-native-community/date
 import DropDownPicker from 'react-native-dropdown-picker';
 import sectionApi from '@/api/axios/routes/section';
 import { Button } from 'react-native-paper';
-import { TimePickerModal } from 'react-native-paper-dates';
+import { TimerPickerModal } from 'react-native-timer-picker';
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import campaignApi from '@/api/axios/routes/campaign';
 
 
 export default function CampaignModal() {
@@ -21,9 +22,7 @@ export default function CampaignModal() {
 
     const [campaignDescription, setCampaignDescription] = useState("")
     const [campaignCoverImage, setCampaignCoverImage] = useState("")
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState("");
-
+    const [visible, setVisible] = useState(false)
 
 
     //Date picker stuff    
@@ -36,8 +35,35 @@ export default function CampaignModal() {
     const [timeStart, setTimeStart] = useState("")
     const [timeEnd, setTimeEnd] = useState("")
 
+    
 
+    const toggleStartTimePicker = () => setVisible(true);
+    const toggleEndTimePicker = () => setVisible(true);
 
+    const onConfirmStart = ({hours, minutes}:{hours : number, minutes: number} ) => {
+      const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+      if (visible === true) {
+        setTimeStart(formattedTime);
+        setVisible(false);
+      }
+      // } else {
+      //   setTimeEnd(formattedTime);
+      //   setVisible(false);
+      // }
+    };
+
+    const onConfirmEnd = ({hours, minutes}:{hours : number, minutes: number} ) => {
+      const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+      if (visible === true) {
+        setTimeEnd(formattedTime);
+        setVisible(false);
+      }
+      // } else {
+      //   setTimeEnd(formattedTime);
+      //   setVisible(false);
+      // }
+    };
+    
     const toggleStartDatePicker = () => {
         setShowStartPicker(() => !showStartPicker)
     }
@@ -99,15 +125,16 @@ export default function CampaignModal() {
               name: campaignName,
               description: campaignDescription,
               coverImage: campaignCoverImage,
-              dateStart: dateStart,
+              dateStart: dateStart.toLocaleDateString("default", {year: "numeric", month: "2-digit", day: "2-digit"}),
               timeStart: timeStart,
-              dateEnd: dateEnd,
+              dateEnd: dateEnd.toLocaleDateString("default", {year: "numeric", month: "2-digit", day: "2-digit"}),
               timeEnd: timeEnd,
               sectionId: 1, //TODO: Implement
               active: true
 
           }
-
+          await campaignApi.campgain(campaignData);
+          router.back()
           return campaignData
       }
       catch{
@@ -155,7 +182,66 @@ export default function CampaignModal() {
             />
 
         </Pressable>
+        <View>
+          
+  <View>
+    <Pressable onPress={toggleStartTimePicker} style={styles.timeButton}>
+      <View>
+        <TextInput 
+        style={styles.input}
+        placeholder='Start tidspunkt'
+        value={timeStart}
+        editable={false}
+        />
+       
+      </View>
+    </Pressable>
+    <TimerPickerModal
+      visible={visible}
+      setIsVisible={setVisible}
+      onConfirm={onConfirmStart}
+      modalTitle="Set Start Time"
+      onCancel={() => setVisible(false)}
+      closeOnOverlayPress
+      styles={{
+        theme: "light",
+        backgroundColor: "#F1F1F1",
+        text: { color: "#202020" },
+        pickerContainer: { marginRight: 10 },
+        pickerItemContainer: { width: 100 },
+        pickerLabelContainer: { right: -20, top: 0, bottom: 6, width: 40, alignItems: "center" },
+      }}
+    />
+  </View>
 
+  <View>
+    <Pressable onPress={toggleEndTimePicker} style={[styles.timeButton, { marginTop: 10 }]}>
+    <TextInput 
+        style={styles.input}
+        placeholder='Slut tidspunkt'
+        value={timeEnd}
+        editable={false}
+        />
+    </Pressable>
+    <TimerPickerModal
+      visible={visible}
+      setIsVisible={setVisible}
+      onConfirm={onConfirmEnd}
+      modalTitle="Set End Time"
+      onCancel={() => setVisible(false)}
+      closeOnOverlayPress
+      styles={{
+        theme: "light",
+        backgroundColor: "#F1F1F1",
+        text: { color: "#202020" },
+        pickerContainer: { marginRight: 10 },
+        pickerItemContainer: { width: 100 },
+        pickerLabelContainer: { right: -20, top: 0, bottom: 6, width: 40, alignItems: "center" },
+      }}
+    />
+    </View>
+
+        </View>
         <Pressable  onPress={createCampaign}>
           <View>
           <Text>Opret lokation</Text>
@@ -179,4 +265,15 @@ const styles = StyleSheet.create({
       fontSize: 16,
       fontWeight: 'bold',
     },
+    timeButton: {
+      paddingVertical: 10,
+      paddingHorizontal: 18,
+      borderRadius: 10,
+      fontSize: 16,
+      overflow: "hidden",
+      borderColor: "#C2C2C2",
+      color: "#C2C2C2",
+      marginBottom: 10,
+  },
   });
+
