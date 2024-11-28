@@ -14,6 +14,38 @@ def get_locations(db: Session = Depends(get_db),current_user: dict = Depends(get
     locations = db.query(Location).all()
     return {"locations": locations}
 
+@router.get("/me")
+def get_location(db: Session = Depends(get_db),  user: User = Depends(get_current_active_user)):
+    try:
+        query = text("""
+                     SELECT  l."locationId", l."locationName", l."address", l."city"
+                     from "Location" l
+                     INNER JOIN "Organizer" o ON o."organizerId" = l."organizerId"
+                     INNER JOIN "UserOrganizerAssosiation" oua ON oua."organizerId" = o."organizerId"
+                     INNER JOIN "User" u ON u."userId" = oua."userId"
+                     where u."email" = :email
+                     """)
+
+        print(query)
+        # Execute query and fetch all results
+        # Execute the query with the email parameter
+
+        result = db.execute(query, {"email": user.email}).fetchall()
+        # result = db.execute(query, {"dateEnd" : datetoday.strftime("%Y-%m-%d") }).offset(offsetcalc).limit(fetchamount)
+
+        # Manually define the column names based on the SELECT query
+        column_names = [
+            "locationId", "locationName", "address", "city"
+        ]
+
+        # Convert the result (a list of Row objects) to a list of dictionaries
+        location_list = [dict(zip(column_names, row)) for row in result]
+
+        return {"locations": location_list}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
 @router.get("/{location_id}")
 def get_location(location_id: int, db: Session = Depends(get_db),current_user: dict = Depends(get_current_user)):
     location = db.query(Location).filter(Location.locationId == location_id).first()
