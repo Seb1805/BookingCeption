@@ -1,8 +1,10 @@
 import { View, Text, ScrollView, FlatList, Pressable, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import ButtonOwn from '@/components/ButtonOwn'
-import { router } from 'expo-router'
+import { router, useFocusEffect } from 'expo-router'
 import PlusEntity from '@/components/PlusEntity'
+import locationApi from '@/api/axios/routes/location'
+import { LocationsOwn } from '@/constants/DBDatatypes'
 
 const datalocations = [
   {
@@ -22,11 +24,38 @@ const datalocations = [
   },
 ]
 export default function Locations() {
+  const [ownLocations, setOwnLocations] = useState<LocationsOwn[]>([])
+
+  useFocusEffect(
+    useCallback(() => {
+      FillLocationList()
+    }, [])
+  )
+
+  async function FillLocationList() {
+    try {
+      const response = await locationApi.getMyLocations()
+    if(response.status == 200) {
+      setOwnLocations(() => response.data.locations)
+    }
+    } catch (error) {
+      console.log("Error getting own locations: ", error);
+     return; 
+    }
+  }
+
   return (
     <>
     <ScrollView style={{flex: 1, margin: 8}}>
-      {datalocations.map((item, key) => {return (
-        <Text key={key}>{item.locationName}</Text>
+      {ownLocations.map((item, key) => {return (
+        <View key={key}>
+          <Text>
+            {item.locationName ? item.locationName : "Intet navn"}
+          </Text>
+          <Text>
+            {item.address}
+          </Text>
+        </View>
       )})}
     </ScrollView>
     <PlusEntity func={() => {router.navigate('/(tabs)/Account/modals/CreateLocation')}}/>
