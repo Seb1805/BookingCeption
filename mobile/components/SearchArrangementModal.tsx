@@ -9,46 +9,39 @@ import {
   Pressable,
   TouchableWithoutFeedback,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import EventCard from "@/components/EventCard";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Colors } from "@/constants/Colors";
+import { useFocusEffect } from "expo-router";
+import campaignApi from "@/api/axios/routes/campaign";
+import { MesseData } from "@/constants/OtherDatatypes";
 
-const datasdf = [
-  {
-    id: 12,
-    title: "Viby",
-    image:
-      "",
-  },
-  {
-    id: 13,
-    title: "Aarhus",
-    image:
-      "",
-  },
-  {
-    id: 16,
-    title: "Randers",
-    image:
-      "",
-  },
-  {
-    id: 18,
-    title: "Aalborg",
-    image:
-      "",
-  },
-];
-
-export default function SearchLocationModal({
-  visibility,
-  setVisibility,
-}: {
-  visibility: boolean;
-  setVisibility: any;
-}) {
+export default function SearchLocationModal({ visibility, setVisibility}: { visibility: boolean; setVisibility: any;}) {
   const [searchinput, setSearchinput] = useState("");
+  const [foundCampaigns, setFoundCampaigns] = useState<MesseData[]>([])
+
+  useFocusEffect(
+    useCallback(() => {
+     if(visibility) {
+      FindCampaigns()
+     }
+    },[searchinput])
+  )
+
+  async function FindCampaigns() {
+    if(searchinput.length > 0) {
+      const response = await campaignApi.searchName(searchinput)
+      if(response.status == 200) {
+        setFoundCampaigns(() => response.data.campaigns)
+      }
+    } else {
+      const response = await campaignApi.getCampaignDatapage(0)
+      if(response.status == 200) {
+        setFoundCampaigns(() => response.data.campaigns)
+      }
+    }
+  }
   return (
     <>
       <Modal
@@ -73,17 +66,18 @@ export default function SearchLocationModal({
             />
           </View>
           <ScrollView>
-            {datasdf.map((item, key) => {
+            {foundCampaigns.map((item, key) => {
               if (
-                item.title.toLowerCase().includes(searchinput.toLowerCase()) || searchinput.length == 0
+                item.name.toLowerCase().includes(searchinput.toLowerCase()) || searchinput.length == 0
               ) {
                 return (
                   <Pressable onPress={() => setVisibility(() => false)} key={key}>
 
                   <EventCard
                     id={item.id}
-                    title={item.title}
-                    imagesrc={item.image}
+                    title={item.name}
+                    imagesrc={item.coverImage}
+                    price={item.price}
                     />
                     </Pressable>
                 );

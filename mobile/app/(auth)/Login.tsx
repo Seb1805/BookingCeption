@@ -74,7 +74,7 @@ const LoginScreen = () => {
       <Button title="Login" onPress={handleLogin} />
       <Text style={styles.link}>
 
-        Don't have an account? <Pressable onPress={() => router.navigate("/(auth)/Signup")}>Register here</Pressable>
+        Don't have an account? <Pressable onPress={() => router.navigate("/(auth)/Signup")}><Text>Register here</Text></Pressable>
       </Text>
     <Toast /> 
     </View>

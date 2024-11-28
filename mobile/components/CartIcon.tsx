@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Cart } from '@/constants/OtherDatatypes'
 import { router, useFocusEffect } from 'expo-router'
 
-export default function CartIcon({color}: {color: string}) {
+export default function CartIcon({color, showCounter = false}: {color: string, showCounter? : boolean}) {
   const [cart, setCart] = useState<Cart | null>(null)
 
   useFocusEffect(
@@ -45,7 +45,7 @@ export default function CartIcon({color}: {color: string}) {
     <Pressable onPress={() => {router.push('/Shop')}}>
       <View style={styles.cart}>
         <Feather name="shopping-cart" size={28} color={color} />
-        {CountCartItems()}
+        {showCounter && CountCartItems()}
       </View>
     </Pressable>
   );

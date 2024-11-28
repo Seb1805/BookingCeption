@@ -21,13 +21,17 @@ export default function EventCard({id, imagesrc = "", title="ads", price} : {id:
     )
   }
 
+  function Capitalize(str: string){
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
   return (
       <Pressable onPress={() => {
         router.push({pathname: '../Shop/[id]', params: {id}})
       }}>
         <View style={styles.cardcontainer}>
           <View style={styles.imagecontainer}>{ImageIdentifyer()}</View>
-          <Text style={styles.text}>{title}</Text>
+          <Text style={styles.text}>{Capitalize(title)}</Text>
           <Text style={styles.price}>fra DKK {price}</Text>
         </View>
       </Pressable>

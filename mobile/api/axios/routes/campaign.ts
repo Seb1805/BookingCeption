@@ -5,7 +5,8 @@ const campaignApi = {
   getCampaignData: () => axiosClientJson.get('/campaigns'),
   getCampaignDatapage: (page: Number) => axiosClientJson.get(`/campaigns/page/${page}`),
   getCampaignSingle: (id: number) => axiosClientJson.get(`/campaigns/${id}`),
-  campgain: (data: Campaign) => axiosClientJson.post("/campaigns",data)
+  searchName: (data: string) => axiosClientJson.get(`/campaigns/search/${data}`),
+  campgain: (data: Campaign) => axiosClientJson.post("/campaigns",data),
 }
 
 export default campaignApi;
