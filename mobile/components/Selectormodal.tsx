@@ -9,18 +9,17 @@ import {
 } from "react-native";
 import React from "react";
 
-export default function Selectormodal({ visibility, setVisibility, title, optionArray, selectedData, setselectedData, dataDisplay,}: { visibility: boolean; setVisibility: any; title: string; optionArray: any[]; selectedData?: any; setselectedData: any; dataDisplay: string;}) {
-  // function Fullstyling() {
+export default function Selectormodal({ visibility, setVisibility, title, optionArray, selectedData, setselectedData, dataDisplay, extraStyling}: { visibility: boolean; setVisibility: any; title?: string; optionArray: any[]; selectedData?: any; setselectedData: any; dataDisplay: string; extraStyling?: {}}) {
 
-  //   if(!extraStyling) {
-  //     return styles.inputSelectorDisplay;
-  //   }
 
-  //   else {
-  //     return [, extraStyling]
-  //   }
-
-  // }
+  function Fullstyling() {
+    if(!extraStyling) {
+      return styles.inputSelectorDisplay;
+    }
+    else {
+      return [styles.inputSelectorDisplay, extraStyling]
+    }
+  }
 
   function Capitalize(str: string){
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -43,10 +42,12 @@ export default function Selectormodal({ visibility, setVisibility, title, option
           OpenModal();
         }}
       >
-        <View style={styles.inputSelectorDisplay}>
-          <Text>{selectedData && selectedData[dataDisplay]}</Text>
+        <View style={Fullstyling()}>
+          <Text>{selectedData && Capitalize(selectedData[dataDisplay])}</Text>
         </View>
       </Pressable>
+
+
       <Modal
         style={{ flex: 1, backgroundColor: "#25252577" }}
         animationType="slide"
@@ -63,13 +64,15 @@ export default function Selectormodal({ visibility, setVisibility, title, option
           <View style={{paddingHorizontal:4}}>
             <View
               style={{
-                paddingTop: 16,
-                paddingBottom: 4,
-                borderBottomColor: "#aaa",
-                borderBottomWidth: 1,
+                paddingTop: 24,
+                paddingBottom: 16,
               }}
             >
-              <Text style={{ fontSize: 18 }}>{Capitalize(title)}</Text>
+            {title && (
+              <Text style={{ fontSize: 24, paddingHorizontal: 12 }}>
+                {Capitalize(title)}
+              </Text>
+            )}
             </View>
             <ScrollView style={styles.optionArea}>
               {optionArray.map((item, key) => {
@@ -99,15 +102,13 @@ const styles = StyleSheet.create({
   inputSelectorPress: {
     display: "flex",
     width: "100%",
-    paddingHorizontal: 4,
   },
   inputSelectorDisplay: {
     paddingVertical: 8,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#aaa",
-    paddingHorizontal: 8,
-    backgroundColor: "#fff"
+    borderWidth: 2,
+    paddingHorizontal: 10,
+    height: 40,
+    borderColor: "#bbb",
   },
   backdrop: {
     position: "absolute",
@@ -120,17 +121,21 @@ const styles = StyleSheet.create({
   modalWindow: {
     position: "absolute",
     width: "100%",
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
     backgroundColor: "#fff",
     bottom: 0,
   },
   optionArea: {
-    
+    paddingBottom:12
   },
   optionPress: {
+    display: 'flex',
+    justifyContent: 'center',
     width: "100%",
-    paddingVertical: 12,
+    height: 48,
+    paddingTop: 8,
+    paddingHorizontal: 12,
     borderBottomWidth: 1,
     borderColor: "#ccc",
   },

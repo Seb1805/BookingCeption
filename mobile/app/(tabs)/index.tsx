@@ -33,7 +33,7 @@ export default function Index() {
       <Selectormodal 
         visibility={selectorVisible} 
         setVisibility={setSelectorVisible} 
-        title="this is a selector"
+        // title="this is a selector"
         optionArray={dummyData}
         selectedData={selectedOption}
         setselectedData={setSelectedOption}
