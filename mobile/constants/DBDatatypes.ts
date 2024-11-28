@@ -37,10 +37,8 @@ export type User = {
 }
 
 export type Section = {
-  locationId: number
-  locationItem: number
+  locationId?: number
   name: string
-  spotId: number
   roomForParticipants: number
   layoutImage: string
 }
