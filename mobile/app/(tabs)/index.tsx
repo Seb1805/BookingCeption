@@ -23,22 +23,7 @@ export default function Index() {
       <Text>Påmindelse om kommende messe (3 dage)</Text>
       <Text>highlighted messer</Text>
 
-      <Link href="/(auth)/Login" style={styles.link} >
-        <Text>Login side</Text>
-      </Link>
-      <Link href="/(auth)/Signup" style={styles.link} >
-        <Text>Signup side</Text>
-      </Link>
-
-      <Selectormodal 
-        visibility={selectorVisible} 
-        setVisibility={setSelectorVisible} 
-        // title="this is a selector"
-        optionArray={dummyData}
-        selectedData={selectedOption}
-        setselectedData={setSelectedOption}
-        dataDisplay="text"
-       />
+     
 
       </View>
     </ScrollView>
