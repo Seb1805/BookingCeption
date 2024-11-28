@@ -5,7 +5,7 @@ from ..database import get_db
 from ..models import Location,LocationCreate,LocationPydantic,LocationUpdate,User
 from ..utils.security import get_current_user,  get_current_active_user
 from fastapi import APIRouter, Depends, HTTPException, status
-
+from sqlalchemy.sql import text
 
 router = APIRouter(prefix="/locations", tags=["locations"])
 
