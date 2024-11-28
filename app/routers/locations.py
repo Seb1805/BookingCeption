@@ -15,7 +15,7 @@ def get_locations(db: Session = Depends(get_db),current_user: dict = Depends(get
     return {"locations": locations}
 
 @router.get("/me")
-def get_location(db: Session = Depends(get_db),  user: User = Depends(get_current_active_user)):
+def get_location(db: Session = Depends(get_db),  user: User = Depends(get_current_user)):
     try:
         query = text("""
                      SELECT  l."locationId", l."locationName", l."address", l."city"
