@@ -1,11 +1,16 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useState } from "react";
 import { Link } from "expo-router";
+import Selectormodal from "@/components/Selectormodal";
 
 export default function Index() {
 
   const [campaignsData, setcampaignsData] = useState([])
+  const [selectorVisible, setSelectorVisible] = useState(false)
+  const [selectedOption, setSelectedOption] = useState(null)
 
+
+  const dummyData = [{text: "option1", id: 1},{text: "option2", id: 2},{text: "option3", id: 3},]
   return (
     <ScrollView style={{paddingTop: 16}}>
       <View style={{
@@ -24,6 +29,16 @@ export default function Index() {
       <Link href="/(auth)/Signup" style={styles.link} >
         <Text>Signup side</Text>
       </Link>
+
+      <Selectormodal 
+        visibility={selectorVisible} 
+        setVisibility={setSelectorVisible} 
+        title="this is a selector"
+        optionArray={dummyData}
+        selectedData={selectedOption}
+        setselectedData={setSelectedOption}
+        dataDisplay="text"
+       />
 
       </View>
     </ScrollView>
