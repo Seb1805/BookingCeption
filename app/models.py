@@ -429,7 +429,6 @@ class Section(Base):
 
 
 class SectionBase(BaseModel):
-    sectionId: int
     locationId: int
     name: str
     roomForParticipants: int
