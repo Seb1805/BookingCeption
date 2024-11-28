@@ -19,7 +19,6 @@ def get_ticket(sectionId: int, db: Session = Depends(get_db)):
 @router.post("/", response_model=SectionPydantic)
 def create_section(section: SectionCreate, db: Session = Depends(get_db)):
     new_section = Section(
-        sectionId=section.sectionId,
         locationId=section.locationId,
         name=section.name,
         roomForParticipants=section.roomForParticipants
