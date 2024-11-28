@@ -1,49 +1,75 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Button, Pressable, Platform } from 'react-native';
+import React, { useState,useEffect } from 'react';
+import { View, Text, TextInput, StyleSheet, Pressable, Platform } from 'react-native';
 import axios from 'axios';
 import { Campaign, Location } from '@/constants/DBDatatypes';
 import locationApi from '@/api/axios/routes/location';
 import { router } from 'expo-router';
 import DateTimePicker, {DateTimePickerEvent } from '@react-native-community/datetimepicker';
-
+import DropDownPicker from 'react-native-dropdown-picker';
+import sectionApi from '@/api/axios/routes/section';
+import { Button } from 'react-native-paper';
+import { TimePickerModal } from 'react-native-paper-dates';
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 
 export default function CampaignModal() {
     const [campaignName, setlocationName] = useState("");
+    const [section,setSectionId] = useState("")
+    const [campaignStartDate, setCampaignStartDate] = useState("")
 
-    const [campaignDate, setcampaignDate] = useState("")
+    const [campaignEndDate, setCampaignEndDate] = useState("")
+
     const [campaignDescription, setCampaignDescription] = useState("")
     const [campaignCoverImage, setCampaignCoverImage] = useState("")
-
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState("");
 
 
 
     //Date picker stuff    
     const [dateStart,setDateStart] = useState(new Date())
-    const [showPicker, setShowPicker] = useState(false)
+    const [showStartPicker, setShowStartPicker] = useState(false)
 
     const [dateEnd,setDateEnd] = useState(new Date())
-    
+    const [showEndPicker, setShowEndPicker] = useState(false)
+
     const [timeStart, setTimeStart] = useState("")
     const [timeEnd, setTimeEnd] = useState("")
 
-    const toggleDatePicker = () => {
-        setShowPicker(() => !showPicker)
+    const [visible, setVisible] = React.useState(false)
+    const onDismiss = React.useCallback(() => {
+      setVisible(false)
+    }, [setVisible])
+  
+    const onConfirm = React.useCallback(
+      ({ hours, minutes }: {hours: number, minutes: number}) => {
+        setVisible(false);
+        console.log({ hours, minutes });
+      },
+      [setVisible]
+    );
+
+    const toggleStartDatePicker = () => {
+        setShowStartPicker(() => !showStartPicker)
     }
+    
+    const toggleEndDatePicker = () => {
+      setShowEndPicker(() => !showEndPicker)
+  }
 
     const exitApp = () => {
       throw {};
     }
     //What the fuck is the type - who knows?
-    const onDateChange = (event: DateTimePickerEvent, selectedDate: Date | undefined) => {
+    const onStartDateChange = (event: DateTimePickerEvent, selectedDate: Date | undefined) => {
         if (event.type === 'set') {
           const currentDate = selectedDate || new Date();
           setDateStart(currentDate);
 
           if(Platform.OS === "android")
           {
-            toggleDatePicker();
-            setcampaignDate(currentDate.toDateString())
+            toggleStartDatePicker();
+            setCampaignStartDate(currentDate.toDateString())
           }
           else if(Platform.OS == "ios" || Platform.OS == "macos")
           {
@@ -51,9 +77,30 @@ export default function CampaignModal() {
 
           }
         } else {
-          toggleDatePicker();
+          toggleStartDatePicker();
         }
       };
+
+          //What the fuck is the type - who knows?
+    const onEndDateChange = (event: DateTimePickerEvent, selectedDate: Date | undefined) => {
+      if (event.type === 'set') {
+        const currentDate = selectedDate || new Date();
+        setDateEnd(currentDate);
+
+        if(Platform.OS === "android")
+        {
+          toggleEndDatePicker();
+          setCampaignEndDate(currentDate.toDateString())
+        }
+        else if(Platform.OS == "ios" || Platform.OS == "macos")
+        {
+          //No support currently
+
+        }
+      } else {
+        toggleEndDatePicker();
+      }
+    };
       
 
     async function createCampaign() {
@@ -83,7 +130,7 @@ export default function CampaignModal() {
   
     return (
       <View>
-        <Text>CreateLocation</Text>
+        <Text>Create Campaign</Text>
         <TextInput
           style={styles.input}
           placeholder="Navn"
@@ -97,21 +144,47 @@ export default function CampaignModal() {
           onChangeText={(text) => setCampaignDescription(text)}
         />
 
-        {showPicker && <DateTimePicker mode='date' display='spinner' value={dateStart} onChange={onDateChange}/>}
-        <Pressable onPress={toggleDatePicker}>
+        {showStartPicker && <DateTimePicker mode='date' display='spinner' value={dateStart} onChange={onStartDateChange}/>}
+        <Pressable onPress={toggleStartDatePicker}>
         <TextInput
           style={styles.input}
-          placeholder="Skralde dag. 1"
+          placeholder="Start dag"
           editable={false}
-          value={campaignDate}
+          value={campaignStartDate}
           //onChangeText={(text) => setlocationOrgaznierId(text)}
             />
 
         </Pressable>
+        {showEndPicker && <DateTimePicker mode='date' display='spinner' value={dateEnd} onChange={onEndDateChange}/>}
+        <Pressable onPress={toggleEndDatePicker}>
+        <TextInput
+          style={styles.input}
+          placeholder="Slut dag"
+          editable={false}
+          value={campaignEndDate}
+          //onChangeText={(text) => setlocationOrgaznierId(text)}
+            />
+
+        </Pressable>
+        <SafeAreaProvider>
+      <View style={styles.marginFix}>
+        <Button onPress={() => setVisible(true)} uppercase={false} mode="outlined">
+          Start tidspunkt
+        </Button>
+        <TimePickerModal
+          visible={visible}
+          onDismiss={onDismiss}
+          onConfirm={onConfirm}
+          hours={12}
+          minutes={14}
+        />
+      </View>
+    </SafeAreaProvider>
 
 
-
-        <Button title="Opret lokation" onPress={createCampaign} />
+        <Pressable style={styles.input} onPress={createCampaign}>
+          <Text>Opret lokation</Text>
+        </Pressable>
       </View>
     );
 }
@@ -123,5 +196,14 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       marginBottom: 15,
       paddingHorizontal: 10,
+    },
+    marginFix: {
+      marginTop: 15,
+
+    },
+    selectedValue: {
+      marginTop: 16,
+      fontSize: 16,
+      fontWeight: 'bold',
     },
   });

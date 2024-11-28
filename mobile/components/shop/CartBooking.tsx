@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet,View } from 'react-native';
 import { Ticket } from '@/constants/DBDatatypes';
+import { Colors } from '@/constants/Colors';
 
 interface CartBookingProps {
   item: Ticket;
@@ -28,19 +29,24 @@ const CartBooking: React.FC<CartBookingProps> = ({ item, amount, onQuantityChang
         <View style={styles.amount}>
           {amount > 1 && <Text style={styles.priceAreaText}>{`${item.price}`}</Text>}
         </View>
+
         <View style={styles.amount}>
-          <Text>{amount}</Text>
-        </View>
-        <View>
-          <Text style={styles.priceAreaText}>{amount * item.price}</Text>
-        </View>
-        
-        <TouchableOpacity style={styles.incrementButton} onPress={() => onQuantityChange(true)}>
-          <Text>+</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.decrementButton} onPress={() => onQuantityChange(false)}>
           <Text>-</Text>
         </TouchableOpacity>
+          <Text style={styles.amountText}>{amount}</Text>
+          <TouchableOpacity style={styles.incrementButton} onPress={() => onQuantityChange(true)}>
+          <Text>+</Text>
+        </TouchableOpacity>
+        </View>
+
+
+        <View>
+          <Text style={styles.totalPriceAreaText}>{amount * item.price}</Text>
+        </View>
+        
+
+
       </>
     )}
   </View>
@@ -90,20 +96,40 @@ const styles = StyleSheet.create({
   location: {},
   date: {},
   priceAreaText: {textAlign: 'right'},
+  totalPriceAreaText : {
+    color: 'purple'
+  },
   amount: {
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
+    display: 'flex',
+    flexDirection:'row',
+    alignItems: 'center',
+    backgroundColor: '#fff'
+  },
+  amountText: {
+    margin: 5
   },
   incrementButton: {
-    marginLeft: 5,
-    marginRight: 5,
-    padding: 8,
-    backgroundColor: '#00ff00',
+    marginLeft: 4,
+    marginRight: 4,
+    padding: 5,
+    backgroundColor: '#aaa',
+    width:25,
+    display:'flex',
+    alignItems:'center',
+    borderTopRightRadius: 4,
+    borderBottomRightRadius: 4,
   },
   decrementButton: {
-    marginLeft: 5,
-    marginRight: 5,
-    padding: 8,
-    backgroundColor: '#ff0000',
+    marginLeft: 4,
+    marginRight: 4,
+    padding: 5,
+    width:25,
+    display:'flex',
+    alignItems:'center',
+    borderTopLeftRadius: 4,
+    borderBottomLeftRadius:4,
+    backgroundColor: '#aaa',
   }
 });
 

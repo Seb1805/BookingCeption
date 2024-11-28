@@ -101,6 +101,7 @@ export default function index() {
     console.log("Iam booking extended",bookingExtendItem)
     const bk = await bookingApi.bookingOrder(bookingExtendItem)
     console.log("wohoo")
+    clearCart()
     router.back()
   }
   catch(error)
@@ -157,7 +158,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     minHeight: 24,
     margin: 8,
-    borderRadius: 8,
     backgroundColor: '#0a0',
     marginTop: 16,
   },
@@ -173,7 +173,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     minHeight: 24,
     margin: 8,
-    borderRadius: 8,
     backgroundColor: '#ff0000',
     marginTop: 16,
   },
