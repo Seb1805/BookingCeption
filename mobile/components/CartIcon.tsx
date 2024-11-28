@@ -6,7 +6,7 @@ import { Cart } from '@/constants/OtherDatatypes'
 import { router, useFocusEffect } from 'expo-router'
 
 export default function CartIcon({color}: {color: string}) {
-  const [cart, setCart] = useState<Cart>()
+  const [cart, setCart] = useState<Cart | null>(null)
 
   useFocusEffect(
     useCallback(() => {
@@ -21,6 +21,9 @@ export default function CartIcon({color}: {color: string}) {
       
       setCart(() => JSON.parse(cart))
     }
+    else {
+      setCart(() => null)
+    }
     } catch (error) {
       console.log(error);
     }
@@ -28,8 +31,8 @@ export default function CartIcon({color}: {color: string}) {
 
   function CountCartItems() {
     let itemCounter = 0;
-    if (typeof(cart) !== "undefined") {
-      cart.cartItems.map((item) => (itemCounter += item.amount));
+    if (cart !== null) {
+      cart?.cartItems.map((item) => (itemCounter += item.amount));
       return (
         <View style={styles.cartCounter}>
           <Text style={styles.cartCounterText}>{itemCounter}</Text>
