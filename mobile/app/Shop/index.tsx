@@ -117,16 +117,24 @@ export default function index() {
     if(newCart[index].amount == 0) {
       newCart.splice(index,1)
     }
-    setcartFull(newCart);
+    
+    setcartFull(() => newCart);
     updateCartInStorage(newCart);
   }, [cartFull]);
   
+  async function CartDelete() {
+    await AsyncStorage.removeItem('cart')
+  }
 
   const updateCartInStorage = async (newCart: ticketWithAmount[]) => {
-    const cartData = {
-      cartItems: newCart.map(item => ({ ticketId: item.ticket.ticketId, amount: item.amount }))
-    };
-    await AsyncStorage.setItem('cart', JSON.stringify(cartData));
+    if(newCart.length == 0) {
+      CartDelete()
+    } else {
+      const cartData = {
+        cartItems: newCart.map(item => ({ ticketId: item.ticket.ticketId, amount: item.amount }))
+      };
+      await AsyncStorage.setItem('cart', JSON.stringify(cartData));
+    }
   };
 
   const clearCart = async () => {
