@@ -47,8 +47,8 @@ export default function SectionModal() {
   
       // Map the fetched data to the format expected by react-native-picker
       const formattedItems = jsonData.locations.map((item: { locationId: number; locationName: string }) => ({
-        label: item.locationName,
-        value: item.locationId.toString()
+        locationName: item.locationName,
+        locationId: item.locationId.toString()
       }));
   
       console.log('Formatted items:', formattedItems); // Added for debugging
@@ -62,6 +62,7 @@ export default function SectionModal() {
 
     async function createSection(){
         try{
+          // console.log(sec)
           console.log(sectionLocationId?.locationId)
           const sectionData: Section = {
             locationId: sectionLocationId?.locationId,
@@ -121,7 +122,7 @@ export default function SectionModal() {
         optionArray={items}
         selectedData={sectionLocationId}
         setselectedData={setSectionLocationId}
-        dataDisplay="label"
+        dataDisplay="locationName"
        />
         <Button title="Opret lokation" onPress={createSection} />
 
