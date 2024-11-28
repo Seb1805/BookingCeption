@@ -5,17 +5,18 @@ import { Router } from 'expo-router';
 import sectionApi from '@/api/axios/routes/section';
 import locationApi from '@/api/axios/routes/location'
 import DropDownPicker from 'react-native-dropdown-picker';
+import Selectormodal from '@/components/Selectormodal';
 
 
 
 export default function SectionModal() {
-  const [sectionLocationId, setSectionLocationId] = useState("");
-  const [sectionLocationItem, setSectionLocationItem] = useState("");
+  const [sectionLocationId, setSectionLocationId] = useState <{ locationId?: number; locationName: string } | null>(null);
   const [sectionName, setSectionName] = useState("");
   const [sectionSpotId, setSectionSpotId] = useState("");
   const [sectionRoomForParticipants, setSectionRoomForParticipants] = useState("");
   const [sectionLayoutImage, setSectionLayoutImage] = useState("");
-
+  const [selectorVisible, setSelectorVisible] = useState(false)
+  const [selectedOption, setSelectedOption] = useState(null)
   //const [items, setItems] = useState([]);
   const [items, setItems] = useState<Array<{ label: string; value: string }>>([]);
 
@@ -61,14 +62,14 @@ export default function SectionModal() {
 
     async function createSection(){
         try{
+          console.log(sectionLocationId?.locationId)
           const sectionData: Section = {
-            locationId: parseInt(value || ""),
-            locationItem: parseInt(sectionLocationItem ),
+            locationId: sectionLocationId?.locationId,
             name: sectionName,
-            spotId: parseInt(sectionSpotId),
             roomForParticipants: parseInt(sectionRoomForParticipants),
             layoutImage: ''
         }
+        console.log("Iam section data",sectionData)
         const response = sectionApi.section(sectionData);
         ;
         //console.log(sectionData)
@@ -97,7 +98,7 @@ export default function SectionModal() {
         keyboardType='number-pad'
         onChangeText={(text) => setSectionRoomForParticipants(text)}
         />
-      <View style={{ zIndex: open ? 1000 : 0 }}>
+      {/* <View style={{ zIndex: open ? 1000 : 0 }}>
         <DropDownPicker 
           containerStyle={{
             width: '100%',
@@ -112,8 +113,16 @@ export default function SectionModal() {
           onSelectItem={(item) => setSectionLocationId(`${item.value}`)}
           />
         <Text style={styles.selectedValue}>Selected Location: {sectionLocationId}</Text>
-      </View>
-
+      </View> */}
+      <Selectormodal 
+        visibility={selectorVisible} 
+        setVisibility={setSelectorVisible} 
+        title="this is a selector"
+        optionArray={items}
+        selectedData={sectionLocationId}
+        setselectedData={setSectionLocationId}
+        dataDisplay="label"
+       />
         <Button title="Opret lokation" onPress={createSection} />
 
     </View>

@@ -36,18 +36,7 @@ export default function CampaignModal() {
     const [timeStart, setTimeStart] = useState("")
     const [timeEnd, setTimeEnd] = useState("")
 
-    const [visible, setVisible] = React.useState(false)
-    const onDismiss = React.useCallback(() => {
-      setVisible(false)
-    }, [setVisible])
-  
-    const onConfirm = React.useCallback(
-      ({ hours, minutes }: {hours: number, minutes: number}) => {
-        setVisible(false);
-        console.log({ hours, minutes });
-      },
-      [setVisible]
-    );
+
 
     const toggleStartDatePicker = () => {
         setShowStartPicker(() => !showStartPicker)
@@ -129,7 +118,7 @@ export default function CampaignModal() {
   
   
     return (
-      <View>
+      <View style={{flex: 1}}>
         <Text>Create Campaign</Text>
         <TextInput
           style={styles.input}
@@ -166,24 +155,11 @@ export default function CampaignModal() {
             />
 
         </Pressable>
-        <SafeAreaProvider>
-      <View style={styles.marginFix}>
-        <Button onPress={() => setVisible(true)} uppercase={false} mode="outlined">
-          Start tidspunkt
-        </Button>
-        <TimePickerModal
-          visible={visible}
-          onDismiss={onDismiss}
-          onConfirm={onConfirm}
-          hours={12}
-          minutes={14}
-        />
-      </View>
-    </SafeAreaProvider>
 
-
-        <Pressable style={styles.input} onPress={createCampaign}>
+        <Pressable  onPress={createCampaign}>
+          <View>
           <Text>Opret lokation</Text>
+          </View>
         </Pressable>
       </View>
     );
@@ -197,10 +173,7 @@ const styles = StyleSheet.create({
       marginBottom: 15,
       paddingHorizontal: 10,
     },
-    marginFix: {
-      marginTop: 15,
 
-    },
     selectedValue: {
       marginTop: 16,
       fontSize: 16,
