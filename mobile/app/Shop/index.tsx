@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
     margin: 8,
     backgroundColor: '#0a0',
     marginTop: 16,
+    borderRadius: 8,
   },
   AcceptText: {
     textAlign: 'center',
@@ -173,8 +174,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     minHeight: 24,
     margin: 8,
-    backgroundColor: '#ff0000',
+    backgroundColor: '#d00',
     marginTop: 16,
+    borderRadius: 8,
   },
   ClearCartText: {
     textAlign: 'center',

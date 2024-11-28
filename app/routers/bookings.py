@@ -23,7 +23,7 @@ def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_c
         query = text("""
             SELECT t."name", t."validDateStart", t."validDateEnd",
                    t."validTimeStart", s."name" AS section_name,
-                   l."address", c."campaignId", c."coverImage",
+                   l."address", c."campaignId", c."name", c."coverImage",
                    sp."spotnumber"
             FROM "User" u
             INNER JOIN "Booking" b ON b."userId" = u."userId"
@@ -43,7 +43,7 @@ def get_bought_tickets(db: Session = Depends(get_db), user: User = Depends(get_c
         # Manually define the column names based on the SELECT query
         column_names = [
             "name", "validDateStart", "validDateEnd", "validTimeStart", 
-            "section_name", "address", "campaignId", "coverImage", "spotnumber"
+            "section_name", "address", "campaignId", "campaignName", "coverImage", "spotnumber"
         ]
 
         # Convert the result (a list of Row objects) to a list of dictionaries

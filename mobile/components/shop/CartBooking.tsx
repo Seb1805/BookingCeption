@@ -26,7 +26,7 @@ const CartBooking: React.FC<CartBookingProps> = ({ item, amount, onQuantityChang
           <Text style={styles.location}>{`${item.address}, ${item.city}`}</Text>
           <Text style={styles.date}>{DatestringToDate(item.validDateStart).toLocaleDateString('default', {day: '2-digit', month: 'short', year: '2-digit'})}  -  {TimestringToDateTime(item.validTimeStart).toLocaleTimeString('default', {hour: 'numeric', minute: '2-digit'})}</Text>
         </View>
-        <View style={styles.amount}>
+        <View>
           {amount > 1 && <Text style={styles.priceAreaText}>{`${item.price}`}</Text>}
         </View>
 
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginHorizontal: 8,
-    marginVertical: 4,
+    marginVertical: 8,
   },
   textArea: {
     flexGrow: 1,
@@ -104,10 +104,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection:'row',
     alignItems: 'center',
-    backgroundColor: '#fff'
   },
   amountText: {
-    margin: 5
+    margin: 5,
+    backgroundColor: "#fff"
   },
   incrementButton: {
     marginLeft: 4,
