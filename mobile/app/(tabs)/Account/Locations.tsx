@@ -48,14 +48,16 @@ export default function Locations() {
     <>
     <ScrollView style={{flex: 1, margin: 8}}>
       {ownLocations.map((item, key) => {return (
-        <View key={key}>
-          <Text>
-            {item.locationName ? item.locationName : "Intet navn"}
-          </Text>
-          <Text>
-            {item.address}
-          </Text>
-        </View>
+        <Pressable style={{borderBottomColor: "#ddd", borderBottomWidth:1, paddingVertical:8}} onPress={() => {}}  key={key}>
+          <View>
+            <Text>
+              {item.locationName ? item.locationName : "Intet navn"}
+            </Text>
+            <Text>
+              {item.address}
+            </Text>
+          </View>
+        </Pressable>
       )})}
     </ScrollView>
     <PlusEntity func={() => {router.navigate('/(tabs)/Account/modals/CreateLocation')}}/>
