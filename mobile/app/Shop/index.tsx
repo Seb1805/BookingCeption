@@ -114,6 +114,9 @@ export default function index() {
   const handleQuantityChange = useCallback((index: number, isIncrementing: boolean) => {
     const newCart = [...cartFull];
     newCart[index].amount += isIncrementing ? 1 : -1;
+    if(newCart[index].amount == 0) {
+      newCart.splice(index,1)
+    }
     setcartFull(newCart);
     updateCartInStorage(newCart);
   }, [cartFull]);
