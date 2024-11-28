@@ -50,25 +50,23 @@ def get_campaigns_chunk(campaign_page: int,  db: Session = Depends(get_db)):
 
 
 @router.get("/search/{campaign_name}")
-def get_campaigns_chunk(campaign_name: int,  db: Session = Depends(get_db)):
+def get_campaigns_chunk(campaign_name: str,  db: Session = Depends(get_db)):
     fetchamount = 20
     try:
         query = text("""
                      SELECT c."campaignId", c."name", min(t."price"), c."coverImage"
                      from "Campaign" c
                      INNER JOIN "Ticket" t ON t."campaignId" = c."campaignId"
-                     where c."dateStart" > :customDateStart AND c."name" LIKE '%:searchName%'
+                     where c."dateStart" > :customDateStart AND c."name" LIKE :searchName
                      group by c."name", c."campaignId", c."coverImage"
                      """)
 
         print(query)
         # Execute query and fetch all results
         # Execute the query with the email parameter
-        offsetcalc = campaign_page * fetchamount
         datetoday = datetime.datetime.now()
 
-        result = db.execute(query, {"customDateStart" : datetoday.strftime("%Y-%m-%d"), "searchName": campaign_name }).fetchall()
-        # result = db.execute(query, {"dateEnd" : datetoday.strftime("%Y-%m-%d") }).offset(offsetcalc).limit(fetchamount)
+        result = db.execute(query, {"customDateStart" : datetoday.strftime("%Y-%m-%d"), "searchName": f'%{campaign_name}%' }).fetchall()
 
         # Manually define the column names based on the SELECT query
         column_names = [
