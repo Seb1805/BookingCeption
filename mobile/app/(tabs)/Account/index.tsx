@@ -72,7 +72,7 @@ export default function index() {
         </Text>
       </View>
 
-      { userData?.role == 1 && 
+      { userData?.role == 3 && 
       <Profilesection title="kontrolpanel">
       <ProfileButtons
         title="Lokaler"

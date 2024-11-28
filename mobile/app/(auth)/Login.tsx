@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet, Pressable } from "react-native";
 import { Link, NavigationContainer } from "@react-navigation/native";
 // import { login } from loginApi
 import {loginApi } from "@/api/axios/axiosClient";
@@ -73,7 +73,8 @@ const LoginScreen = () => {
       />
       <Button title="Login" onPress={handleLogin} />
       <Text style={styles.link}>
-        Don't have an account? <Link to={"/Signup"}>Register here</Link>
+
+        Don't have an account? <Pressable onPress={() => router.navigate("/(auth)/Signup")}>Register here</Pressable>
       </Text>
     <Toast /> 
     </View>
