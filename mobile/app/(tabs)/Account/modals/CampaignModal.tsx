@@ -22,7 +22,8 @@ export default function CampaignModal() {
 
     const [campaignDescription, setCampaignDescription] = useState("")
     const [campaignCoverImage, setCampaignCoverImage] = useState("")
-    const [visible, setVisible] = useState(false)
+    const [visibleStart, setVisibleStart] = useState(false)
+    const [visibleEnd, setVisibleEnd] = useState(false)
 
 
     //Date picker stuff    
@@ -37,28 +38,28 @@ export default function CampaignModal() {
 
     
 
-    const toggleStartTimePicker = () => setVisible(true);
-    const toggleEndTimePicker = () => setVisible(true);
+    const toggleStartTimePicker = () => setVisibleStart(true);
+    const toggleEndTimePicker = () => setVisibleEnd(true);
 
     const onConfirmStart = ({hours, minutes}:{hours : number, minutes: number} ) => {
       const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-      if (visible === true) {
+      if (visibleStart === true) {
         setTimeStart(formattedTime);
-        setVisible(false);
+        setVisibleStart(false);
       }
-      // } else {
-      //   setTimeEnd(formattedTime);
+      //  else {
+      //   setTimeStart(formattedTime);
       //   setVisible(false);
       // }
     };
 
     const onConfirmEnd = ({hours, minutes}:{hours : number, minutes: number} ) => {
       const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-      if (visible === true) {
+      if (visibleEnd === true) {
         setTimeEnd(formattedTime);
-        setVisible(false);
+        setVisibleEnd(false);
       }
-      // } else {
+      //  else {
       //   setTimeEnd(formattedTime);
       //   setVisible(false);
       // }
@@ -197,11 +198,11 @@ export default function CampaignModal() {
       </View>
     </Pressable>
     <TimerPickerModal
-      visible={visible}
-      setIsVisible={setVisible}
+      visible={visibleStart}
+      setIsVisible={setVisibleStart}
       onConfirm={onConfirmStart}
       modalTitle="Set Start Time"
-      onCancel={() => setVisible(false)}
+      onCancel={() => setVisibleStart(false)}
       closeOnOverlayPress
       styles={{
         theme: "light",
@@ -224,11 +225,11 @@ export default function CampaignModal() {
         />
     </Pressable>
     <TimerPickerModal
-      visible={visible}
-      setIsVisible={setVisible}
+      visible={visibleEnd}
+      setIsVisible={setVisibleEnd}
       onConfirm={onConfirmEnd}
       modalTitle="Set End Time"
-      onCancel={() => setVisible(false)}
+      onCancel={() => setVisibleEnd(false)}
       closeOnOverlayPress
       styles={{
         theme: "light",
