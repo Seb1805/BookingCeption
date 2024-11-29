@@ -166,6 +166,7 @@ export default function index() {
                 text: "OK",
                 onPress: async () => {
                   await AsyncStorage.removeItem("access_token")
+                  await AsyncStorage.removeItem("boughtlist")
                   setuserData(() => undefined)
                   router.navigate('/')
                   },
