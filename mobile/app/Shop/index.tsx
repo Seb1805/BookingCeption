@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native'
+import { View, Text, ScrollView, Pressable, StyleSheet, Alert } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import CartBooking from '@/components/shop/CartBooking'
 import { Ticket } from '@/constants/DBDatatypes'
@@ -23,7 +23,7 @@ export default function index() {
 
   useFocusEffect(
     useCallback(() => {
-      GetCartData().then((cart) => setcartFull(cart))
+      GetCartData()
     }, [])
   )
 
@@ -35,15 +35,11 @@ export default function index() {
   
     if(cartData) {
       const cartObj = JSON.parse(cartData);
-      console.log("Iam cartObj",cartObj)
       // Use Promise.all to wait for all API calls to complete
       tickets = await Promise.all(
         cartObj.cartItems.map(async (x: CartItem) => {
-          // console.log("Before api");
-          // console.log("Iam x",x)
           try{
             const response = await ticketApi.getTicketExtended(x.ticketId)
-            console.log("Iam code",response.status)
             if(response.status === 200) {
               const data = response.data.ticket;
               const theShit : ticketWithAmount = {
@@ -52,35 +48,37 @@ export default function index() {
               };
               return theShit;
             } else {
-              console.log("Not a status code 200, but trash");
-              // console.log(response.status);
               throw new Error(`Failed to fetch ticket data for ${x.ticketId}`);
             }
           }
           catch(error){
-            console.log("HELLO I AM FAT ERROR",error)
+            console.log("API connection: ",error)
           }
 
         })
       );
     }
-    console.log("The ticket i return",tickets);
-    return tickets;
+    setcartFull(() => tickets)
   }
   
 
   async function OrderConfirm() {
-    try{
+    try {
+      const loggedinCheck = await userApi.getUserData()
+      if(loggedinCheck.status !== 200) {
+        router.navigate('/(auth)/Login')
+      }
+    } catch (error) {
+      console.log('Not logged in');
+      router.navigate('/(auth)/Login')
+    }
 
-    
-    console.log(cartFull)
+    try {
     if (!cartFull.length) 
       {
         console.log("Skrald")
         return;
       }
-    // const response = await userApi.getUserData()
-    // const data = response.data;
     const bc: BookingCampaign[] = cartFull.map(item => ({
       ticketId: item.ticket.ticketId,
       ticketAmount: item.amount,
@@ -101,6 +99,10 @@ export default function index() {
     console.log("Iam booking extended",bookingExtendItem)
     const bk = await bookingApi.bookingOrder(bookingExtendItem)
     console.log("wohoo")
+    Toast.show({
+      type: 'success',
+      text1: 'Tak for dit køb',
+    })
     clearCart()
     router.back()
   }
@@ -112,47 +114,97 @@ export default function index() {
   const handleQuantityChange = useCallback((index: number, isIncrementing: boolean) => {
     const newCart = [...cartFull];
     newCart[index].amount += isIncrementing ? 1 : -1;
-    setcartFull(newCart);
+    if(newCart[index].amount == 0) {
+      newCart.splice(index,1)
+    }
+    
+    setcartFull(() => newCart);
     updateCartInStorage(newCart);
   }, [cartFull]);
   
+  async function CartDelete() {
+    await AsyncStorage.removeItem('cart')
+  }
 
   const updateCartInStorage = async (newCart: ticketWithAmount[]) => {
-    const cartData = {
-      cartItems: newCart.map(item => ({ ticketId: item.ticket.ticketId, amount: item.amount }))
-    };
-    await AsyncStorage.setItem('cart', JSON.stringify(cartData));
+    if(newCart.length == 0) {
+      CartDelete()
+    } else {
+      const cartData = {
+        cartItems: newCart.map(item => ({ ticketId: item.ticket.ticketId, amount: item.amount }))
+      };
+      await AsyncStorage.setItem('cart', JSON.stringify(cartData));
+    }
   };
 
   const clearCart = async () => {
     await AsyncStorage.removeItem('cart');
-    setcartFull(() => [])  };
-  return (
-    <ScrollView>
-      {cartFull?.map((item, key) => (
-        <CartBooking 
-          key={key} 
-          item={item.ticket} 
-          amount={item.amount} 
-          onQuantityChange={(isIncrementing) => handleQuantityChange(key, isIncrementing)}
-        />
-      ))}
-      
-      <Pressable style={styles.Accept} onPress={() => OrderConfirm()}>
-        <Text style={styles.AcceptText}>Accepter bestilling</Text>
-      </Pressable>
-      
-      <Pressable style={styles.ClearCart} onPress={clearCart}>
-        <Text style={styles.ClearCartText}>Clear Cart</Text>
-      </Pressable>
-      
-      <Toast />
-    </ScrollView>
-  );
+    setcartFull(() => [])  
+  };
+
+  if(cartFull.length > 0) {
+    return (
+      <ScrollView>
+        {cartFull?.map((item, key) => (
+          <CartBooking 
+            key={key} 
+            item={item.ticket} 
+            amount={item.amount} 
+            onQuantityChange={(isIncrementing) => handleQuantityChange(key, isIncrementing)}
+          />
+        ))}
+        
+        <Pressable style={styles.Accept} onPress={() => OrderConfirm()}>
+          <Text style={styles.AcceptText}>Accepter bestilling</Text>
+        </Pressable>
+        
+        {/* Confirm clear */}
+        <Pressable style={styles.ClearCart} onPress={() => {
+          Alert.alert("Ryd kurv", "Er du sikker du vil tømme kurven?", [
+            {
+              text: "Nej",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel",
+            },
+            {
+              text: "Ja",
+              onPress: () => clearCart()
+            },
+          ]);
+        }}>
+          <Text style={styles.ClearCartText}>Clear Cart</Text>
+        </Pressable>
+  
+        {/* No conformation */}
+        {/* <Pressable style={styles.ClearCart} onPress={() => clearCart() }>
+          <Text style={styles.ClearCartText}>Clear Cart</Text>
+        </Pressable> */}
+        
+        <Toast />
+      </ScrollView>
+    );
+  }
+  else { 
+    return (
+      <Text style={styles.noticketstext}>
+        Ingen billetter i kurven
+      </Text>
+    )
+  }
 };
 
 
 const styles = StyleSheet.create({
+  noticketstext: {
+    top: 0, 
+    bottom: 0,
+    left: 0,
+    right: 0,
+    margin: 'auto',
+    textAlign: 'center',
+    color: '#777',
+    width: '100%'
+  },
   Accept: {
     justifyContent: 'center',
     paddingVertical: 12,

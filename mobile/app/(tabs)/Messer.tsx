@@ -94,7 +94,7 @@ export default function Shop() {
               color={Colors.light.textInverse}
             />
           </Pressable>
-          <CartIcon color={Colors.light.textInverse} />
+          <CartIcon color={Colors.light.textInverse} showCounter={true}/>
         </View>
       </View>
       {/* {datasdf.map((item, key) => {

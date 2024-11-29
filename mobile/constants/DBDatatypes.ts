@@ -105,3 +105,10 @@ export type BookingExtended = {
   dateCreated: string
   bookingCampaigns: BookingCampaign[]
 }
+
+export type LocationsOwn = {
+  locationId: number
+  locationName: string
+  address: string
+  city: string
+}
